@@ -1,0 +1,148 @@
+/*设置歌单详情列表*/
+.playlist-detail {
+    padding-bottom: 37px;
+}
+.detail-head {
+    display: flex;
+}
+.detail-head-cover {
+    flex: 0 0 150px;
+    padding: 26px 26px 8px 26px;
+}
+.detail-head img {
+    height: 150px;
+    width: 150px;
+}
+/*设置歌单详情的标题*/
+.detail-head-title {
+    flex: 1;
+}
+.detail-head-title h2 {
+    font-size: 24px;
+    font-weight: bold;
+}
+/*设置播放按钮*/
+.playlist-button-list {
+    display: flex;
+    position: relative;
+    top: 10px;
+}
+.playlist-button.playadd-button {
+    flex: 0 0 136px;
+}
+.playlist-button {
+    height: 30px;
+    border: solid 1px #bebebe;
+    cursor: pointer;
+    border-radius: 2px;
+    display: flex;
+    margin-right: 20px;
+}
+.play-list {
+    flex: 1;
+    padding: 0 18px;
+    display: flex;
+    align-items: center;
+}
+.play-list img{
+    width: 16px;
+    height: 16px;
+    flex: 0 0 14px;
+    margin-right: 4px;
+}
+.add-list {
+    flex: 0 0 26px;
+    height: 29px;
+    width: 26px;
+    border-left: solid 1px #bebebe;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.add-list img{
+    width: 16px;
+    height: 16px;
+}
+.play-list .fadd{
+    margin-right: 8px;
+    margin-bottom: 2px;
+}
+
+/*详情播放列表*/
+ul.detail-song-list {
+    padding: 0 25px;
+}
+ul.detail-song-list li.head {
+    height: 28px;
+    color: #999999;
+}
+ul.detail-song-list li {
+    display: flex;
+    border-bottom: solid 1px #f4f4f4;
+    height: 37px;
+    align-items: center;
+    padding: 0 20px;
+}
+ul.detail-song-list li .title,.artist,.album {
+    flex: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-height: 17px;
+    max-height: 38px;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+ul.detail-song-list li .artist,.album {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-height: 17px;
+    max-height: 38px;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+ul.detail-song-list li a {
+    cursor: pointer;
+}
+ul.detail-song-list li .tools {
+    flex: 0 0 110px;
+    display: flex;
+    align-items: center;
+}
+/*设置歌曲的操作*/
+.li-handle-img{
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+}
+.tools-hide{
+    visibility: hidden;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>online-music</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+    <script src="/static/me/js/jquery-3.3.1.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <!--首页js-->
+    <script src="/static/me/js/index.js"></script>
+    <script src="/static/me/js/song-detail.js"></script>
+    <script src="/static/me/js/foot.js"></script>
+    <link href="/static/me/css/index.css" rel="stylesheet">
+    <link href="/static/me/css/tracklist.css" rel="stylesheet">
+    <link href="/static/me/css/footer.css" rel="stylesheet">
+    <!--歌曲详情-->
+    <link href="/static/me/css/lyric.css" rel="stylesheet">
+
+</head>
+<body>
+    <div id="main" class="main">
+<!--侧边栏-->
+        <div id="sidebar" class="sidebar">
+            <div class="flex-scroll-wrapper">
+                <div class="menu-control"></div>
+                <div class="menu-title">
+                    <div class="title ng-binding">搜索聚合</div>
+                </div>
+                <div>
+                    <div class="jxgd gd-select collect-select ">
+                         <span class="li-featured-list">
+                            <img src="/static/me/imgs/starts.png" />
+                        </span>
+                        <a class="ng-binding ajxgd" href="/v1/song/songBestCoverUI" target="main">精选歌单</a>
+                    </div>
+                </div>
+ <!--歌单列表-->
+                <div>
+                    <div class="panel-group" id="accordion" >
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion"
+                                       href="#collapseOne">
+                                        创建歌单
+                                    </a>
+                                    <span><img class="add" src="/static/me/imgs/unadd.png"></span>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="collect-list gd-select">
+                                         <span>
+                                             <img src="/static/me/imgs/music.png">
+                                        </span>
+                                        <a href="/v1/song/songListUI" target="main">电音</a>
+                                    </div>
+                                    <div class="collect-list gd-select">
+                                         <span>
+                                             <img src="/static/me/imgs/music.png">
+                                        </span>
+                                        <a href="/v1/song/songListUI" target="main" >英文</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion"
+                                       href="#collapseTwo">
+                                        收藏歌单
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="collect-list gd-select">
+                                        <span>
+                                             <img src="/static/me/imgs/music.png">
+                                        </span>
+                                        <a href="/v1/song/songListUI" target="main">过年回家</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--内容栏-->
+        <div class="content">
+ <!--导航栏-->
+            <div class="navigation">
+                <nav class="navbar navbar-default" role="navigation">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <div class="backfront">
+                                <span class="navbar-left navbar-brand" ng-click="popWindow()"><</span>
+                                <span  class="navbar-right navbar-brand" ng-click="forwardWindow()">></span>
+                            </div>
+                        </div>
+                        <div>
+                            <ul class="nav navbar-nav">
+                                <li >
+                                    <div class="search">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">search</span>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </li>
+                                {{if .session_user.Name }}
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        个人中心
+                                        <b class="caret"></b>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/v1/user/userDetailUI" target="_blank">个人信息</a></li>
+                                        <li><a href="/v1/user/modifyPwdUI" target="_blank">修改密码</a></li>
+                                        <li><a href="/v1/login/loginOut" target="_self">注销</a></li>
+                                    </ul>
+                                </li>
+                                {{else}}
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        Login
+                                        <b class="caret"></b>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/v1/login/loginUI" target="_blank">登录</a></li>
+                                        <li><a href="/v1/user/registerUI" target="_blank">注册</a></li>
+                                    </ul>
+                                </li>
+                                {{end}}
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+ <!--外部数据展示栏--><!--data-spy="scroll"
+	 style="height:200px;overflow:auto; position: relative;"-->
+            <div>
+                <iframe src="/v1/song/songBestCoverUI" name="main" width="100%" height="547px" style="margin-top: -20px"></iframe>
+            </div>
+        </div>
+    </div>
+ <!--歌词的展示-->
+    <div id="songdetail-wrapper" class="songdetail-wrapper ng-hide">
+        <div class="playsong-detail">
+            <div class="detail-head">
+                <div class="detail-head-cover">
+                    <img src="/static/me/temp/cover2.jpg">
+                </div>
+            </div>
+            <div class="detail-songinfo">
+                <h2 class="">当时当下</h2>
+                <div class="info">
+                    <div class="singer">歌手：xxxx</div>
+                    <div class="album">专辑名称：xxxx</div>
+                </div>
+                <div class="lyric">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--底边栏-->
+    <div class="footer">
+        <!--左边控制-->
+        <div class="left-control">
+            <span>
+                 <img id="upSong" class="bf-netx-per-play-pause" src="/static/me/imgs/bf_previous.png" title="上一首">
+            </span>
+            <span>
+                <img id="playPause" class="bf-netx-per-play-pause" src="/static/me/imgs/bf_pause.png" title="播放">
+            </span>
+            <span>
+                 <img id="downSong" class="bf-netx-per-play-pause" src="/static/me/imgs/bf_next.png" title="下一首">
+            </span>
+        </div>
+        <div class="main-info">
+           <img class="cover" src="/static/me/temp/cover2.jpg">
+            <div class="play-progress">
+                <div class="ctrl">
+                    <span>
+                        <a title="单曲循环" class="bf-fs"><img src="/static/me/imgs/bffs_dqxh.png" ></a>
+                        <a title="顺序播放" class="bf-fs  ng-hide" ><img src="/static/me/imgs/bffs_xsbf.png" ></a>
+                        <a title="随机播放" class="bf-fs  ng-hide" ><img src="/static/me/imgs/bffs_sjbf.png" ></a>
+                    </span>
+                </div>
+                <div class="play-title">情人而已</div>
+                <div class="more-info">
+                    <div class="current">00:00</div>
+                    <div class="total">04:35</div>
+                </div>
+                <div class="playbar">
+                    <audio id="audioTag" src="music/thh.mp3"></audio>
+                    <div class="pgs">
+                        <div class="pgs-play" id="progress" style="width: 0%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right-control">
+            <!--播放列表-->
+            <div class="playlist-toggle">
+                <img src="/static/me/imgs/plarer_list.png" title="播放列表">
+            </div>
+            <!--音量控制-->
+            <div class="volume-ctrl">
+                <span>
+                    <img class="on-off"  src="/static/me/imgs/no_volume.png">
+                </span>
+                <!--音量的控制-->
+                <div class="range">
+                    <input type="range" min="0" max="10" step="1" value="0">
+                    <p class="rang_width"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

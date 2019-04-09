@@ -1,0 +1,149 @@
+.footer{
+    height: 60px;
+    width:100%;
+    background-color: #dddddd;
+    position: fixed;
+    bottom: 0;
+    display: flex;
+}
+
+/*--------------------------------------------【前进和后退，暂停和播放】*/
+.left-control{
+    flex: 0 0 300px;
+    display: flex;
+    align-items: center;
+}
+.main-info{
+    flex: 1;
+    background: #f2f2f2;
+    display: flex;
+}
+/*--------------------------------------------【当前播放的封面】*/
+.cover{
+    height: 60px;
+    width: 60px;
+    flex: 0 0 60px;
+    cursor: pointer;
+}
+.play-progress{
+    flex: 1;
+    position: relative;
+}
+.ctrl{
+    position: absolute;
+    right: 0px;
+    margin-top: 4px;
+}
+.play-title{
+    text-align: center;
+    font-size: 14px;
+    margin-top: 3px;
+}
+/*--------------------------------------------【当前的播放时时间】*/
+.current{
+     margin-left: 10px;
+     margin-top: 4px;
+     width: 50px;
+     font-size: 12px;
+}
+.total{
+    position: absolute;
+    width: 50px;
+    font-size: 12px;
+    right: 0px;
+    margin-top: -18px;
+
+}
+.playbar{
+    width: 100%;
+}
+/*设置进度条*/
+.pgs{
+    width: 657px;
+    background-color: #bed3ec;
+    margin-left: 10px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    height: 5px;
+    border-radius: 10px 10px 10px 10px;
+}
+.pgs-play{
+    position: absolute;
+    width: 0;
+    height: 100%;
+    /*#262729 黑色*/
+    background-color: #4785f9;
+}
+/*--------------------------------------------【右侧的控制】*/
+.right-control{
+    flex: 0 0 300px;
+    display: flex;
+    align-items: center;
+}
+/*播放列表的设置*/
+.playlist-toggle img{
+    width: 16px;
+    height: 16px;
+    margin-left: 29px;
+    cursor: pointer;
+}
+.volume-ctrl{
+    flex: 1;
+    display: flex;
+}
+/*对===========================================【拖动按钮的设置】*/
+
+input[type="range"] {
+    display: block;
+    -webkit-appearance: none;
+    background-color: #bdc3c7;
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    margin: 0 auto;
+    outline: 0;
+}
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background-color: #333;
+    width: 20px;height: 20px;
+    border-radius: 50%;
+    /*border: 2px solid white;*/
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+.range{
+    position:relative;
+    margin-left: 25px;
+    margin-top: 5px;
+}
+.rang_width{
+    position:absolute;
+    top: -2px;
+    background:#333;
+    height:10px;
+    border-radius:5px 0 0 5px;
+}
+.on-off{
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    margin-left: 21px;
+}
+/*--------------------------------------------【播放暂停，上下歌曲样式】*/
+
+/*设置暂停和播放，下一曲，上一曲*/
+.bf-netx-per-play-pause{
+    cursor: pointer;
+    margin-left: 42px;
+    width: 28px;
+    height: 28px;
+}
+/*设置循环，随机，单曲样式*/
+.bf-fs img{
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    margin-right: 18px;
+}

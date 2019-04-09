@@ -1,3 +1,94 @@
 swagger: "2.0"
 info: {}
-paths: {}
+basePath: v1
+paths:
+  /index/errorUI:
+    get:
+      tags:
+      - index
+      description: 错误页面
+      operationId: IndexController.ErrorUI
+      responses:
+        exec:
+          description: error
+  /index/indexUI:
+    get:
+      tags:
+      - index
+      description: 首页页面
+      operationId: IndexController.IndexUI
+      responses:
+        exec:
+          description: error
+  /login/:
+    post:
+      tags:
+      - login
+      description: 登录
+      operationId: LoginController.LoginIn
+  /login/loginOut:
+    get:
+      tags:
+      - login
+      description: 退出登录
+      operationId: LoginController.LoginOut
+  /login/loginUI:
+    get:
+      tags:
+      - login
+      description: 登录UI
+      operationId: LoginController.LoginUI
+  /song/songBestCoverUI:
+    get:
+      tags:
+      - song
+      description: 精选歌单UI
+      operationId: SongController.SongBestCoverUI
+      responses:
+        exec:
+          description: error
+  /song/songListUI:
+    get:
+      tags:
+      - song
+      description: 歌曲列表UI
+      operationId: SongController.SongDetailUI
+      responses:
+        exec:
+          description: error
+  /user/createUser:
+    post:
+      tags:
+      - user
+      description: 添加用户
+      operationId: UserController.CreateUser
+  /user/modifyPwd:
+    post:
+      tags:
+      - user
+      description: 修改密码
+      operationId: UserController.ModifyPwd
+  /user/modifyPwdUI:
+    get:
+      tags:
+      - user
+      description: 修改密码UI
+      operationId: UserController.ModifyPwdUI
+  /user/modifyUser:
+    post:
+      tags:
+      - user
+      description: 修改用户
+      operationId: UserController.ModifyUser
+  /user/registerUI:
+    get:
+      tags:
+      - user
+      description: 注册页面
+      operationId: UserController.RegisterUI
+  /user/userDetailUI:
+    get:
+      tags:
+      - user
+      description: 用户基本信息
+      operationId: UserController.UserDetailUI

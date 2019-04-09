@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户个人信息</title>
+
+    <script src="/static/me/js/jquery-3.3.1.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/layui-v2.4.5/layui/layui.js" ></script>
+    <script type="text/javascript" src="/static/layui-v2.4.5/layui/layui.all.js"></script>
+    <link rel="stylesheet" href="/static/layui-v2.4.5/layui/css/layui.css" />
+    <script src="/static/me/js/Mydate.js"></script>
+</head>
+<body>
+    <div style="width:500px ; margin: auto;">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                用户信息
+            </div>
+            <div class="panel-body">
+                <form class="form-horizontal" role="form" action="/v1/user/modifyUser" method="post">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">用户名:</label>
+                        <div class="col-sm-10">
+                            <input type="text"  name="username" class="form-control"  value="{{.session_user.Name}}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">邮&nbsp;&nbsp;&nbsp;&nbsp;箱:</label>
+                        <div class="col-sm-10">
+                            <input type="text"  name="email" class="form-control"  value="{{.session_user.Email}}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">年&nbsp;&nbsp;&nbsp;&nbsp;龄:</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="age" class="form-control" value="{{.session_user.Age}}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">生&nbsp;&nbsp;&nbsp;&nbsp;日:</label>
+                        <div class="col-sm-10">
+                            <input type="text"  name="birthday" class="layui-input form-control" id="birthday" placeholder="yyyy-MM-dd" value="{{.session_user.Birthday}}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">性&nbsp;&nbsp;&nbsp;&nbsp;别:</label>
+                        <div class="radio">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <label>
+                                <input type="radio" name="gender"  value="男"
+                                       {{if eq .session_user.Gender "男"}} checked {{end}}
+                                >男
+                            </label>
+                            <label>
+                                <input type="radio" name="gender"  value="女"
+                                        {{if eq .session_user.Gender "女"}} checked {{end}}
+                                >女
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-success">确定</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="reset" class="btn btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

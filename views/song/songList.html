@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/static/me/js/jquery-3.3.1.js"></script>
+    <script src="/static/me/js/song-detail.js"></script>
+    <link href="/static/me/css/tracklist.css" rel="stylesheet">
+    <link href="/static/me/css/index.css" rel="stylesheet">
+</head>
+<body>
+<div>
+    <div class="playlist-detail">
+        <!--歌单详情头-->
+        <div class="detail-head">
+            <div class="detail-head-cover">
+                <img src="/static/me/temp/cover2.jpg">
+            </div>
+            <div class="detail-head-title">
+                <h2 class="ng-binding">一条小团团OvO</h2>
+                <div class="playlist-button-list">
+                    <div class="playlist-button playadd-button">
+                        <div class="play-list ng-binding">
+                            <img src="/static/me/imgs/play.png">
+                            <span> 播放全部</span>
+                        </div>
+                        <div class="add-list">
+                            <img src="/static/me/imgs/add2.png">
+                        </div>
+                    </div>
+                    <div class="playlist-button clone-button">
+                        <div class="play-list">
+                            <img class="fadd" src="/static/me/imgs/folder_add.png">
+                            <span>收藏歌单</span>
+                        </div>
+                    </div>
+                    <div class="playlist-button edit-button">
+                        <div class="play-list">
+                            <img class="fadd" src="/static/me/imgs/linked.png">
+                            <span>外部链接</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="detail-list">
+            <ul class="detail-song-list">
+                <li class="head">
+                    <div class="title"><a class="ng-binding">歌曲名</a></div>
+                    <div class="artist"><a class="ng-binding">歌手</a></div>
+                    <div class="album"><a class="ng-binding">专辑名</a></div>
+                    <div class="tools ng-binding">操作</div>
+                </li>
+                <li  class="ng-scope" onmouseover="songHandleMouseOver(this)"
+                     onmouseout="songHandleMouseOut(this)">
+                    <div class="title">
+                        <a class="ng-binding ">DJ Mr.Zi - 上天安排的最大嘛（DJ Mr.Zi / 可有道 remix）</a>
+                    </div>
+                    <div class="artist">
+                        <a class="ng-binding">DJ&nbsp;Mr.Zi</a>
+                    </div>
+                    <div class="album">
+                        <a class="ng-binding">大话西游</a>
+                    </div>
+                    <div class="tools tools2 tools-hide">
+                        <a title="添加到当前播放" class="detail-add-button" >
+                            <span class=" li-add">
+                                <img class="li-handle-img" src="/static/me/imgs/add2.png">
+                            </span>
+                        </a>
+                        <a title="添加到歌单" class="detail-fav-button">
+                            <span class=" li-song-list">
+                                <img  class="li-handle-img" class="li-handle-img" src="/static/me/imgs/folder_add.png">
+                            </span>
+                        </a>
+                        <!--不是自己的歌单不能显示删除操作-->
+                        <a title="从歌单删除" class="detail-delete-button ng-hide ">
+                            <span class="li-del">
+                                 <img  class="li-handle-img" src="/static/me/imgs/del.png">
+                            </span>
+                        </a>
+                        <a title="链接" class="source-button">
+                            <span class=" li-link ">
+                               <img class="li-handle-img" src="/static/me/imgs/linked.png">
+                            </span>
+                        </a>
+                    </div>
+                </li>
+                <li  class="ng-scope" onmouseover="songHandleMouseOver(this)"
+                     onmouseout="songHandleMouseOut(this)">
+                    <div class="title">
+                        <a class="ng-binding ">DJ Mr.Zi - 上天安排的最大嘛（DJ Mr.Zi / 可有道 remix）</a>
+                    </div>
+                    <div class="artist">
+                        <a class="ng-binding">DJ&nbsp;Mr.Zi</a>
+                    </div>
+                    <div class="album">
+                        <a class="ng-binding">大话西游</a>
+                    </div>
+                    <div class="tools tools2 tools-hide">
+                        <a title="添加到当前播放" class="detail-add-button" >
+                            <span class=" li-add">
+                                <img class="li-handle-img" src="/static/me/imgs/add2.png">
+                            </span>
+                        </a>
+                        <a title="添加到歌单" class="detail-fav-button">
+                            <span class=" li-song-list">
+                                <img  class="li-handle-img" class="li-handle-img" src="/static/me/imgs/folder_add.png">
+                            </span>
+                        </a>
+                        <!--不是自己的歌单不能显示删除操作-->
+                        <a title="从歌单删除" class="detail-delete-button ng-hide ">
+                            <span class="li-del">
+                                 <img  class="li-handle-img" src="/static/me/imgs/del.png">
+                            </span>
+                        </a>
+                        <a title="链接" class="source-button">
+                            <span class=" li-link ">
+                               <img class="li-handle-img" src="/static/me/imgs/linked.png">
+                            </span>
+                        </a>
+                    </div>
+                </li>
+                <li  class="ng-scope" onmouseover="songHandleMouseOver(this)"
+                     onmouseout="songHandleMouseOut(this)">
+                    <div class="title">
+                        <a class="ng-binding ">DJ Mr.Zi - 上天安排的最大嘛（DJ Mr.Zi / 可有道 remix）</a>
+                    </div>
+                    <div class="artist">
+                        <a class="ng-binding">DJ&nbsp;Mr.Zi</a>
+                    </div>
+                    <div class="album">
+                        <a class="ng-binding">大话西游</a>
+                    </div>
+                    <div class="tools tools2 tools-hide">
+                        <a title="添加到当前播放" class="detail-add-button" >
+                            <span class=" li-add">
+                                <img class="li-handle-img" src="/static/me/imgs/add2.png">
+                            </span>
+                        </a>
+                        <a title="添加到歌单" class="detail-fav-button">
+                            <span class=" li-song-list">
+                                <img  class="li-handle-img" class="li-handle-img" src="/static/me/imgs/folder_add.png">
+                            </span>
+                        </a>
+                        <!--不是自己的歌单不能显示删除操作-->
+                        <a title="从歌单删除" class="detail-delete-button ng-hide ">
+                            <span class="li-del">
+                                 <img  class="li-handle-img" src="/static/me/imgs/del.png">
+                            </span>
+                        </a>
+                        <a title="链接" class="source-button">
+                            <span class=" li-link ">
+                               <img class="li-handle-img" src="/static/me/imgs/linked.png">
+                            </span>
+                        </a>
+                    </div>
+                </li>
+                <li  class="ng-scope" onmouseover="songHandleMouseOver(this)"
+                     onmouseout="songHandleMouseOut(this)">
+                    <div class="title">
+                        <a class="ng-binding ">DJ Mr.Zi - 上天安排的最大嘛（DJ Mr.Zi / 可有道 remix）</a>
+                    </div>
+                    <div class="artist">
+                        <a class="ng-binding">DJ&nbsp;Mr.Zi</a>
+                    </div>
+                    <div class="album">
+                        <a class="ng-binding">大话西游</a>
+                    </div>
+                    <div class="tools tools2 tools-hide">
+                        <a title="添加到当前播放" class="detail-add-button" >
+                            <span class=" li-add">
+                                <img class="li-handle-img" src="/static/me/imgs/add2.png">
+                            </span>
+                        </a>
+                        <a title="添加到歌单" class="detail-fav-button">
+                            <span class=" li-song-list">
+                                <img  class="li-handle-img" class="li-handle-img" src="/static/me/imgs/folder_add.png">
+                            </span>
+                        </a>
+                        <!--不是自己的歌单不能显示删除操作-->
+                        <a title="从歌单删除" class="detail-delete-button ng-hide ">
+                            <span class="li-del">
+                                 <img  class="li-handle-img" src="/static/me/imgs/del.png">
+                            </span>
+                        </a>
+                        <a title="链接" class="source-button">
+                            <span class=" li-link ">
+                               <img class="li-handle-img" src="/static/me/imgs/linked.png">
+                            </span>
+                        </a>
+                    </div>
+                </li>
+                <li  class="ng-scope" onmouseover="songHandleMouseOver(this)"
+                     onmouseout="songHandleMouseOut(this)">
+                    <div class="title">
+                        <a class="ng-binding ">DJ Mr.Zi - 上天安排的最大嘛（DJ Mr.Zi / 可有道 remix）</a>
+                    </div>
+                    <div class="artist">
+                        <a class="ng-binding">DJ&nbsp;Mr.Zi</a>
+                    </div>
+                    <div class="album">
+                        <a class="ng-binding">大话西游</a>
+                    </div>
+                    <div class="tools tools2 tools-hide">
+                        <a title="添加到当前播放" class="detail-add-button" >
+                            <span class=" li-add">
+                                <img class="li-handle-img" src="/static/me/imgs/add2.png">
+                            </span>
+                        </a>
+                        <a title="添加到歌单" class="detail-fav-button">
+                            <span class=" li-song-list">
+                                <img  class="li-handle-img" class="li-handle-img" src="/static/me/imgs/folder_add.png">
+                            </span>
+                        </a>
+                        <!--不是自己的歌单不能显示删除操作-->
+                        <a title="从歌单删除" class="detail-delete-button ng-hide ">
+                            <span class="li-del">
+                                 <img  class="li-handle-img" src="/static/me/imgs/del.png">
+                            </span>
+                        </a>
+                        <a title="链接" class="source-button">
+                            <span class=" li-link ">
+                               <img class="li-handle-img" src="/static/me/imgs/linked.png">
+                            </span>
+                        </a>
+                    </div>
+                </li>
+                <li  class="ng-scope" onmouseover="songHandleMouseOver(this)"
+                     onmouseout="songHandleMouseOut(this)">
+                    <div class="title">
+                        <a class="ng-binding ">DJ Mr.Zi - 上天安排的最大嘛（DJ Mr.Zi / 可有道 remix）</a>
+                    </div>
+                    <div class="artist">
+                        <a class="ng-binding">DJ&nbsp;Mr.Zi</a>
+                    </div>
+                    <div class="album">
+                        <a class="ng-binding">大话西游</a>
+                    </div>
+                    <div class="tools tools2 tools-hide">
+                        <a title="添加到当前播放" class="detail-add-button" >
+                            <span class=" li-add">
+                                <img class="li-handle-img" src="/static/me/imgs/add2.png">
+                            </span>
+                        </a>
+                        <a title="添加到歌单" class="detail-fav-button">
+                            <span class=" li-song-list">
+                                <img  class="li-handle-img" class="li-handle-img" src="/static/me/imgs/folder_add.png">
+                            </span>
+                        </a>
+                        <!--不是自己的歌单不能显示删除操作-->
+                        <a title="从歌单删除" class="detail-delete-button ng-hide ">
+                            <span class="li-del">
+                                 <img  class="li-handle-img" src="/static/me/imgs/del.png">
+                            </span>
+                        </a>
+                        <a title="链接" class="source-button">
+                            <span class=" li-link ">
+                               <img class="li-handle-img" src="/static/me/imgs/linked.png">
+                            </span>
+                        </a>
+                    </div>
+                </li>
+                <li  class="ng-scope" onmouseover="songHandleMouseOver(this)"
+                     onmouseout="songHandleMouseOut(this)">
+                    <div class="title">
+                        <a class="ng-binding ">DJ Mr.Zi - 上天安排的最大嘛（DJ Mr.Zi / 可有道 remix）</a>
+                    </div>
+                    <div class="artist">
+                        <a class="ng-binding">DJ&nbsp;Mr.Zi</a>
+                    </div>
+                    <div class="album">
+                        <a class="ng-binding">大话西游</a>
+                    </div>
+                    <div class="tools tools2 tools-hide">
+                        <a title="添加到当前播放" class="detail-add-button" >
+                            <span class=" li-add">
+                                <img class="li-handle-img" src="/static/me/imgs/add2.png">
+                            </span>
+                        </a>
+                        <a title="添加到歌单" class="detail-fav-button">
+                            <span class=" li-song-list">
+                                <img  class="li-handle-img" class="li-handle-img" src="/static/me/imgs/folder_add.png">
+                            </span>
+                        </a>
+                        <!--不是自己的歌单不能显示删除操作-->
+                        <a title="从歌单删除" class="detail-delete-button ng-hide ">
+                            <span class="li-del">
+                                 <img  class="li-handle-img" src="/static/me/imgs/del.png">
+                            </span>
+                        </a>
+                        <a title="链接" class="source-button">
+                            <span class=" li-link ">
+                               <img class="li-handle-img" src="/static/me/imgs/linked.png">
+                            </span>
+                        </a>
+                    </div>
+                </li>
+                <li  class="ng-scope" onmouseover="songHandleMouseOver(this)"
+                     onmouseout="songHandleMouseOut(this)">
+                    <div class="title">
+                        <a class="ng-binding ">DJ Mr.Zi - 上天安排的最大嘛（DJ Mr.Zi / 可有道 remix）</a>
+                    </div>
+                    <div class="artist">
+                        <a class="ng-binding">DJ&nbsp;Mr.Zi</a>
+                    </div>
+                    <div class="album">
+                        <a class="ng-binding">大话西游</a>
+                    </div>
+                    <div class="tools tools2 tools-hide">
+                        <a title="添加到当前播放" class="detail-add-button" >
+                            <span class=" li-add">
+                                <img class="li-handle-img" src="/static/me/imgs/add2.png">
+                            </span>
+                        </a>
+                        <a title="添加到歌单" class="detail-fav-button">
+                            <span class=" li-song-list">
+                                <img  class="li-handle-img" class="li-handle-img" src="/static/me/imgs/folder_add.png">
+                            </span>
+                        </a>
+                        <!--不是自己的歌单不能显示删除操作-->
+                        <a title="从歌单删除" class="detail-delete-button ng-hide ">
+                            <span class="li-del">
+                                 <img  class="li-handle-img" src="/static/me/imgs/del.png">
+                            </span>
+                        </a>
+                        <a title="链接" class="source-button">
+                            <span class=" li-link ">
+                               <img class="li-handle-img" src="/static/me/imgs/linked.png">
+                            </span>
+                        </a>
+                    </div>
+                </li>
+                <li  class="ng-scope" onmouseover="songHandleMouseOver(this)"
+                     onmouseout="songHandleMouseOut(this)">
+                    <div class="title">
+                        <a class="ng-binding ">DJ Mr.Zi - 上天安排的最大嘛（DJ Mr.Zi / 可有道 remix）</a>
+                    </div>
+                    <div class="artist">
+                        <a class="ng-binding">DJ&nbsp;Mr.Zi</a>
+                    </div>
+                    <div class="album">
+                        <a class="ng-binding">大话西游</a>
+                    </div>
+                    <div class="tools tools2 tools-hide">
+                        <a title="添加到当前播放" class="detail-add-button" >
+                            <span class=" li-add">
+                                <img class="li-handle-img" src="/static/me/imgs/add2.png">
+                            </span>
+                        </a>
+                        <a title="添加到歌单" class="detail-fav-button">
+                            <span class=" li-song-list">
+                                <img  class="li-handle-img" class="li-handle-img" src="/static/me/imgs/folder_add.png">
+                            </span>
+                        </a>
+                        <!--不是自己的歌单不能显示删除操作-->
+                        <a title="从歌单删除" class="detail-delete-button ng-hide ">
+                            <span class="li-del">
+                                 <img  class="li-handle-img" src="/static/me/imgs/del.png">
+                            </span>
+                        </a>
+                        <a title="链接" class="source-button">
+                            <span class=" li-link ">
+                               <img class="li-handle-img" src="/static/me/imgs/linked.png">
+                            </span>
+                        </a>
+                    </div>
+                </li>
+                <li  class="ng-scope" onmouseover="songHandleMouseOver(this)"
+                     onmouseout="songHandleMouseOut(this)">
+                    <div class="title">
+                        <a class="ng-binding ">DJ Mr.Zi - 上天安排的最大嘛（DJ Mr.Zi / 可有道 remix）</a>
+                    </div>
+                    <div class="artist">
+                        <a class="ng-binding">DJ&nbsp;Mr.Zi</a>
+                    </div>
+                    <div class="album">
+                        <a class="ng-binding">大话西游</a>
+                    </div>
+                    <div class="tools tools2 tools-hide">
+                        <a title="添加到当前播放" class="detail-add-button" >
+                            <span class=" li-add">
+                                <img class="li-handle-img" src="/static/me/imgs/add2.png">
+                            </span>
+                        </a>
+                        <a title="添加到歌单" class="detail-fav-button">
+                            <span class=" li-song-list">
+                                <img  class="li-handle-img" class="li-handle-img" src="/static/me/imgs/folder_add.png">
+                            </span>
+                        </a>
+                        <!--不是自己的歌单不能显示删除操作-->
+                        <a title="从歌单删除" class="detail-delete-button ng-hide ">
+                            <span class="li-del">
+                                 <img  class="li-handle-img" src="/static/me/imgs/del.png">
+                            </span>
+                        </a>
+                        <a title="链接" class="source-button">
+                            <span class=" li-link ">
+                               <img class="li-handle-img" src="/static/me/imgs/linked.png">
+                            </span>
+                        </a>
+                    </div>
+                </li>
+                <li  class="ng-scope" onmouseover="songHandleMouseOver(this)"
+                     onmouseout="songHandleMouseOut(this)">
+                    <div class="title">
+                        <a class="ng-binding ">DJ Mr.Zi - 上天安排的最大嘛（DJ Mr.Zi / 可有道 remix）</a>
+                    </div>
+                    <div class="artist">
+                        <a class="ng-binding">DJ&nbsp;Mr.Zi</a>
+                    </div>
+                    <div class="album">
+                        <a class="ng-binding">大话西游</a>
+                    </div>
+                    <div class="tools tools2 tools-hide">
+                        <a title="添加到当前播放" class="detail-add-button" >
+                            <span class=" li-add">
+                                <img class="li-handle-img" src="/static/me/imgs/add2.png">
+                            </span>
+                        </a>
+                        <a title="添加到歌单" class="detail-fav-button">
+                            <span class=" li-song-list">
+                                <img  class="li-handle-img" class="li-handle-img" src="/static/me/imgs/folder_add.png">
+                            </span>
+                        </a>
+                        <!--不是自己的歌单不能显示删除操作-->
+                        <a title="从歌单删除" class="detail-delete-button ng-hide ">
+                            <span class="li-del">
+                                 <img  class="li-handle-img" src="/static/me/imgs/del.png">
+                            </span>
+                        </a>
+                        <a title="链接" class="source-button">
+                            <span class=" li-link ">
+                               <img class="li-handle-img" src="/static/me/imgs/linked.png">
+                            </span>
+                        </a>
+                    </div>
+                </li>
+                <li  class="ng-scope" onmouseover="songHandleMouseOver(this)"
+                     onmouseout="songHandleMouseOut(this)">
+                    <div class="title">
+                        <a class="ng-binding ">DJ Mr.Zi - 上天安排的最大嘛（DJ Mr.Zi / 可有道 remix）</a>
+                    </div>
+                    <div class="artist">
+                        <a class="ng-binding">DJ&nbsp;Mr.Zi</a>
+                    </div>
+                    <div class="album">
+                        <a class="ng-binding">大话西游</a>
+                    </div>
+                    <div class="tools tools2 tools-hide">
+                        <a title="添加到当前播放" class="detail-add-button" >
+                            <span class=" li-add">
+                                <img class="li-handle-img" src="/static/me/imgs/add2.png">
+                            </span>
+                        </a>
+                        <a title="添加到歌单" class="detail-fav-button">
+                            <span class=" li-song-list">
+                                <img  class="li-handle-img" class="li-handle-img" src="/static/me/imgs/folder_add.png">
+                            </span>
+                        </a>
+                        <!--不是自己的歌单不能显示删除操作-->
+                        <a title="从歌单删除" class="detail-delete-button ng-hide ">
+                            <span class="li-del">
+                                 <img  class="li-handle-img" src="/static/me/imgs/del.png">
+                            </span>
+                        </a>
+                        <a title="链接" class="source-button">
+                            <span class=" li-link ">
+                               <img class="li-handle-img" src="/static/me/imgs/linked.png">
+                            </span>
+                        </a>
+                    </div>
+                </li>
+
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

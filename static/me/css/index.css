@@ -1,0 +1,248 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+    font-family: system-ui, "PingFang SC", STHeiti, sans-serif;
+}
+.main {
+    flex: 1;
+    display: flex;
+    width: 1364px;
+   /* height: 809px;*/
+}
+/*去掉所有的a标签的下划线*/
+a:hover,a:visited,a:link,a:active{
+    text-decoration: none;
+}
+/*侧边框*/
+.main .sidebar {
+    flex: 0 0 200px;
+    display: flex;
+    flex-direction: column;
+    background: rgba(245, 245, 245, 0.7);
+}
+.sidebar{
+    width: 200px;
+    height: 600px;
+}
+/*空白*/
+.sidebar .menu-control {
+    height: 43px;
+    width: 125px;
+    -webkit-app-region: drag;
+}
+
+.sidebar .menu-title {
+    height: 28px;
+    line-height: 28px;
+    margin: 0 12px 4px 12px;
+    color: #999999;
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+}
+body{
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar {/*滚动条整体样式*/
+    width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
+    height: 4px;
+    position: absolute;
+}
+::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    background: rgba(0,0,0,0.2);
+}
+::-webkit-scrollbar-track {/*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    border-radius: 0;
+    background: rgba(0,0,0,0.1);
+}
+
+
+
+
+
+
+
+
+/*设置精选歌单*/
+.jxgd{
+    width: 164px;
+    height:28px;
+    line-height: 28px;
+    margin-left: 28px;
+    margin-bottom: 4px;
+}
+.ajxgd{
+    margin-left: 4px;
+    cursor: pointer;
+}
+.ajxgd:hover{
+    color: #000;
+}
+.ng-binding{
+    color: #000;
+}
+
+/*设置精选歌单的图标*/
+.li-featured-list img{
+    width:18px;
+    height:18px;
+    margin-bottom: 2px;
+    margin-left: 10px;
+}
+
+/*设置我的音乐*/
+.title{
+    flex: 1;
+}
+/*设置添加图标*/
+.add{
+    position: relative;
+    bottom: 2px;
+    width: 18px;
+    height: 18px;
+}
+.panel{
+
+    margin-left: 12px;
+}
+
+.panel-title{
+    font-size: 12px;
+    color: #999999;
+}
+.panel-title span{
+    width: 20px;
+    height: 20px;
+    margin-left: 68px;
+}
+/*设置你收藏音乐的样式*/
+.collect-list a{
+    color: #000;
+    margin-left: 5px;
+}
+.collect-list{
+    width: 164px;
+    height: 28px;
+    line-height: 28px
+}
+.collect-select{
+    background-color:#ccc;
+}
+/*设置收藏音乐的列表*/
+.collect-list span img{
+    width: 18px;
+    height: 18px;
+    margin-bottom: 6px
+}
+.collect-list span{
+    margin-left: 10px;
+}
+/*////////////////////设置右侧//////////////////////////////////////*/
+.content{
+    background: #ffffff;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+/*设置导航栏*/
+.navbar-default {
+    background-color: #ffff;
+}
+.navbar-brand{
+    cursor: pointer;
+}
+.navbar {
+    position: relative;
+    min-height: 50px;
+    /* margin-bottom: 20px; */
+    border: 1px solid transparent;
+}
+.search{
+    margin-top: 8px;
+    margin-left: 30px;
+}
+/*choose按钮的设置*/
+.dropdown{
+    margin-left: 50px;
+}
+/*对外部数据的展示的设置*/
+.flex-scroll-wrapper{
+    flex: 1;
+   /* height: 100px;*/
+    overflow-y: scroll
+}
+.page-hot-playlist {
+    max-width: 850px;
+    margin: 0 auto;
+}
+.cover-container{
+    margin-top: 10px;
+}
+
+/*设置封面列表样式*/
+.playlist-covers{
+    margin: 0;
+    padding: 0 13px;
+    display: flex;
+    flex-flow: row wrap;
+    position: relative;
+}
+ul{
+    list-style: none;
+}
+.playlist-covers li {
+    flex: 0 1 calc(20% - 26px);
+    height: 215px;
+    color: #111111;
+    margin: 0 13px;
+}
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+/*设置封面的*/
+.u-cover img{
+    max-width: 100%;
+    border: solid 1px #e5e5e5;
+    margin-bottom: 2px;
+    cursor: pointer;
+}
+.playlist-covers .desc {
+    cursor: pointer;
+}
+/*设置要隐藏的div*/
+.ng-hide{
+    display: none;
+}
+
+/*/////////////////////底部播放器///////////////////////////////////////////////*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
