@@ -26,9 +26,6 @@ func (receiver *UserController) RegisterUI() {
 //@router /userDetailUI [get]
 func (receiver *UserController) UserDetailUI() {
 	receiver.BeforeStart("UserDetailUI")
-	sessionUser := receiver.GetSession(constants.SESSION_USER)
-	result, _ := sessionUser.(models.LoginResp)
-	receiver.Data[constants.SESSION_USER] = result
 
 	receiver.TplName = "user/userInfo.html"
 }

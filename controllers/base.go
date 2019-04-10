@@ -1,12 +1,14 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 	"online-music/common/constants"
 	"online-music/models"
 	"online-music/service"
+	"online-music/service/impl"
 )
 
 type BaseController struct {
@@ -20,10 +22,15 @@ type BaseControllerInit struct {
 
 // Prepare : 处理完路由后调用
 func (receiver *BaseController) Prepare() {
-	sessionUser := receiver.GetSession(constants.SESSION_USER)
-	result, _ := sessionUser.(models.LoginResp)
-	receiver.Session.UserId = result.Id
-	receiver.Session.UserName = result.Name
+	//这里的返回的错误可以忽略
+	sessionService := new(impl.SessionService)
+	key, _ := receiver.GetSecureCookie(constants.COOKIE_SECRET, constants.COOKIE_NAME)
+	user, _ := sessionService.GetSession(key)
+	var session models.Session
+	json.Unmarshal([]byte(user), &session)
+	receiver.Data[constants.SESSION_USER] = session
+	receiver.Session.UserId = session.UserId
+	receiver.Session.UserName = session.UserName
 }
 
 func (receiver *BaseController) BeforeStart(methodName string) {

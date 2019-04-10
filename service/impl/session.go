@@ -50,7 +50,7 @@ func (receiver *SessionService) SetSession(key, value, expire string) error {
 
 /*
 *@Title: 得到session
-*@Description: 返回的value是一个json的字符串
+*@Description: 返回的value是一个json的字符串,根据key得到value时，出错，(没有这个key的错)
 *@User: 徐鹏豪
 *@Date 2019/4/9
  */
@@ -64,16 +64,9 @@ func (receiver *SessionService) GetSession(key string) (string, error) {
 	}
 
 	cmd := client.Get(key)
-	if cmd.Err() != nil {
-		logs.Error("得到session-根据key到的value时，cmd错误:(%v)", cmd.Err())
-		return result, utils.NewDetailErr("根据key到的value时，cmd错误:(%v)", cmd.Err())
-	}
 
-	result, err := cmd.Result()
-	if err != nil {
-		logs.Error("得到session-根据key到的value时，错误:(%v)", err.Error())
-		return result, utils.NewDetailErr("根据key到的value时，错误:(%v)", err.Error())
-	}
+	//返回一个空串不算错误
+	result, _ = cmd.Result()
 
 	return result, nil
 
