@@ -17,6 +17,8 @@ func init() {
 		beego.NSNamespace("/login", beego.NSInclude(&controllers.LoginController{})),
 		//歌曲
 		beego.NSNamespace("/song", beego.NSInclude(&controllers.SongController{})),
+		//歌单
+		beego.NSNamespace("/songCover", beego.NSInclude(&controllers.SongCoverController{})),
 	)
 
 	beego.AddNamespace(ns)

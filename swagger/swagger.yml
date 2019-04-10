@@ -38,21 +38,33 @@ paths:
       - login
       description: 登录UI
       operationId: LoginController.LoginUI
-  /song/songBestCoverUI:
-    get:
-      tags:
-      - song
-      description: 精选歌单UI
-      operationId: SongController.SongBestCoverUI
-      responses:
-        exec:
-          description: error
   /song/songListUI:
     get:
       tags:
       - song
       description: 歌曲列表UI
       operationId: SongController.SongDetailUI
+      responses:
+        exec:
+          description: error
+  /songCover/querySongCoverList:
+    get:
+      tags:
+      - songCover
+      description: 查询歌单列表
+      operationId: SongCoverController.SongBestCoverUI
+      parameters:
+      - in: query
+        name: channelId
+        description: 来源渠道id 如网易，qq
+        required: true
+        type: string
+      - in: query
+        name: curPage
+        description: 当前页
+        required: true
+        type: integer
+        format: int64
       responses:
         exec:
           description: error
