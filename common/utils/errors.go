@@ -36,6 +36,11 @@ func NewErr(code, msg string, err ...error) error {
 	return result
 }
 
+func NewDetailErr(format string, a ...interface{}) error {
+	msg := fmt.Sprintf(format, a...)
+	return NewSysErr(msg)
+}
+
 func NewSysErr(msg string, err ...error) error {
 	return NewErr(E_MUSIC_999_CODE, msg, err...)
 }

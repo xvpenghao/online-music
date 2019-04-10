@@ -1,11 +1,8 @@
 package service
 
-import "github.com/astaxie/beego/session"
-
 type (
 	ISessionService interface {
 		IBaseService
-		session.Store
 		//设置session
 		SetSession(key, value, expire string) error
 		//得到session
