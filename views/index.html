@@ -31,7 +31,7 @@
                          <span class="li-featured-list">
                             <img src="/static/me/imgs/starts.png" />
                         </span>
-                        <a class="ng-binding ajxgd" href="/v1/song/songBestCoverUI" target="main">精选歌单</a>
+                        <a class="ng-binding ajxgd" href="/v1/songCover/querySongCoverList?channelId=1&curPage=0" target="main">精选歌单</a>
                     </div>
                 </div>
  <!--歌单列表-->
@@ -109,6 +109,10 @@
                                             <input type="text" class="form-control">
                                         </div>
                                     </div>
+                                </li>
+                                <li>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button type="button" class="btn btn-primary" style="margin-left: 15px;margin-top: 7px;" onclick="Search()">search</button>
                                 </li>
                                 {{if .session_user.UserName }}
                                 <li class="dropdown">

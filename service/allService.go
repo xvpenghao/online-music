@@ -8,6 +8,7 @@ const (
 	ServiceISession   = "ISession"
 	ServiceISongCover = "ISongCover"
 	ServiceIChannel   = "IChannel"
+	ServiceISong      = "ISong"
 )
 
 var (

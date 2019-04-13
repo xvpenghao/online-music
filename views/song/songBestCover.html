@@ -27,12 +27,13 @@
                         <ul class="playlist-covers">
                             {{range .coverList.List }}
                             <li>
-                                <a href="/v1/song/songListUI/{{ .SongCoverId }}" class="ng-binding" target="_self">
+                                <a href="/v1/songCover/querySongList?channelId=1&songCoverId={{.SongCoverId}}&coverImgUrl={{.CoverImgUrl}}&description={{.Description}}"
+                                   class="ng-binding" target="_self">
                                     <div class="u-cover">
-                                        <img src="{{ .CoverImgUrl }}" title="{{ .Description }}">
+                                        <img src="{{.CoverImgUrl}}" title="{{.Description}}">
                                     </div>
                                     <div class="desc">
-                                        <span>{{ .Description }}</span>
+                                        <span>{{.Description}}</span>
                                     </div>
                                 </a>
                             </li>

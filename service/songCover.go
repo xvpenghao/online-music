@@ -9,7 +9,9 @@ type (
 	ISongCoverService interface {
 		IBaseService
 		//查询歌单列表
-		QuerySongCoverList(req models.QuerySongCoverListReq) ([]dbModel.SongConver, error)
+		QuerySongCoverList(req models.QuerySongCoverListReq) ([]dbModel.SongCover, error)
+		//根据歌单id查询歌曲列表
+		QuerySongList(req models.QuerySongListReq) ([]dbModel.Song, error)
 	}
 )
 

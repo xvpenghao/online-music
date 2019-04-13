@@ -1,14 +1,4 @@
-package dbModel
-
-//歌单封面
-type SongCover struct {
-	//封面图片路径
-	CoverImgUrl string
-	//歌单描述
-	Description string
-	//歌单id
-	SongCoverId string
-}
+package models
 
 //歌曲信息
 type Song struct {
@@ -26,4 +16,14 @@ type Song struct {
 	SongPlayUrl string
 	//歌词
 	SongLyric string
+}
+
+//查询歌曲详情
+type QuerySongDetailReq struct {
+	//歌曲id
+	SongId string
+}
+
+type QuerySongDetailResp struct {
+	Song
 }

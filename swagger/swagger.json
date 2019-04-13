@@ -60,20 +60,6 @@
                 "operationId": "LoginController.LoginUI"
             }
         },
-        "/song/songListUI": {
-            "get": {
-                "tags": [
-                    "song"
-                ],
-                "description": "歌曲列表UI",
-                "operationId": "SongController.SongDetailUI",
-                "responses": {
-                    "exec": {
-                        "description": "error"
-                    }
-                }
-            }
-        },
         "/songCover/querySongCoverList": {
             "get": {
                 "tags": [
@@ -96,6 +82,50 @@
                         "required": true,
                         "type": "integer",
                         "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "exec": {
+                        "description": "error"
+                    }
+                }
+            }
+        },
+        "/songCover/querySongList": {
+            "get": {
+                "tags": [
+                    "songCover"
+                ],
+                "description": "根据歌单id获取歌曲列表",
+                "operationId": "SongCoverController.QuerySongList",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "channelId",
+                        "description": "渠道id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "songCoverId",
+                        "description": "歌单id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "coverImgUrl",
+                        "description": "歌单图片id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "description",
+                        "description": "歌单描述",
+                        "required": true,
+                        "type": "string"
                     }
                 ],
                 "responses": {
