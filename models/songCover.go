@@ -44,3 +44,17 @@ type QuerySongListResp struct {
 	//歌曲列表
 	List []Song
 }
+
+//创建歌单
+type CreateSongCoverReq struct {
+	//歌单名称
+	SongCoverName string `form:"songCoverName"`
+}
+
+//修改歌单
+type ModifySongCoverReq struct {
+}
+
+//修改歌单
+type DeleteSongCoverReq struct {
+}

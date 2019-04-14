@@ -29,3 +29,11 @@ func QuerySongListReqVerify(req models.QuerySongListReq) error {
 
 	return nil
 }
+
+//创建歌单参数校验
+func CreateSongCoverReqVerify(req models.CreateSongCoverReq) error {
+	if !utils.CheckLegal(&utils.StrChecker{Value: req.SongCoverName, MinLen: 1, MaxLen: 100}) {
+		return fmt.Errorf("歌单名称(%v)参数错误，取值(%v ~ %v)", req.SongCoverName, 1, 100)
+	}
+	return nil
+}

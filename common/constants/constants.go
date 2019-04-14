@@ -66,3 +66,11 @@ const (
 	//默认分页大小，35一页
 	DEFAULT_PAGE_SIZE = "35"
 )
+
+//歌单类型
+const (
+	//歌单类型自定义
+	SONG_COVER_TYPE_CUSTOMER = 1
+	//歌单类型其他（其他的平台的歌单）
+	SONG_COVER_TYPE_OTHER = 2
+)

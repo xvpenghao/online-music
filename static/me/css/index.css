@@ -143,6 +143,11 @@ body{
 .collect-list span{
     margin-left: 10px;
 }
+
+#createSongCover{
+    cursor: pointer;
+}
+
 /*////////////////////设置右侧//////////////////////////////////////*/
 .content{
     background: #ffffff;

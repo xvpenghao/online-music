@@ -5,10 +5,12 @@ import (
 	"github.com/astaxie/beego/logs"
 	"github.com/gocolly/colly"
 	"online-music/common/constants"
+	"online-music/common/utils"
 	"online-music/models"
 	"online-music/service/dbModel"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type SongCoverService struct {
@@ -115,4 +117,80 @@ func (receiver *SongCoverService) QuerySongList(req models.QuerySongListReq) ([]
 
 	return result, nil
 
+}
+
+/*
+*@Title:创建歌单
+*@Description:
+*@User: 徐鹏豪
+*@Date 2019/4/14 0014
+*@Param
+*@Return
+ */
+func (receiver *SongCoverService) CreateSongCover(req models.CreateSongCoverReq) error {
+	receiver.BeforeLog("CreateSongCover")
+
+	db, err := receiver.GetConn()
+	if err != nil {
+		logs.Error("创建歌单-数据库链接错误：(%v)", err.Error())
+		return utils.NewDBErr("数据库链接错误", err)
+	}
+	defer db.Close()
+	//该用户的创建的自定义歌单名不能重复
+	sql := dbModel.QUERY_USER_COVER_COUNT_BY_SONG_COVER_NAME
+	sqlParam := []interface{}{receiver.BaseRequest.UserID, req.SongCoverName}
+	var counts int
+	err = db.Raw(sql, sqlParam...).Count(&counts).Error
+	if err != nil {
+		logs.Error("创建歌单-根据歌单名查询用户歌单失败：(%v)", err.Error())
+		return utils.NewDBErr("根据歌单名查询用户歌单失败", err)
+	}
+
+	if counts > 0 {
+		logs.Error("创建歌单-根据歌单名查询用户歌单，歌单名重复，歌单名称：(%v)", req.SongCoverName)
+		return utils.NewSysErr("根据歌单名查询用户歌单,歌单名重复")
+	}
+
+	nowTime := time.Now()
+	songCover := dbModel.SongCoverInfo{
+		ID:            utils.GetUUID(),
+		Type:          constants.SONG_COVER_TYPE_CUSTOMER,
+		SongCoverName: req.SongCoverName,
+		DelState:      constants.USER_NO_DEL_STATUS,
+		CreatTime:     nowTime,
+		CreateUser:    receiver.BaseRequest.UserName,
+		CreateUserId:  receiver.BaseRequest.UserID,
+		UpdateTime:    nowTime,
+		UpdateUser:    receiver.BaseRequest.UserName,
+		UpdateUserId:  receiver.BaseRequest.UserID,
+	}
+	userSongCover := dbModel.UserSongCover{
+		ID:           utils.GetUUID(),
+		UserId:       receiver.BaseRequest.UserID,
+		SongCoverId:  songCover.ID,
+		DelState:     constants.USER_NO_DEL_STATUS,
+		CreatTime:    nowTime,
+		CreateUser:   receiver.BaseRequest.UserName,
+		CreateUserId: receiver.BaseRequest.UserID,
+		UpdateTime:   nowTime,
+		UpdateUser:   receiver.BaseRequest.UserName,
+		UpdateUserId: receiver.BaseRequest.UserID,
+	}
+
+	tx := db.Begin()
+	err = tx.Table("tb_song_cover").Create(&songCover).Error
+	if err != nil {
+		tx.Rollback()
+		logs.Error("创建歌单错误：(%v)", err.Error())
+		return utils.NewDBErr("创建歌单错误", err)
+	}
+
+	err = tx.Table("tb_user_song_cover").Create(&userSongCover).Error
+	if err != nil {
+		tx.Rollback()
+		logs.Error("创建歌单-创建用户歌单失败：(%v)", err.Error())
+		return utils.NewDBErr("创建用户歌单失败", err)
+	}
+	tx.Commit()
+	return nil
 }

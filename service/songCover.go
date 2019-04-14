@@ -12,6 +12,8 @@ type (
 		QuerySongCoverList(req models.QuerySongCoverListReq) ([]dbModel.SongCover, error)
 		//根据歌单id查询歌曲列表
 		QuerySongList(req models.QuerySongListReq) ([]dbModel.Song, error)
+		//创建歌单
+		CreateSongCover(req models.CreateSongCoverReq) error
 	}
 )
 

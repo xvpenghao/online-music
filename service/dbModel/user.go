@@ -30,7 +30,7 @@ type User struct {
 	//生日
 	Birthday time.Time `gorm:"column:birthday"`
 	//删除的状态 1删除 2不删除
-	DelState int `gorm:"column:del_state"`
+	DelState int `gorm:"column:del_status"`
 	//创建时间
 	CreatTime time.Time `gorm:"column:create_time"`
 	//创建人

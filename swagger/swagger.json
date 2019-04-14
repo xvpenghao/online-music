@@ -89,6 +89,31 @@
                 }
             }
         },
+        "/songCover/createSongCover": {
+            "post": {
+                "tags": [
+                    "songCover"
+                ],
+                "description": "创建歌单",
+                "operationId": "SongCoverController.CreateSongCover",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "info",
+                        "description": "req",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateSongCoverReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "exec": {
+                        "description": "error"
+                    }
+                }
+            }
+        },
         "/songCover/querySongCoverList": {
             "get": {
                 "tags": [
@@ -220,6 +245,15 @@
         }
     },
     "definitions": {
+        "models.CreateSongCoverReq": {
+            "title": "CreateSongCoverReq",
+            "type": "object",
+            "properties": {
+                "SongCoverName": {
+                    "type": "string"
+                }
+            }
+        },
         "models.QuerySongDetailResp": {
             "title": "QuerySongDetailResp",
             "type": "object",
