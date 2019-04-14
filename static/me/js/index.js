@@ -7,6 +7,9 @@ $(function(){ //页面加载完毕后再执行js
     $('#createSongCover').click(function () {
         alertCreateSongCoverWindow();
     });
+
+    //查询用户歌单信息
+    queryUserSongCoverList();
 });
 
 //给每一个歌单[gd-select]都注册一个单击事件，
@@ -41,6 +44,7 @@ function  alertCreateSongCoverWindow(){
         form.appendChild(input);
         $(document.body).append(form);
         form.submit();
+        layer.close(index);
       /*  //得到输入的信息，并请求添加歌单请求，发送ajax
         $.ajax({
             url:"http://localhost:8080/v1/songCover/createSongCover",
@@ -55,4 +59,32 @@ function  alertCreateSongCoverWindow(){
     });
 }
 
-
+//查询用户歌单详情
+function queryUserSongCoverList() {
+    let userSongCoverList = "";
+    $.ajax({
+        url:"http://localhost:8080/v1/songCover/queryUserSongCoverList",
+        type:"GET",
+        dataType:"json",
+        success:function (data) {
+            if (data.list == null){
+                return
+            }
+            data.list.map((ele,i)=>{
+                let htmlContent = `
+                 <div class="collect-list gd-select">
+                     <span>
+                         <img src="/static/me/imgs/music.png">
+                    </span>
+                    <a href="/v1/song/songListUI" id="${ele.userSongCoverId}" 
+                                                  target="main">${ele.songCoverName}</a>
+               </div>`;
+                userSongCoverList  += htmlContent
+            });
+           $('#userSongCoverList').html(userSongCoverList)
+        },
+        error:function (err) {
+            layer.alert('业务逻辑返回错误');
+        }
+    });
+}

@@ -9,6 +9,12 @@ const (
                                                  INNER JOIN TB_USER_SONG_COVER AS TBUSC 
                                                  ON TBSC.SONG_COVER_ID = TBUSC.SONG_COVER_ID
                                                  WHERE TBUSC.USER_ID = ? AND TBSC.SONG_COVER_NAME = ? `
+	//查询用户歌单列表
+	QUERY_USER_COVER_LIST = `SELECT TBUSC.USER_SONG_COVER_ID,TBSC.SONG_COVER_NAME
+                             FROM TB_SONG_COVER TBSC 
+                             INNER JOIN TB_USER_SONG_COVER TBUSC 
+                             ON TBSC.SONG_COVER_ID = TBUSC.SONG_COVER_ID
+                             AND TBUSC.USER_ID = ? AND TBUSC.DEL_STATUS = ? AND TBSC.TYPE = ? `
 )
 
 type SongCoverInfo struct {
@@ -85,4 +91,11 @@ type Song struct {
 	SongPlayUrl string
 	//歌词
 	SongLyric string
+}
+
+type QueryUserSongCover struct {
+	//用户id
+	ID string `gorm:"column:USER_SONG_COVER_ID"`
+	//歌单名称
+	SongCoverName string `gorm:"column:SONG_COVER_NAME"`
 }

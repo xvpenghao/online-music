@@ -189,6 +189,31 @@
                 }
             }
         },
+        "/songCover/queryUserSongCoverList": {
+            "get": {
+                "tags": [
+                    "songCover"
+                ],
+                "description": "查询用户歌单列表",
+                "operationId": "SongCoverController.QueryUserSongCoverList",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "info",
+                        "description": "req",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.QueryUserSongCoverListReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "exec": {
+                        "description": "error"
+                    }
+                }
+            }
+        },
         "/user/createUser": {
             "post": {
                 "tags": [
@@ -277,6 +302,19 @@
                     "type": "string"
                 },
                 "SongPlayUrl": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.QueryUserSongCoverListReq": {
+            "title": "QueryUserSongCoverListReq",
+            "type": "object",
+            "properties": {
+                "Type": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "UserId": {
                     "type": "string"
                 }
             }

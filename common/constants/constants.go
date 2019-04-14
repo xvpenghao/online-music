@@ -74,3 +74,11 @@ const (
 	//歌单类型其他（其他的平台的歌单）
 	SONG_COVER_TYPE_OTHER = 2
 )
+
+//删除的状态
+const (
+	//删除1
+	DEL_STATUS = 1
+	//不删除
+	NOT_DEL_STATUS = 2
+)

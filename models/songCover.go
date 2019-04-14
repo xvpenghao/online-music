@@ -51,10 +51,30 @@ type CreateSongCoverReq struct {
 	SongCoverName string `form:"songCoverName"`
 }
 
+//查询用户歌单列表
+type QueryUserSongCoverListReq struct {
+	//1 自定义歌单 2other歌单
+	Type int
+	//用户id
+	UserId string
+}
+
+type UserSongCover struct {
+	//用户歌单Id
+	UserSongCoverId string `json:"userSongCoverId"`
+	//用户歌单名称
+	SongCoverName string `json:"songCoverName"`
+}
+
+type QueryUserSongCoverListResp struct {
+	//用户歌单列表
+	UserSongCoverList []UserSongCover `json:"list"`
+}
+
 //修改歌单
 type ModifySongCoverReq struct {
 }
 
-//修改歌单
+//删除歌单
 type DeleteSongCoverReq struct {
 }

@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/astaxie/beego/logs"
 	"net/http"
+	"online-music/common/constants"
 	"online-music/models"
 	"online-music/service"
 	"online-music/service/dbModel"
@@ -159,6 +160,46 @@ func (receiver *SongCoverController) CreateSongCover() error {
 	}
 
 	receiver.Redirect("/v1/index/indexUI", http.StatusFound)
+
+	return nil
+}
+
+//@Title QueryUserSongCoverList
+//@Description 查询用户歌单列表
+//@Param info body models.QueryUserSongCoverListReq true "req"
+//@Failure exec error
+//@router /queryUserSongCoverList [get]
+func (receiver *SongCoverController) QueryUserSongCoverList() error {
+	receiver.BeforeStart("QueryUserSongCoverList")
+
+	req := models.QueryUserSongCoverListReq{
+		UserId: receiver.Session.UserId,
+		Type:   constants.SONG_COVER_TYPE_CUSTOMER,
+	}
+	songCoverService := service.NewSongCoverService(receiver.GetServiceInit())
+	result, err := songCoverService.QueryUserSongCoverList(req)
+	if err != nil {
+		logs.Error("查询用户歌单列表-service返回错误：(%v)", err.Error())
+		msg := map[string]string{
+			"msg": err.Error(),
+		}
+		receiver.Data["json"] = msg
+		receiver.ServeJSON()
+		return nil
+	}
+
+	var resp models.QueryUserSongCoverListResp
+	var userSongCover models.UserSongCover
+	for _, v := range result {
+		userSongCover.UserSongCoverId = v.ID
+		userSongCover.SongCoverName = v.SongCoverName
+		resp.UserSongCoverList = append(resp.UserSongCoverList, userSongCover)
+	}
+
+	logs.Debug("%+v", resp)
+
+	receiver.Data["json"] = resp
+	receiver.ServeJSON()
 
 	return nil
 }

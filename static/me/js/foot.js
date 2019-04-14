@@ -7,10 +7,7 @@ let lrcTimeArray = [];
 let scrollLocation = 0;
 
 const data =[
-    {"song":"music/thh.mp3"},
-    {"song":"music/thh2.mp3"},
-    {"song":"music/thh3.mp3"},
-    {"song":"music/thh4.mp3"},
+    {"song":"/static/me/temp/thh.mp3"},
 ];
 
 $(function () {

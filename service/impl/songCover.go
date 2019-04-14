@@ -156,7 +156,7 @@ func (receiver *SongCoverService) CreateSongCover(req models.CreateSongCoverReq)
 		ID:            utils.GetUUID(),
 		Type:          constants.SONG_COVER_TYPE_CUSTOMER,
 		SongCoverName: req.SongCoverName,
-		DelState:      constants.USER_NO_DEL_STATUS,
+		DelState:      constants.NOT_DEL_STATUS,
 		CreatTime:     nowTime,
 		CreateUser:    receiver.BaseRequest.UserName,
 		CreateUserId:  receiver.BaseRequest.UserID,
@@ -168,7 +168,7 @@ func (receiver *SongCoverService) CreateSongCover(req models.CreateSongCoverReq)
 		ID:           utils.GetUUID(),
 		UserId:       receiver.BaseRequest.UserID,
 		SongCoverId:  songCover.ID,
-		DelState:     constants.USER_NO_DEL_STATUS,
+		DelState:     constants.NOT_DEL_STATUS,
 		CreatTime:    nowTime,
 		CreateUser:   receiver.BaseRequest.UserName,
 		CreateUserId: receiver.BaseRequest.UserID,
@@ -193,4 +193,34 @@ func (receiver *SongCoverService) CreateSongCover(req models.CreateSongCoverReq)
 	}
 	tx.Commit()
 	return nil
+}
+
+/*
+*@Title:查询用户歌单列表
+*@Description:
+*@User: 徐鹏豪
+*@Date 2019/4/14 0014
+*@Param
+*@Return
+ */
+func (receiver *SongCoverService) QueryUserSongCoverList(req models.QueryUserSongCoverListReq) ([]dbModel.QueryUserSongCover, error) {
+	receiver.BeforeLog("QueryUserSongCoverList")
+
+	db, err := receiver.GetConn()
+	var result []dbModel.QueryUserSongCover
+	if err != nil {
+		logs.Error("查询用户歌单列表-数据库链接错误：(%v)", err.Error())
+		return result, utils.NewDBErr("数据库链接错误", err)
+	}
+	defer db.Close()
+
+	sql := dbModel.QUERY_USER_COVER_LIST
+	sqlParam := []interface{}{req.UserId, constants.NOT_DEL_STATUS, req.Type}
+	err = db.Raw(sql, sqlParam...).Find(&result).Error
+	if err != nil {
+		logs.Error("查询用户歌单列表错误：(%v)", err.Error())
+		return result, utils.NewDBErr("查询用户歌单列表错误", err)
+	}
+
+	return result, nil
 }
