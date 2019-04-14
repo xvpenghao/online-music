@@ -51,3 +51,16 @@ function songHandleMouseOut(obj) {
         }
     })
 }
+
+//设置播放歌曲的url
+function playSongByUrl(song) {
+    console.log(song);
+    //子页面获取父页面的数据
+    let audio = parent.$('#audioTag').get(0);
+    audio.src = song.playUrl;
+    parent.$("#songCoverImg").attr({src:song.songCoverUrl});
+    //设置图片的name为歌曲id
+    parent.$("#songCoverImg").attr({name:song.songID});
+    parent.$('.play-title').text(song.songName);
+
+}

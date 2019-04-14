@@ -84,6 +84,9 @@ func (receiver *SongCoverService) QuerySongList(req models.QuerySongListReq) ([]
 	c.OnHTML("ul[class='f-hide']", func(e *colly.HTMLElement) {
 		var songId string
 		e.ForEach("li", func(i int, ele *colly.HTMLElement) {
+			if len(result) == 10 {
+				return
+			}
 			songId = ele.ChildAttr("a", "href")
 			///song?id=1350336759 只要id
 			song.SongId = strings.Split(songId, "=")[1]

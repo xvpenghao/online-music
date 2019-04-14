@@ -155,14 +155,14 @@
         <div class="playsong-detail">
             <div class="detail-head">
                 <div class="detail-head-cover">
-                    <img src="/static/me/temp/cover2.jpg">
+                    <img src="/static/me/temp/cover2.jpg" id="songDetailCoverImg">
                 </div>
             </div>
             <div class="detail-songinfo">
-                <h2 class="">当时当下</h2>
+                <h2 class="songName" id="songName"></h2>
                 <div class="info">
-                    <div class="singer">歌手：xxxx</div>
-                    <div class="album">专辑名称：xxxx</div>
+                    <div class="singer" id="singer">歌手：</div>
+                    <div class="album" id="album">专辑名称:</div>
                 </div>
                 <div class="lyric">
 
@@ -185,7 +185,7 @@
             </span>
         </div>
         <div class="main-info">
-           <img class="cover" src="/static/me/temp/cover2.jpg">
+           <img class="cover" src="/static/me/temp/cover2.jpg" id="songCoverImg" name="">
             <div class="play-progress">
                 <div class="ctrl">
                     <span>
@@ -197,7 +197,7 @@
                 <div class="play-title">情人而已</div>
                 <div class="more-info">
                     <div class="current">00:00</div>
-                    <div class="total">04:35</div>
+                    <div class="total">00:00</div>
                 </div>
                 <div class="playbar">
                     <audio id="audioTag" src="music/thh.mp3"></audio>

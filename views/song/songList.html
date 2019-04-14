@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="/static/me/js/jquery-3.3.1.js"></script>
-    <script src="/static/me/js/song-detail.js"></script>
     <link href="/static/me/css/tracklist.css" rel="stylesheet">
     <link href="/static/me/css/index.css" rel="stylesheet">
+    <script src="/static/me/js/jquery-3.3.1.js"></script>
+    <script src="/static/me/js/song-detail.js"></script>
 </head>
 <body>
 <div>
@@ -54,8 +54,12 @@
                 {{range .songList.List}}
                 <li  class="ng-scope" onmouseover="songHandleMouseOver(this)"
                      onmouseout="songHandleMouseOut(this)">
-                    <div class="title">
-                        <img src="/static/me/imgs/play_song.png" id="{{.SongId}}"/>
+                    <div class="title"
+                         onclick="playSongByUrl({'playUrl':{{.SongPlayUrl}},
+                                                'songCoverUrl':{{.SongCoverUrl}},
+                                                 'songID':{{.SongId}},
+                                                  'songName':{{.SongName}} })">
+                        <img src="/static/me/imgs/play_song.png"/>
                         <a class="ng-binding " style="position: relative;top: -4px;left: 4px;">
                             {{.SongName}}
                         </a>
@@ -95,6 +99,7 @@
         </div>
     </div>
 </div>
+
 
 
 </body>

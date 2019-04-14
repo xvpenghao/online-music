@@ -60,6 +60,35 @@
                 "operationId": "LoginController.LoginUI"
             }
         },
+        "/song/querySongDetail/{songID}": {
+            "get": {
+                "tags": [
+                    "song"
+                ],
+                "description": "查询歌曲详情",
+                "operationId": "SongController.QuerySongDetail",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "songId",
+                        "description": "歌曲ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "exec": {
+                        "description": "error"
+                    },
+                    "info": {
+                        "description": "true \"返回歌曲相应信息\"",
+                        "schema": {
+                            "$ref": "#/definitions/models.QuerySongDetailResp"
+                        }
+                    }
+                }
+            }
+        },
         "/songCover/querySongCoverList": {
             "get": {
                 "tags": [
@@ -187,6 +216,62 @@
                 ],
                 "description": "用户基本信息",
                 "operationId": "UserController.UserDetailUI"
+            }
+        }
+    },
+    "definitions": {
+        "models.QuerySongDetailResp": {
+            "title": "QuerySongDetailResp",
+            "type": "object",
+            "properties": {
+                "Singer": {
+                    "type": "string"
+                },
+                "SongAlbum": {
+                    "type": "string"
+                },
+                "SongCoverUrl": {
+                    "type": "string"
+                },
+                "SongId": {
+                    "type": "string"
+                },
+                "SongLyric": {
+                    "type": "string"
+                },
+                "SongName": {
+                    "type": "string"
+                },
+                "SongPlayUrl": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Song": {
+            "title": "Song",
+            "type": "object",
+            "properties": {
+                "singer": {
+                    "type": "string"
+                },
+                "songAlbum": {
+                    "type": "string"
+                },
+                "songCoverUrl": {
+                    "type": "string"
+                },
+                "songId": {
+                    "type": "string"
+                },
+                "songLyric": {
+                    "type": "string"
+                },
+                "songName": {
+                    "type": "string"
+                },
+                "songPlayUrl": {
+                    "type": "string"
+                }
             }
         }
     }

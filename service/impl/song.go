@@ -70,6 +70,10 @@ func (receiver *SongService) QuerySongDetail(req models.QuerySongDetailReq) (dbM
 
 	//歌词url
 	result.SongLyric, err = receiver.querySongLyricBySongId(req.SongId)
+	if err != nil {
+		logs.Error("查询歌曲详情-根据歌曲id获取歌词失败:(%v)", err.Error())
+		return result, err
+	}
 
 	return result, nil
 }
@@ -160,6 +164,9 @@ func (receiver *SongService) QuerySongBaseInfo(req models.QuerySongDetailReq) (d
 	result.SongName = keywordss[0]
 	result.SongAlbum = keywordss[1]
 	result.Singer = keywordss[2]
+	result.SongCoverUrl = imageUrl
+	//歌曲url
+	result.SongPlayUrl = fmt.Sprintf(constants.SONG_PLAY_URL, req.SongId)
 
 	return result, nil
 }

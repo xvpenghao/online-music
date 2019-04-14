@@ -41,7 +41,7 @@ $(function () {
     volumeOnOrOff();
 
     //设置歌词播放时间
-    setLyricTime();
+    setLyricTime(lyricData);
     //设置歌词详情和main的切换
     changeMainAndLyricDetail()
 
@@ -57,7 +57,7 @@ function playOrPause() {
     $('#playPause').click(function(){
         //改变暂停/播放icon
         if(audio.paused){
-            $(this).attr({src:"static/me/imgs/bf_play.png",title:PAUSE_TITLE});
+            $(this).attr({src:"/static/me/imgs/bf_play.png",title:PAUSE_TITLE});
             audio.play();
             //选中第一个
             let $lrcP = $(".lrc-line");
@@ -65,7 +65,7 @@ function playOrPause() {
             $($lrcP[0]).removeClass("lyric");
             $($lrcP[0]).addClass("lrc-height-line");
         } else{
-            $(this).attr({src:"static/me/imgs/bf_pause.png",title:PLAY_TITLE});
+            $(this).attr({src:"/static/me/imgs/bf_pause.png",title:PLAY_TITLE});
             audio.pause();
 
         }
@@ -184,9 +184,9 @@ function setVolume(){
         let audio = $('#audioTag').get(0);
         let newValue = elem.value;
         if(newValue<=0){
-            $(".on-off").attr({src:"static/me/imgs/no_volume.png",title:OFF_VOLUME});
+            $(".on-off").attr({src:"/static/me/imgs/no_volume.png",title:OFF_VOLUME});
         }else{
-            $(".on-off").attr({src:"static/me/imgs/volume.png",title:ON_VOLUME});
+            $(".on-off").attr({src:"/static/me/imgs/volume.png",title:ON_VOLUME});
         }
 
         let max = elem.getAttribute("max");
@@ -205,11 +205,11 @@ function volumeOnOrOff(){
     $(".on-off").click(function () {
         let value = $(".on-off").attr("title");
         if (value == ON_VOLUME){
-            $(this).attr({src:"static/me/imgs/no_volume.png",title:OFF_VOLUME});
+            $(this).attr({src:"/static/me/imgs/no_volume.png",title:OFF_VOLUME});
             let audio = $('#audioTag').get(0);
             audio.volume = 0.0;
         }else{
-            $(this).attr({src:"static/me/imgs/volume.png",title:ON_VOLUME});
+            $(this).attr({src:"/static/me/imgs/volume.png",title:ON_VOLUME});
             let elem = document.querySelector('input[type="range"]');
             let audio = $('#audioTag').get(0);
             let newValue = elem.value;
@@ -221,12 +221,10 @@ function volumeOnOrOff(){
 
 /* ***************************关于歌词的设置************************************************* */
 let lyricData = [
-    {"sgc":false,
-        "sfy":false,
-        "qfy":false,
-        "lrc":{"version":7,"lyric":"[00:00.00] 作曲 : 金玟岐\n[00:01.00] 作词 : 金玟岐/梁振华\n[00:05.230]制作人/编曲：薛琳可\n[00:10.230]吉他演奏：薛峰\n[00:15.230]弦乐演奏：国际首席爱乐乐团\n[00:20.230]混音：赵靖@BIG.J Studio，Beijing\n[00:25.230]思美人兮 路长漫漫不可及\n[00:30.230]拭泪天涯无归期\n[00:36.120]千言万语 只如梗在心底\n[00:41.920]愁丝万缕一朝夕\n[00:47.840]思美人兮 悠悠浮云为我寄\n[00:53.390]奈何鸿飞不解意\n[00:58.550]归鸟乘风远飞\n[01:01.930]我折翼在原地\n[01:05.070]只见思念划天际\n[01:10.320]男儿志千古愁\n[01:13.360]溢于胸怀中\n[01:15.960]抛入一汪江水向东流\n[01:21.400]笑非笑 忧且忧\n[01:24.580]浊世谁人能懂\n[01:27.290]拂袖独行不回首\n[01:32.910]幽兰花异芬芳\n[01:36.110]含风影自香\n[01:38.800]问君可有识得她芳踪\n[01:44.160]趁年华未散尽\n[01:47.210]摘得芙蓉与共\n[01:49.990]莫让憾事绕心中\n[02:19.040]思美人兮 纵然九死无悔意\n[02:24.690]我心惜古人不及\n[02:30.370]江可竭山可移\n[02:33.210]唯志节不离弃\n[02:36.300]宁求上下无归期\n[02:41.610]男儿志千古愁\n[02:44.750]溢于胸怀中\n[02:47.110]抛入一汪江水向东流\n[02:52.770]笑非笑 忧且忧\n[02:55.880]浊世谁人能懂\n[02:58.710]拂袖独行不回首\n[03:04.360]幽兰花异芬芳\n[03:07.180]含风影自香\n[03:09.920]问君可有识得她芳踪\n[03:15.600]趁年华未散尽\n[03:18.620]摘得芙蓉与共\n[03:22.100]莫让憾事绕心中\n[03:27.420]男儿志千古愁\n[03:30.510]溢于胸怀中\n[03:32.860]抛入一汪江水向东流\n[03:38.460]笑非笑 忧且忧\n[03:41.410]浊世谁人能懂\n[03:44.650]拂袖独行不回首\n[03:49.950]幽兰花异芬芳\n[03:52.920]含风影自香\n[03:55.410]问君可有识得她芳踪\n[04:01.200]趁年华未散尽\n[04:04.320]摘得芙蓉与共\n[04:07.590]莫让憾事绕心中\n[04:13.210]思美人兮\n[04:16.160]漂泊南行无所依\n[04:19.360]我欲随风同归去\n"},
-        "tlyric":{"version":0,"lyric":null},
-        "code":200}
+    {
+    "lyric":"[00:00.00] 作曲 : 金玟岐\n[00:01.00] 作词 : 金玟岐/梁振华\n[00:05.230]制作人/编曲：薛琳可\n[00:10.230]吉他演奏：薛峰\n[00:15.230]弦乐演奏：国际首席爱乐乐团\n[00:20.230]混音：赵靖@BIG.J Studio，Beijing\n[00:25.230]思美人兮 路长漫漫不可及\n[00:30.230]拭泪天涯无归期\n[00:36.120]千言万语 只如梗在心底\n[00:41.920]愁丝万缕一朝夕\n[00:47.840]思美人兮 悠悠浮云为我寄\n[00:53.390]奈何鸿飞不解意\n[00:58.550]归鸟乘风远飞\n[01:01.930]我折翼在原地\n[01:05.070]只见思念划天际\n[01:10.320]男儿志千古愁\n[01:13.360]溢于胸怀中\n[01:15.960]抛入一汪江水向东流\n[01:21.400]笑非笑 忧且忧\n[01:24.580]浊世谁人能懂\n[01:27.290]拂袖独行不回首\n[01:32.910]幽兰花异芬芳\n[01:36.110]含风影自香\n[01:38.800]问君可有识得她芳踪\n[01:44.160]趁年华未散尽\n[01:47.210]摘得芙蓉与共\n[01:49.990]莫让憾事绕心中\n[02:19.040]思美人兮 纵然九死无悔意\n[02:24.690]我心惜古人不及\n[02:30.370]江可竭山可移\n[02:33.210]唯志节不离弃\n[02:36.300]宁求上下无归期\n[02:41.610]男儿志千古愁\n[02:44.750]溢于胸怀中\n[02:47.110]抛入一汪江水向东流\n[02:52.770]笑非笑 忧且忧\n[02:55.880]浊世谁人能懂\n[02:58.710]拂袖独行不回首\n[03:04.360]幽兰花异芬芳\n[03:07.180]含风影自香\n[03:09.920]问君可有识得她芳踪\n[03:15.600]趁年华未散尽\n[03:18.620]摘得芙蓉与共\n[03:22.100]莫让憾事绕心中\n[03:27.420]男儿志千古愁\n[03:30.510]溢于胸怀中\n[03:32.860]抛入一汪江水向东流\n[03:38.460]笑非笑 忧且忧\n[03:41.410]浊世谁人能懂\n[03:44.650]拂袖独行不回首\n[03:49.950]幽兰花异芬芳\n[03:52.920]含风影自香\n[03:55.410]问君可有识得她芳踪\n[04:01.200]趁年华未散尽\n[04:04.320]摘得芙蓉与共\n[04:07.590]莫让憾事绕心中\n[04:13.210]思美人兮\n[04:16.160]漂泊南行无所依\n[04:19.360]我欲随风同归去\n",
+    "code":200,
+    }
 ];
 
 //歌词段落的添加
@@ -287,9 +285,9 @@ function lrcMove(currentTime){
 }
 
 //设置歌词的时间，通过正则
-function setLyricTime(){
-    let lyrics = lyricData[0].lrc.lyric.split("\n");
-    lyricData[0].lrc.lyric.replace(/\[(\d*):(\d*)([\.|\:]\d*)\]/g,function () {
+function setLyricTime(lyricData){
+    let lyrics = lyricData[0].lyric.split("\n");
+    lyricData[0].lyric.replace(/\[(\d*):(\d*)([\.|\:]\d*)\]/g,function () {
         /*
         * arguments:
         * 0:"[00:01.00]"
@@ -310,20 +308,43 @@ function setLyricTime(){
     addLrc(lyrics);
 }
 //状态的切换
-var mainAndLyricDetailstateChange = true
+var mainAndLyricDetailstateChange = true;
 //点击播放封面，完成事件的切换 显示歌词，不显示歌词详情
 function changeMainAndLyricDetail(){
     $(".cover").click(function () {
         if (mainAndLyricDetailstateChange){
             //隐藏main，显示歌词详情
-            $(".main").addClass("ng-hide")
-            $(".songdetail-wrapper").removeClass("ng-hide")
-            mainAndLyricDetailstateChange = false
+            $(".main").addClass("ng-hide");
+            $(".songdetail-wrapper").removeClass("ng-hide");
+            mainAndLyricDetailstateChange = false;
+            //ajax加载数据
+            let songID = $("#songCoverImg").attr('name');
+            $.ajax({
+                type:"GET",
+                url:"http://localhost:8080/v1/song/querySongDetail/"+songID,
+                dataType:"json",
+                success:function (data) {
+                    //设置歌曲详情页面属性
+                    lyricData = [{'lyric':data.songLyric}];
+                    $("#songName").text(data.songName);
+                    $("#singer").text("歌手名称："+data.singer);
+                    $("#album").text("专辑名称："+data.songAlbum);
+                    $("#songDetailCoverImg").attr({src:data.songCoverUrl});
+                    //先清空数组
+                    lrcTimeArray = [];
+                    setLyricTime(lyricData);
+                },
+                error:function (err) {
+                    console.log(err);
+                   alert("获取歌曲详情失败")
+                }
+            });
         }else{
             //隐藏歌词详情，显示main
-            $(".songdetail-wrapper").addClass("ng-hide")
-            $(".main").removeClass("ng-hide")
+            $(".songdetail-wrapper").addClass("ng-hide");
+            $(".main").removeClass("ng-hide");
             mainAndLyricDetailstateChange = true
         }
     })
 }
+

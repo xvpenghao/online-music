@@ -93,8 +93,14 @@ func (receiver *SongCoverController) QuerySongList() error {
 	var song models.Song
 	var dbSong dbModel.Song
 	var resp models.QuerySongListResp
-	for _, v := range result {
+	logs.Debug(len(result))
+	for i, v := range result {
+		//FIXME 这里需要优化，目前先定位3首歌曲
+		if i == 3 {
+			break
+		}
 		querySongDetailReq.SongId = v.SongId
+		//FIXME 这里需要优化,考虑使用携程
 		dbSong, err = songService.QuerySongBaseInfo(querySongDetailReq)
 		if err != nil {
 			logs.Error("根据歌单id获取歌曲列表-查询歌单详情service返回错误：(%v)", err.Error())
@@ -104,6 +110,8 @@ func (receiver *SongCoverController) QuerySongList() error {
 		song.SongName = dbSong.SongName
 		song.Singer = dbSong.Singer
 		song.SongAlbum = dbSong.SongAlbum
+		song.SongPlayUrl = dbSong.SongPlayUrl
+		song.SongCoverUrl = dbSong.SongCoverUrl
 		resp.List = append(resp.List, song)
 	}
 
