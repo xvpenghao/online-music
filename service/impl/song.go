@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"github.com/astaxie/beego/logs"
 	"github.com/gocolly/colly"
+	"github.com/jinzhu/gorm"
 	"online-music/common/constants"
+	"online-music/common/utils"
 	"online-music/models"
 	"online-music/service/dbModel"
 	"strings"
@@ -169,4 +171,35 @@ func (receiver *SongService) QuerySongBaseInfo(req models.QuerySongDetailReq) (d
 	result.SongPlayUrl = fmt.Sprintf(constants.SONG_PLAY_URL, req.SongId)
 
 	return result, nil
+}
+
+/*
+*@Title:根据歌单id查询歌曲列表
+*@Description: 
+*@User: 徐鹏豪
+*@Date 2019/4/15 0015 
+*@Param 
+*@Return 
+*/
+func (receiver *SongService)QueryUserSongList(req models.QueryUserSongListReq)([]dbModel.UserSong,error){
+    receiver.BeforeLog("QueryUserSongList")
+
+	db,err := receiver.GetConn()
+	var result []dbModel.UserSong
+	if err !=nil{
+		logs.Error("根据歌单id查询歌曲列表-数据库链接错误：(%v)",err.Error())
+		return result,utils.NewDBErr("数据库链接错误",err)
+	}
+	defer db.Close()
+
+	sql := dbModel.QUERY_USER_SONG_LIST
+	sqlParam := []interface{}{req.SongCoverId}
+
+	err = db.Raw(sql,sqlParam...).Find(&result).Error
+	if err !=nil && err != gorm.ErrRecordNotFound{
+		logs.Error("根据歌单id查询歌曲列表错误：(%v)",err.Error())
+		return result,utils.NewDBErr("根据歌单id查询歌曲列表错误",err)
+	}
+
+	return result,nil
 }

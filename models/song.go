@@ -27,3 +27,21 @@ type QuerySongDetailReq struct {
 type QuerySongDetailResp struct {
 	Song
 }
+
+
+//查询自定义歌曲列表
+type QueryUserSongListReq struct {
+	//歌曲id
+	SongCoverId string
+}
+
+type QueryUserSongListResp struct {
+	//歌单id
+	SongCoverId string
+	//歌单url
+	SongCoverImgUrl string
+	//歌单名称
+	SongName string
+	//用户歌曲列表
+	UserSongList []Song
+}

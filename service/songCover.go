@@ -18,6 +18,8 @@ type (
 		QueryUserSongCoverList(req models.QueryUserSongCoverListReq) ([]dbModel.QueryUserSongCover, error)
 		//创建收藏歌单
 		CreateCollectSongCover(req models.CreateCollectSongCoverReq) error
+		//根据歌单id查询信息
+		QuerySongCoverById(req models.QueryCoverSongByIdReq)(dbModel.SongCoverInfo,error)
 	}
 )
 

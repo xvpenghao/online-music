@@ -15,6 +15,10 @@ const (
 	                         inner join tb_user_song_cover tbusc on tbsc.song_cover_id = tbusc.song_cover_id
 	                         and tbusc.user_id = ? and tbusc.del_status = ?  
                              order by tbusc.create_time `
+	//根据id查询歌单信息
+	QUERY_SONG_COVER_BY_ID = `select song_cover_id,song_cover_name,cover_url
+                              from tb_song_cover tsc
+                              where song_cover_id = ?`
 )
 
 type SongCoverInfo struct {
@@ -75,24 +79,6 @@ type SongCover struct {
 	Description string
 	//歌单id
 	SongCoverId string
-}
-
-//歌曲信息
-type Song struct {
-	//歌曲id
-	SongId string
-	//歌曲名称
-	SongName string
-	//歌手
-	Singer string
-	//歌曲专辑
-	SongAlbum string
-	//歌曲封面Url
-	SongCoverUrl string
-	//歌曲播放链接
-	SongPlayUrl string
-	//歌词
-	SongLyric string
 }
 
 type QueryUserSongCover struct {

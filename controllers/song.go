@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/astaxie/beego/logs"
 	"net/http"
 	"online-music/models"
 	"online-music/service"
@@ -46,6 +47,53 @@ func (receiver *SongController) QuerySongDetail() error {
 
 	receiver.Data["json"] = resp
 	receiver.ServeJSON()
+
+	return nil
+}
+
+// @Title ModifySongCoverList
+// @Description 根据歌单id得到歌曲列表
+// @Param songCoverId path string true "歌单id"
+// @Failure exec error
+// @router /queryUserSongList/:songCoverId [get]
+func (receiver *SongController)QueryUserSongList()error{
+	receiver.BeforeStart("CustomerSongCoverList")
+
+	req := models.QueryUserSongListReq{
+		SongCoverId:receiver.GetString(":songCoverId"),
+	}
+
+	songService := service.NewSongService(receiver.GetServiceInit())
+	result,err := songService.QueryUserSongList(req)
+	if err !=nil{
+		logs.Error("根据歌单id得到歌曲列表-service返回错误：(%v)", err.Error())
+		return receiver.returnError("service返回错误：(%v)", err.Error())
+	}
+	songCoverService := service.NewSongCoverService(receiver.GetServiceInit())
+	songCover,err := songCoverService.QuerySongCoverById(models.QueryCoverSongByIdReq{SongCoverId:req.SongCoverId})
+	if err !=nil{
+		logs.Error("根据歌单id得到歌曲列表-查询歌单详情service返回错误：(%v)", err.Error())
+		return receiver.returnError("查询歌单详情service返回错误：(%v)", err.Error())
+	}
+	var resp models.QueryUserSongListResp
+	var song models.Song
+	for _,v := range result{
+		song.SongId = v.SongId
+		song.Singer = v.Singer
+		song.SongName = v.SongName
+		song.SongAlbum = v.SongAlbum
+		song.SongLyric = v.SongLyric
+		song.SongPlayUrl = v.SongPlayUrl
+		song.SongCoverUrl = v.SongCoverUrl
+		resp.UserSongList = append(resp.UserSongList,song)
+	}
+
+	resp.SongCoverId =songCover.ID
+	resp.SongName =songCover.SongCoverName
+	resp.SongCoverImgUrl = songCover.CoverUrl
+
+	receiver.Data["resp"] = resp
+	receiver.TplName = "song/customerSongList.html"
 
 	return nil
 }

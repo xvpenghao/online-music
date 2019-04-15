@@ -76,11 +76,9 @@ function queryUserSongCoverList() {
             console.log(data);
             console.log('data.songCoverList',data.songCoverList);
             if (data.songCoverList != null){
-                console.log('1');
-                songCoverList(data.songCoverList,'#userSongCoverList','/v1/song/songListUI');
+                songCoverList(data.songCoverList,'#userSongCoverList','/v1/song/queryUserSongList');
             }
             if (data.collectList != null){
-                console.log('2');
                 songCoverList(data.collectList,'#userCollectSongCover','/v1/song/songListUI');
             }
 
@@ -102,7 +100,7 @@ function songCoverList(data,id,url) {
                      <span>
                          <img src="/static/me/imgs/music.png">
                     </span>
-                    <a href="${url}" id="${ele.userSongCoverId}" 
+                    <a href="${url}/${ele.songCoverId}" id="${ele.songCoverId}" 
                                                   target="main">${songCoverName}</a>
                </div>`;
         userSongCoverList  += $div

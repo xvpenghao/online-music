@@ -14,10 +14,10 @@
         <!--歌单详情头-->
         <div class="detail-head">
             <div class="detail-head-cover">
-                <img src="{{.songList.SongCoverImgUrl}}">
+                <img src="{{.resp.SongCoverImgUrl}}">
             </div>
             <div class="detail-head-title">
-                <h2 class="ng-binding">{{.songList.Description}}</h2>
+                <h2 class="ng-binding">{{.resp.SongName}}</h2>
                 <div class="playlist-button-list">
                     <div class="playlist-button playadd-button">
                         <div class="play-list ng-binding">
@@ -31,7 +31,7 @@
                     <div class="playlist-button clone-button">
                         <div class="play-list">
                             <img class="fadd" src="/static/me/imgs/folder_add.png">
-                            <span>收藏歌单</span>
+                            <span>编辑歌单</span>
                         </div>
                     </div>
                     <div class="playlist-button edit-button">
@@ -51,7 +51,7 @@
                     <div class="album"><a class="ng-binding">专辑名</a></div>
                     <div class="tools ng-binding">操作</div>
                 </li>
-                {{range .songList.List}}
+                {{range .resp.UserSongList}}
                 <li  class="ng-scope" onmouseover="songHandleMouseOver(this)"
                      onmouseout="songHandleMouseOut(this)">
                     <div class="title"
@@ -99,8 +99,6 @@
         </div>
     </div>
 </div>
-
-
 
 </body>
 </html>

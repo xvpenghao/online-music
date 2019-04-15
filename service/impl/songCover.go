@@ -309,3 +309,34 @@ func (receiver *SongCoverService) CreateCollectSongCover(req models.CreateCollec
 
 	return nil
 }
+
+/*
+*@Title:根据歌单id查询信息
+*@Description: 
+*@User: 徐鹏豪
+*@Date 2019/4/15 0015 
+*@Param 
+*@Return 
+*/
+func (receiver *SongCoverService)QuerySongCoverById(req models.QueryCoverSongByIdReq)(dbModel.SongCoverInfo,error){
+    receiver.BeforeLog("QuerySongCoverById")
+
+	db,err := receiver.GetConn()
+	var result dbModel.SongCoverInfo
+	if err !=nil{
+		logs.Error("根据歌单id查询信息-数据库链接错误：(%v)",err.Error())
+		return result,utils.NewDBErr("数据库链接错误",err)
+	}
+	defer db.Close()
+
+	sql := dbModel.QUERY_SONG_COVER_BY_ID
+	sqlParam := []interface{}{req.SongCoverId}
+
+	err = db.Raw(sql,sqlParam...).First(&result).Error
+	if err !=nil{
+		logs.Error("根据歌单id查询信息错误：(%v)",err.Error())
+		return result,utils.NewDBErr("根据歌单id查询信息错误",err)
+	}
+
+	return result,nil
+}

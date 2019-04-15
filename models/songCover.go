@@ -103,3 +103,9 @@ type ModifySongCoverReq struct {
 //删除歌单
 type DeleteSongCoverReq struct {
 }
+
+//根据id查询歌单信息
+type QueryCoverSongByIdReq struct {
+	//歌单id
+	SongCoverId string
+}
