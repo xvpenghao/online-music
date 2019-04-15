@@ -16,6 +16,8 @@ type (
 		CreateSongCover(req models.CreateSongCoverReq) error
 		//查询用户歌单列表
 		QueryUserSongCoverList(req models.QueryUserSongCoverListReq) ([]dbModel.QueryUserSongCover, error)
+		//创建收藏歌单
+		CreateCollectSongCover(req models.CreateCollectSongCoverReq) error
 	}
 )
 

@@ -82,3 +82,11 @@ const (
 	//不删除
 	NOT_DEL_STATUS = 2
 )
+
+//创建用户歌单的默认值
+const (
+	//歌单默认详情
+	SONG_COVER_DEFAULT_DESCRIPTION = "无"
+	//歌单默认封面图片
+	SONG_COVER_DEFAULT_COVER_URL = "/static/me/temp/default_cover.png"
+)

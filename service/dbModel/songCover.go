@@ -8,7 +8,7 @@ const (
                                                  FROM TB_SONG_COVER AS TBSC 
                                                  INNER JOIN TB_USER_SONG_COVER AS TBUSC 
                                                  ON TBSC.SONG_COVER_ID = TBUSC.SONG_COVER_ID
-                                                 WHERE TBUSC.USER_ID = ? AND TBSC.SONG_COVER_NAME = ? `
+                                                 WHERE TBUSC.USER_ID = ? AND TBSC.SONG_COVER_NAME = ? AND TBSC.TYPE = ? `
 	//查询用户歌单列表
 	QUERY_USER_COVER_LIST = `SELECT TBUSC.USER_SONG_COVER_ID,TBSC.SONG_COVER_NAME
                              FROM TB_SONG_COVER TBSC 
@@ -26,6 +26,8 @@ type SongCoverInfo struct {
 	ChannelID string `gorm:"column:channel_id"`
 	//歌单名称
 	SongCoverName string `gorm:"column:song_cover_name"`
+	//封面Url
+	CoverUrl string `gorm:"column:cover_url"`
 	//删除的状态 1删除 2不删除
 	DelState int `gorm:"column:del_status"`
 	//创建时间
@@ -98,4 +100,11 @@ type QueryUserSongCover struct {
 	ID string `gorm:"column:USER_SONG_COVER_ID"`
 	//歌单名称
 	SongCoverName string `gorm:"column:SONG_COVER_NAME"`
+}
+
+type CreateCollectSongCoverReply struct {
+	//歌单id
+	SongCoverId string
+	//歌单名称
+	SongCoverName string
 }

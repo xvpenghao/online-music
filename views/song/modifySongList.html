@@ -2,16 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>歌曲列表</title>
-
-    <script src="/static/me/js/jquery-3.3.1.js"></script>
-    <script type="text/javascript" src="/static/layui-v2.4.5/layui/layui.js" ></script>
-
-    <script type="text/javascript" src="/static/layui-v2.4.5/layui/layui.all.js"></script>
-
-    <script src="/static/me/js/song-detail.js"></script>
+    <title>Title</title>
     <link href="/static/me/css/tracklist.css" rel="stylesheet">
     <link href="/static/me/css/index.css" rel="stylesheet">
+    <script src="/static/me/js/jquery-3.3.1.js"></script>
+    <script src="/static/me/js/song-detail.js"></script>
 </head>
 <body>
 <div>
@@ -34,11 +29,7 @@
                         </div>
                     </div>
                     <div class="playlist-button clone-button">
-                        <div class="play-list" onclick="createCollectSongCover({
-                            'songCoverId':{{.songList.SongCoverId}},
-                            'songCoverUrl':{{.songList.SongCoverImgUrl}},
-                            'songCoverName':{{.songList.Description}},
-                             })">
+                        <div class="play-list">
                             <img class="fadd" src="/static/me/imgs/folder_add.png">
                             <span>收藏歌单</span>
                         </div>

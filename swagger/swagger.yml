@@ -57,6 +57,26 @@ paths:
           description: true "返回歌曲相应信息"
           schema:
             $ref: '#/definitions/models.QuerySongDetailResp'
+  /songCover/createCollectSongCover:
+    post:
+      tags:
+      - songCover
+      description: 创建收藏歌单
+      operationId: SongCoverController.CreateCollectSongCover
+      parameters:
+      - in: body
+        name: req
+        description: req
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateCollectSongCoverReq'
+      responses:
+        exec:
+          description: error
+        resp:
+          description: true "resp"
+          schema:
+            $ref: '#/definitions/models.CreateCollectSongCoverResp'
   /songCover/createSongCover:
     post:
       tags:
@@ -177,6 +197,22 @@ paths:
       description: 用户基本信息
       operationId: UserController.UserDetailUI
 definitions:
+  models.CreateCollectSongCoverReq:
+    title: CreateCollectSongCoverReq
+    type: object
+    properties:
+      songCoverId:
+        type: string
+      songCoverName:
+        type: string
+      songCoverUrl:
+        type: string
+  models.CreateCollectSongCoverResp:
+    title: CreateCollectSongCoverResp
+    type: object
+    properties:
+      msg:
+        type: string
   models.CreateSongCoverReq:
     title: CreateSongCoverReq
     type: object

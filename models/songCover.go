@@ -39,7 +39,7 @@ type QuerySongListResp struct {
 	SongCoverId string
 	//歌单url
 	SongCoverImgUrl string
-	//歌单描述
+	//歌单名称
 	Description string
 	//歌曲列表
 	List []Song
@@ -69,6 +69,20 @@ type UserSongCover struct {
 type QueryUserSongCoverListResp struct {
 	//用户歌单列表
 	UserSongCoverList []UserSongCover `json:"list"`
+}
+
+//创建收藏歌单
+type CreateCollectSongCoverReq struct {
+	//歌单ID
+	SongCoverId string `json:"songCoverId"`
+	//歌单名称
+	SongCoverName string `json:"songCoverName"`
+	//歌单封面的url
+	SongCoverUrl string `json:"songCoverUrl"`
+}
+
+type CreateCollectSongCoverResp struct {
+	Msg string `json:"msg"`
 }
 
 //修改歌单

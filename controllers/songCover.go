@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/json"
 	"github.com/astaxie/beego/logs"
 	"net/http"
 	"online-music/common/constants"
@@ -144,7 +145,6 @@ func (receiver *SongCoverController) CreateSongCover() error {
 		logs.Error("创建歌单-解析表单参数错误：(%v),请求参数(%+v)", err.Error(), req)
 		return receiver.returnError("解析表单参数错误:(%v)", err.Error())
 	}
-	logs.Debug("%+v", req)
 
 	err = verify.CreateSongCoverReqVerify(req)
 	if err != nil {
@@ -171,6 +171,14 @@ func (receiver *SongCoverController) CreateSongCover() error {
 //@router /queryUserSongCoverList [get]
 func (receiver *SongCoverController) QueryUserSongCoverList() error {
 	receiver.BeforeStart("QueryUserSongCoverList")
+	var resp models.QueryUserSongCoverListResp
+
+	//用户没有登录，则直接退出
+	if receiver.Session.UserId == "" {
+		receiver.Data["json"] = resp
+		receiver.ServeJSON()
+		return nil
+	}
 
 	req := models.QueryUserSongCoverListReq{
 		UserId: receiver.Session.UserId,
@@ -188,7 +196,6 @@ func (receiver *SongCoverController) QueryUserSongCoverList() error {
 		return nil
 	}
 
-	var resp models.QueryUserSongCoverListResp
 	var userSongCover models.UserSongCover
 	for _, v := range result {
 		userSongCover.UserSongCoverId = v.ID
@@ -201,5 +208,51 @@ func (receiver *SongCoverController) QueryUserSongCoverList() error {
 	receiver.Data["json"] = resp
 	receiver.ServeJSON()
 
+	return nil
+}
+
+//@Title CreateCollectSongCover
+//@Description 创建收藏歌单
+//@Param req body models.CreateCollectSongCoverReq true "req"
+//@Success resp {object} models.CreateCollectSongCoverResp true "resp"
+//@Failure exec error
+//@router /createCollectSongCover [post]
+func (receiver *SongCoverController) CreateCollectSongCover() error {
+	receiver.BeforeStart("CreateCollectSongCover")
+
+	var req models.CreateCollectSongCoverReq
+	var resp models.CreateCollectSongCoverResp
+	logs.Debug("%s", receiver.Ctx.Input.RequestBody)
+
+	if receiver.Session.UserId == "" {
+		receiver.Ctx.Output.Status = http.StatusBadRequest
+		resp.Msg = "对不起，你还没有登录，请登录之后，再收藏"
+		receiver.Data["json"] = resp
+		receiver.ServeJSON()
+		return nil
+	}
+
+	err := json.Unmarshal(receiver.Ctx.Input.RequestBody, &req)
+	if err != nil {
+		logs.Error("创建收藏歌单-解析参数错误：(%v)", err.Error())
+		receiver.Ctx.Output.Status = http.StatusBadRequest
+		resp.Msg = err.Error()
+		receiver.Data["json"] = resp
+		receiver.ServeJSON()
+		return nil
+	}
+
+	songCoverService := service.NewSongCoverService(receiver.GetServiceInit())
+	err = songCoverService.CreateCollectSongCover(req)
+	if err != nil {
+		logs.Error("创建收藏歌单-service返回错误：(%v)", err.Error())
+		receiver.Ctx.Output.Status = http.StatusBadRequest
+		resp.Msg = err.Error()
+		receiver.Data["json"] = resp
+		receiver.ServeJSON()
+	}
+
+	receiver.Data["json"] = resp
+	receiver.ServeJSON()
 	return nil
 }
