@@ -67,30 +67,45 @@ function  alertCreateSongCoverWindow(){
 
 //查询用户歌单详情
 function queryUserSongCoverList() {
-    let userSongCoverList = "";
+
     $.ajax({
         url:"http://localhost:8080/v1/songCover/queryUserSongCoverList",
         type:"GET",
         dataType:"json",
         success:function (data) {
-            if (data.list == null){
-                return
+            console.log(data);
+            console.log('data.songCoverList',data.songCoverList);
+            if (data.songCoverList != null){
+                console.log('1');
+                songCoverList(data.songCoverList,'#userSongCoverList','/v1/song/songListUI');
             }
-            data.list.map((ele,i)=>{
-                let htmlContent = `
+            if (data.collectList != null){
+                console.log('2');
+                songCoverList(data.collectList,'#userCollectSongCover','/v1/song/songListUI');
+            }
+
+        },
+        error:function (err) {
+            layer.msg('提示：'+err.responseJSON.resultMsg);
+        }
+    });
+}
+
+//遍历歌单列表
+function songCoverList(data,id,url) {
+    // /v1/song/songListUI
+    let userSongCoverList = "";
+    data.map((ele,i)=>{
+        let songCoverName = getSplitSongCoverName(ele.songCoverName,7);
+        let $div = `
                  <div class="collect-list gd-select">
                      <span>
                          <img src="/static/me/imgs/music.png">
                     </span>
-                    <a href="/v1/song/songListUI" id="${ele.userSongCoverId}" 
-                                                  target="main">${ele.songCoverName}</a>
+                    <a href="${url}" id="${ele.userSongCoverId}" 
+                                                  target="main">${songCoverName}</a>
                </div>`;
-                userSongCoverList  += htmlContent
-            });
-           $('#userSongCoverList').append(userSongCoverList)
-        },
-        error:function (err) {
-            layer.alert('业务逻辑返回错误');
-        }
+        userSongCoverList  += $div
     });
+    $(id).append(userSongCoverList)
 }

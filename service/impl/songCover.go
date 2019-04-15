@@ -221,7 +221,7 @@ func (receiver *SongCoverService) QueryUserSongCoverList(req models.QueryUserSon
 	defer db.Close()
 
 	sql := dbModel.QUERY_USER_COVER_LIST
-	sqlParam := []interface{}{req.UserId, constants.NOT_DEL_STATUS, req.Type}
+	sqlParam := []interface{}{req.UserId, constants.NOT_DEL_STATUS}
 	err = db.Raw(sql, sqlParam...).Find(&result).Error
 	if err != nil {
 		logs.Error("查询用户歌单列表错误：(%v)", err.Error())

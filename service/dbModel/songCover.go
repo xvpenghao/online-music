@@ -4,17 +4,17 @@ import "time"
 
 const (
 	//查询用户歌单数量，通过歌单名称
-	QUERY_USER_COVER_COUNT_BY_SONG_COVER_NAME = `SELECT COUNT(*) 
-                                                 FROM TB_SONG_COVER AS TBSC 
-                                                 INNER JOIN TB_USER_SONG_COVER AS TBUSC 
-                                                 ON TBSC.SONG_COVER_ID = TBUSC.SONG_COVER_ID
-                                                 WHERE TBUSC.USER_ID = ? AND TBSC.SONG_COVER_NAME = ? AND TBSC.TYPE = ? `
+	QUERY_USER_COVER_COUNT_BY_SONG_COVER_NAME = `select count(*) 
+                                                 from tb_song_cover as tbsc 
+                                                 inner join tb_user_song_cover as tbusc 
+                                                 on tbsc.song_cover_id = tbusc.song_cover_id
+                                                 where tbusc.user_id = ? and tbsc.song_cover_name = ? and tbsc.type = ? `
 	//查询用户歌单列表
-	QUERY_USER_COVER_LIST = `SELECT TBUSC.USER_SONG_COVER_ID,TBSC.SONG_COVER_NAME
-                             FROM TB_SONG_COVER TBSC 
-                             INNER JOIN TB_USER_SONG_COVER TBUSC 
-                             ON TBSC.SONG_COVER_ID = TBUSC.SONG_COVER_ID
-                             AND TBUSC.USER_ID = ? AND TBUSC.DEL_STATUS = ? AND TBSC.TYPE = ? `
+	QUERY_USER_COVER_LIST = `select tbusc.song_cover_id,tbusc.user_song_cover_id,tbsc.song_cover_name,tbsc.type 
+                             from tb_song_cover tbsc
+	                         inner join tb_user_song_cover tbusc on tbsc.song_cover_id = tbusc.song_cover_id
+	                         and tbusc.user_id = ? and tbusc.del_status = ?  
+                             order by tbusc.create_time `
 )
 
 type SongCoverInfo struct {
@@ -96,10 +96,14 @@ type Song struct {
 }
 
 type QueryUserSongCover struct {
-	//用户id
-	ID string `gorm:"column:USER_SONG_COVER_ID"`
+	//用户歌单id
+	UserSongCoverId string `gorm:"column:user_song_cover_id"`
+	//歌单id
+	SongCoverId string `gorm:"column:song_cover_id"`
 	//歌单名称
-	SongCoverName string `gorm:"column:SONG_COVER_NAME"`
+	SongCoverName string `gorm:"column:song_cover_name"`
+	//歌单的类型 1自定义 2 其他
+	Type int `gorm:"column:type"`
 }
 
 //创建歌单的返回值

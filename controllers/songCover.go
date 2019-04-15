@@ -190,27 +190,23 @@ func (receiver *SongCoverController) QueryUserSongCoverList() error {
 	result, err := songCoverService.QueryUserSongCoverList(req)
 	if err != nil {
 		logs.Error("查询用户歌单列表-service返回错误：(%v)", err.Error())
-		msg := map[string]string{
-			"msg": err.Error(),
-		}
-		receiver.Data["json"] = msg
-		receiver.ServeJSON()
-		return nil
+		return receiver.returnJSONError("service返回错误：(%v)", err.Error())
 	}
 
 	var userSongCover models.UserSongCover
 	for _, v := range result {
-		userSongCover.UserSongCoverId = v.ID
+		//根据type来区分自定义歌单和收藏歌单
+		userSongCover.UserSongCoverId = v.UserSongCoverId
 		userSongCover.SongCoverName = v.SongCoverName
-		resp.UserSongCoverList = append(resp.UserSongCoverList, userSongCover)
+		userSongCover.SongCoverId = v.SongCoverId
+		if v.Type == constants.SONG_COVER_TYPE_CUSTOMER {
+			resp.UserSongCoverList = append(resp.UserSongCoverList, userSongCover)
+		} else {
+			resp.CollectSongCoverList = append(resp.CollectSongCoverList, userSongCover)
+		}
 	}
 
-	logs.Debug("%+v", resp)
-
-	receiver.Data["json"] = resp
-	receiver.ServeJSON()
-
-	return nil
+	return receiver.returnJSONSuccess(resp)
 }
 
 //@Title CreateCollectSongCover

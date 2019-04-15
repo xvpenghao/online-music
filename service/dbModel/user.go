@@ -6,14 +6,14 @@ const (
 	//查询用户信息根据用户id
 	QUEYR_USER_INFO_BY_Id = ``
 	//登录
-	QUERY_LOGIN_USER_INFO = `SELECT  TBU.* 
-                             FROM TB_LOGIN TBL 
-                             INNER JOIN TB_USER TBU ON TBL.USER_ID = TBU.USER_ID
-                             WHERE (TBL.LOGIN_NAME = ? OR TBL.LOGIN_EMAIL = ?) 
-                                   AND TBL.PASSWORD = ?`
-	QUERY_USER_COUNTS_BY_UID = `SELECT COUNT(*)
-                                FROM TB_USER TBU
-                                WHERE TBU.USER_ID <> ? AND (TBU.USER_NAME = ? OR TBU.EMAIL = ?)`
+	QUERY_LOGIN_USER_INFO = `select  tbu.* 
+                             from tb_login tbl 
+                             inner join tb_user tbu on tbl.user_id = tbu.user_id
+                             where (tbl.login_name = ? or tbl.login_email = ?) 
+                                   and tbl.password = ?`
+	QUERY_USER_COUNTS_BY_UID = `select count(*)
+                                from tb_user tbu
+                                where tbu.user_id <> ? and (tbu.user_name = ? or tbu.email = ?)`
 )
 
 type User struct {

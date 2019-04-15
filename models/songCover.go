@@ -69,13 +69,17 @@ type QueryUserSongCoverListReq struct {
 type UserSongCover struct {
 	//用户歌单Id
 	UserSongCoverId string `json:"userSongCoverId"`
+	//歌曲id
+	SongCoverId string `json:"songCoverId"`
 	//用户歌单名称
 	SongCoverName string `json:"songCoverName"`
 }
 
 type QueryUserSongCoverListResp struct {
 	//用户歌单列表
-	UserSongCoverList []UserSongCover `json:"list"`
+	UserSongCoverList []UserSongCover `json:"songCoverList"`
+	//用户收藏歌单列表
+	CollectSongCoverList []UserSongCover `json:"collectList"`
 }
 
 //创建收藏歌单
