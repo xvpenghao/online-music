@@ -13,7 +13,7 @@ type (
 		//根据歌单id查询歌曲列表
 		QuerySongList(req models.QuerySongListReq) ([]dbModel.Song, error)
 		//创建歌单
-		CreateSongCover(req models.CreateSongCoverReq) error
+		CreateSongCover(req models.CreateSongCoverReq) (dbModel.CreateSongCoverReply, error)
 		//查询用户歌单列表
 		QueryUserSongCoverList(req models.QueryUserSongCoverListReq) ([]dbModel.QueryUserSongCover, error)
 		//创建收藏歌单

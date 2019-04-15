@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
+	"net/http"
 	"online-music/common/constants"
 	"online-music/models"
 	"online-music/service"
@@ -52,5 +53,26 @@ func (receiver *BaseController) returnError(format string, a ...interface{}) (e 
 	//返回的状态码
 	receiver.Data["errorMsg"] = res
 	receiver.TplName = "errors.html"
+	return
+}
+
+//返回400错误
+func (receiver *BaseController) returnJSONError(format string, a ...interface{}) (e error) {
+	res := fmt.Sprintf(format, a...)
+	receiver.Ctx.Output.Status = http.StatusBadRequest
+	//返回的状态码
+	errMap := map[string]string{
+		"resultMsg": res,
+	}
+	receiver.Data["json"] = errMap
+	receiver.ServeJSON()
+	return
+}
+
+//返回成功
+func (receiver *BaseController) returnJSONSuccess(data interface{}) (e error) {
+	//返回的状态码
+	receiver.Data["json"] = data
+	receiver.ServeJSON()
 	return
 }

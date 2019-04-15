@@ -48,7 +48,14 @@ type QuerySongListResp struct {
 //创建歌单
 type CreateSongCoverReq struct {
 	//歌单名称
-	SongCoverName string `form:"songCoverName"`
+	SongCoverName string `json:"songCoverName"`
+}
+
+type CreateSongCoverResp struct {
+	//歌单id
+	SongCoverId string `json:"songCoverId"`
+	//返回的消息
+	baseResp
 }
 
 //查询用户歌单列表

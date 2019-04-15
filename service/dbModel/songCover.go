@@ -102,7 +102,8 @@ type QueryUserSongCover struct {
 	SongCoverName string `gorm:"column:SONG_COVER_NAME"`
 }
 
-type CreateCollectSongCoverReply struct {
+//创建歌单的返回值
+type CreateSongCoverReply struct {
 	//歌单id
 	SongCoverId string
 	//歌单名称

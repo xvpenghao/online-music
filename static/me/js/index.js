@@ -10,6 +10,7 @@ $(function(){ //页面加载完毕后再执行js
 
     //查询用户歌单信息
     queryUserSongCoverList();
+
 });
 
 //给每一个歌单[gd-select]都注册一个单击事件，
@@ -33,29 +34,34 @@ function addSongListClick() {
 
 //弹出创建歌单窗口
 function  alertCreateSongCoverWindow(){
+
     layer.config({title:"创建歌单"});
     layer.prompt(function(val, index){
-        let form  = document.createElement('form');
-        form.action = 'http://localhost:8080/v1/songCover/createSongCover';
-        form.method = 'post';
-        let input = document.createElement('input');
-        input.name = 'songCoverName';
-        input.value = val;
-        form.appendChild(input);
-        $(document.body).append(form);
-        form.submit();
-        layer.close(index);
-      /*  //得到输入的信息，并请求添加歌单请求，发送ajax
+        //得到输入的信息，并请求添加歌单请求，发送ajax
         $.ajax({
+            contentType:'application/json;charset=UTF-8',
             url:"http://localhost:8080/v1/songCover/createSongCover",
             type:"POST",
-            data:{"songCoverName":val},
-            success:function () {
-
+            data:JSON.stringify({"songCoverName":val}),
+            dataType:'json',
+            success:function (data) {
+                console.log('songCoverId',data.songCoverId);
+                //如果用户的个歌单过程则截取
+                let songCoverName  =  getSplitSongCoverName(val,7)
+                let $div = `
+                 <div class="collect-list gd-select" id="${data.songCoverId}">
+                     <span>
+                         <img src="/static/me/imgs/music.png">
+                    </span>
+                    <a href="/v1/song/songListUI" target="main">${songCoverName}</a>
+                </div> `;
+                $('#userSongCoverList').append($div);
             },
-            error:function (err) {}
+            error:function (err) {
+                layer.msg('提示：'+err.responseJSON.resultMsg);
+            }
         });
-        layer.close(index);*/
+        layer.close(index);
     });
 }
 
@@ -81,7 +87,7 @@ function queryUserSongCoverList() {
                </div>`;
                 userSongCoverList  += htmlContent
             });
-           $('#userSongCoverList').html(userSongCoverList)
+           $('#userSongCoverList').append(userSongCoverList)
         },
         error:function (err) {
             layer.alert('业务逻辑返回错误');

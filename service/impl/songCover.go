@@ -127,13 +127,14 @@ func (receiver *SongCoverService) QuerySongList(req models.QuerySongListReq) ([]
 *@Param
 *@Return
  */
-func (receiver *SongCoverService) CreateSongCover(req models.CreateSongCoverReq) error {
+func (receiver *SongCoverService) CreateSongCover(req models.CreateSongCoverReq) (dbModel.CreateSongCoverReply, error) {
 	receiver.BeforeLog("CreateSongCover")
 
 	db, err := receiver.GetConn()
+	var result dbModel.CreateSongCoverReply
 	if err != nil {
 		logs.Error("创建歌单-数据库链接错误：(%v)", err.Error())
-		return utils.NewDBErr("数据库链接错误", err)
+		return result, utils.NewDBErr("数据库链接错误", err)
 	}
 	defer db.Close()
 	//该用户的创建的自定义歌单名不能重复
@@ -143,12 +144,12 @@ func (receiver *SongCoverService) CreateSongCover(req models.CreateSongCoverReq)
 	err = db.Raw(sql, sqlParam...).Count(&counts).Error
 	if err != nil {
 		logs.Error("创建歌单-根据歌单名查询用户歌单失败：(%v)", err.Error())
-		return utils.NewDBErr("根据歌单名查询用户歌单失败", err)
+		return result, utils.NewDBErr("根据歌单名查询用户歌单失败", err)
 	}
 
 	if counts > 0 {
 		logs.Error("创建歌单-根据歌单名查询用户歌单，歌单名重复，歌单名称：(%v)", req.SongCoverName)
-		return utils.NewSysErr("根据歌单名查询用户歌单,歌单名重复")
+		return result, utils.NewSysErr("根据歌单名查询用户歌单,歌单名重复")
 	}
 
 	nowTime := time.Now()
@@ -183,17 +184,21 @@ func (receiver *SongCoverService) CreateSongCover(req models.CreateSongCoverReq)
 	if err != nil {
 		tx.Rollback()
 		logs.Error("创建歌单错误：(%v)", err.Error())
-		return utils.NewDBErr("创建歌单错误", err)
+		return result, utils.NewDBErr("创建歌单错误", err)
 	}
 
 	err = tx.Table("tb_user_song_cover").Create(&userSongCover).Error
 	if err != nil {
 		tx.Rollback()
 		logs.Error("创建歌单-创建用户歌单失败：(%v)", err.Error())
-		return utils.NewDBErr("创建用户歌单失败", err)
+		return result, utils.NewDBErr("创建用户歌单失败", err)
 	}
 	tx.Commit()
-	return nil
+
+	result.SongCoverId = songCover.ID
+	result.SongCoverName = songCover.SongCoverName
+
+	return result, nil
 }
 
 /*

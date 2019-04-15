@@ -127,11 +127,12 @@ func (receiver *SongCoverController) QuerySongList() error {
 	return nil
 }
 
-//@Title CreateSongCover
-//@Description 创建歌单
-//@Param info body models.CreateSongCoverReq true "req"
-//@Failure exec error
-//@router /createSongCover [post]
+// @Title CreateSongCover
+// @Description 创建歌单
+// @Param info body models.CreateSongCoverReq true "req"
+// @Success res {object} models.CreateCollectSongCoverResp true "resp"
+// @Failure exec error
+// @router /createSongCover [post]
 func (receiver *SongCoverController) CreateSongCover() error {
 	receiver.BeforeStart("CreateSongCover")
 
@@ -140,28 +141,29 @@ func (receiver *SongCoverController) CreateSongCover() error {
 		return receiver.returnError("对不起，您未登录，不能创建歌单，请登录后操作")
 	}
 	var req models.CreateSongCoverReq
-	err := receiver.ParseForm(&req)
+	err := json.Unmarshal(receiver.Ctx.Input.RequestBody, &req)
 	if err != nil {
-		logs.Error("创建歌单-解析表单参数错误：(%v),请求参数(%+v)", err.Error(), req)
-		return receiver.returnError("解析表单参数错误:(%v)", err.Error())
+		logs.Error("创建歌单-解析参数错误：(%v),请求参数(%+v)", err.Error(), req)
+		return receiver.returnJSONError("请求参数错误:(%v)", err.Error())
 	}
 
 	err = verify.CreateSongCoverReqVerify(req)
 	if err != nil {
-		logs.Error("创建歌单-参数错误：(%v)", err.Error())
-		return receiver.returnError("参数错误：(%v)", err.Error())
+		logs.Error("创建歌单-参数不合法：(%v)", err.Error())
+		return receiver.returnJSONError("参数不合法:(%v)", err.Error())
 	}
 
 	songCoverService := service.NewSongCoverService(receiver.GetServiceInit())
-	err = songCoverService.CreateSongCover(req)
+	result, err := songCoverService.CreateSongCover(req)
 	if err != nil {
 		logs.Error("创建歌单-service返回错误：(%v)", err.Error())
-		return receiver.returnError("service返回错误：(%v)", err.Error())
+		return receiver.returnJSONError("service返回错误:(%v)", err.Error())
+	}
+	resp := models.CreateSongCoverResp{
+		SongCoverId: result.SongCoverId,
 	}
 
-	receiver.Redirect("/v1/index/indexUI", http.StatusFound)
-
-	return nil
+	return receiver.returnJSONSuccess(resp)
 }
 
 //@Title QueryUserSongCoverList
