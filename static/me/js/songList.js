@@ -106,3 +106,15 @@ function getSplitSongCoverName(str,endIndex) {
     return result
 
 }
+
+var ADD_SONG_TO_SONGCOVER_WINDOW_INDEX;
+function addSongToSongCoverWindow(songId) {
+    ADD_SONG_TO_SONGCOVER_WINDOW_INDEX = layer.open({
+        type: 2,
+        title: '添加歌曲',
+        shadeClose: true,
+        shade: 0,
+        area: ['285px', '430px'],
+        content: `http://localhost:8080/v1/songCover/userSongCoverListUI/${songId}` //iframe的url
+    });
+}

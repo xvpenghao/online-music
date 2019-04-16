@@ -1,0 +1,47 @@
+#dialog-body{
+    width: 100%;
+    height: 370px;
+    overflow-y: auto;
+}
+ul{
+    list-style: none;
+}
+
+#dialog-playlist{
+    padding-left: 0px;
+    text-align: left;
+}
+
+#dialog-playlist li{
+    cursor: pointer;
+    height: 48px;
+    padding: 6px;
+}
+
+#dialog-playlist li img{
+    float: left;
+    height: 48px;
+    width: 48px;
+}
+
+#dialog-playlist li h2{
+    margin-left: 58px;
+    font-size: 13px;
+    font-weight: inherit;
+}
+
+::-webkit-scrollbar {/*滚动条整体样式*/
+    width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
+    height: 4px;
+    position: absolute;
+}
+::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    background: rgba(0,0,0,0.2);
+}
+::-webkit-scrollbar-track {/*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    border-radius: 0;
+    background: rgba(0,0,0,0.1);
+}

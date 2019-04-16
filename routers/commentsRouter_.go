@@ -115,6 +115,15 @@ func init() {
             Filters: nil,
             Params: nil})
 
+    beego.GlobalControllerRouter["online-music/controllers:SongCoverController"] = append(beego.GlobalControllerRouter["online-music/controllers:SongCoverController"],
+        beego.ControllerComments{
+            Method: "UserSongCoverListUI",
+            Router: `/userSongCoverListUI/:songId`,
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
     beego.GlobalControllerRouter["online-music/controllers:UserController"] = append(beego.GlobalControllerRouter["online-music/controllers:UserController"],
         beego.ControllerComments{
             Method: "CreateUser",

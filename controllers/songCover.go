@@ -199,6 +199,7 @@ func (receiver *SongCoverController) QueryUserSongCoverList() error {
 		userSongCover.UserSongCoverId = v.UserSongCoverId
 		userSongCover.SongCoverName = v.SongCoverName
 		userSongCover.SongCoverId = v.SongCoverId
+		userSongCover.SongCoverUrl = v.SongCoverUrl
 		if v.Type == constants.SONG_COVER_TYPE_CUSTOMER {
 			resp.UserSongCoverList = append(resp.UserSongCoverList, userSongCover)
 		} else {
@@ -252,5 +253,19 @@ func (receiver *SongCoverController) CreateCollectSongCover() error {
 
 	receiver.Data["json"] = resp
 	receiver.ServeJSON()
+	return nil
+}
+
+// @Title UserSongCoverListUI
+// @Description 用户歌单列表UI
+// @Param singId path string true "歌曲id"
+// @Failure exec error
+// @router /userSongCoverListUI/:songId [get]
+func (receiver *SongCoverController)UserSongCoverListUI()error{
+	receiver.BeforeStart("UserSongCoverListUI")
+
+	receiver.Data["songId"] = receiver.GetString(":songId")
+	receiver.TplName = "song/userSongCoverList.html"
+
 	return nil
 }

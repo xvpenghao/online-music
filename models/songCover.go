@@ -71,6 +71,8 @@ type UserSongCover struct {
 	UserSongCoverId string `json:"userSongCoverId"`
 	//歌曲id
 	SongCoverId string `json:"songCoverId"`
+	//歌单封面url
+	SongCoverUrl string `json:"songCoverUrl"`
 	//用户歌单名称
 	SongCoverName string `json:"songCoverName"`
 }

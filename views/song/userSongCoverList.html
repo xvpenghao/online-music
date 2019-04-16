@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <script type="text/javascript" src="/static/me/js/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="/static/layui-v2.4.5/layui/layui.js" ></script>
+    <script type="text/javascript" src="/static/layui-v2.4.5/layui/layui.all.js"></script>
+
+    <script type="text/javascript" src="/static/me/js/userSongCoverList.js"></script>
+    <link href="/static/me/css/userSongCoverList.css" rel="stylesheet">
+</head>
+<body>
+    <!-- w:285px h:387px-->
+    <div id="dialog-body">
+        <ul id="dialog-playlist">
+            <li class="playlist" onclick="closeUserCoverList()"
+                                 onmouseover="songCoveMouseover(this)"
+                                 onmouseout="songCoveMouseout(this)">
+                <img src="/static/me/temp/default_cover.png"/>
+                <h2>新建歌单</h2>
+            </li>
+        </ul>
+    </div>
+    {{/*存放你要添加的歌曲id*/}}
+    <input type="hidden" id="songId" value="{{.songId}}">
+</body>
+</html>

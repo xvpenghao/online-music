@@ -10,7 +10,7 @@ const (
                                                  on tbsc.song_cover_id = tbusc.song_cover_id
                                                  where tbusc.user_id = ? and tbsc.song_cover_name = ? and tbsc.type = ? `
 	//查询用户歌单列表
-	QUERY_USER_COVER_LIST = `select tbusc.song_cover_id,tbusc.user_song_cover_id,tbsc.song_cover_name,tbsc.type 
+	QUERY_USER_COVER_LIST = `select tbusc.song_cover_id,tbusc.user_song_cover_id,tbsc.song_cover_name,tbsc.cover_url,tbsc.type 
                              from tb_song_cover tbsc
 	                         inner join tb_user_song_cover tbusc on tbsc.song_cover_id = tbusc.song_cover_id
 	                         and tbusc.user_id = ? and tbusc.del_status = ?  
@@ -88,6 +88,8 @@ type QueryUserSongCover struct {
 	SongCoverId string `gorm:"column:song_cover_id"`
 	//歌单名称
 	SongCoverName string `gorm:"column:song_cover_name"`
+	//歌单封面url
+	SongCoverUrl string `gorm:"column:cover_url"`
 	//歌单的类型 1自定义 2 其他
 	Type int `gorm:"column:type"`
 }

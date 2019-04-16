@@ -9,7 +9,7 @@
 
     <script type="text/javascript" src="/static/layui-v2.4.5/layui/layui.all.js"></script>
 
-    <script src="/static/me/js/song-detail.js"></script>
+    <script src="/static/me/js/songList.js"></script>
     <link href="/static/me/css/tracklist.css" rel="stylesheet">
     <link href="/static/me/css/index.css" rel="stylesheet">
 </head>
@@ -85,7 +85,7 @@
                                 <img class="li-handle-img" src="/static/me/imgs/add2.png">
                             </span>
                         </a>
-                        <a title="添加到歌单" class="detail-fav-button">
+                        <a title="添加到歌单" class="detail-fav-button" onclick="addSongToSongCoverWindow({{.SongId}})">
                             <span class=" li-song-list">
                                 <img  class="li-handle-img" class="li-handle-img" src="/static/me/imgs/folder_add.png">
                             </span>
