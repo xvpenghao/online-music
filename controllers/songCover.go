@@ -138,7 +138,7 @@ func (receiver *SongCoverController) CreateSongCover() error {
 
 	if receiver.Session.UserId == "" {
 		logs.Error("创建歌单-用户未登录不能创建歌单")
-		return receiver.returnError("对不起，您未登录，不能创建歌单，请登录后操作")
+		return receiver.returnJSONError("对不起，您未登录，不能创建歌单，请登录后操作")
 	}
 	var req models.CreateSongCoverReq
 	err := json.Unmarshal(receiver.Ctx.Input.RequestBody, &req)
@@ -261,7 +261,7 @@ func (receiver *SongCoverController) CreateCollectSongCover() error {
 // @Param singId path string true "歌曲id"
 // @Failure exec error
 // @router /userSongCoverListUI/:songId [get]
-func (receiver *SongCoverController)UserSongCoverListUI()error{
+func (receiver *SongCoverController) UserSongCoverListUI() error {
 	receiver.BeforeStart("UserSongCoverListUI")
 
 	receiver.Data["songId"] = receiver.GetString(":songId")

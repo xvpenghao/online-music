@@ -11,6 +11,7 @@ import (
 	"online-music/models"
 	"online-music/service/dbModel"
 	"strings"
+	"time"
 )
 
 type SongService struct {
@@ -175,31 +176,132 @@ func (receiver *SongService) QuerySongBaseInfo(req models.QuerySongDetailReq) (d
 
 /*
 *@Title:根据歌单id查询歌曲列表
-*@Description: 
+*@Description:
 *@User: 徐鹏豪
-*@Date 2019/4/15 0015 
-*@Param 
-*@Return 
-*/
-func (receiver *SongService)QueryUserSongList(req models.QueryUserSongListReq)([]dbModel.UserSong,error){
-    receiver.BeforeLog("QueryUserSongList")
+*@Date 2019/4/15 0015
+*@Param
+*@Return
+ */
+func (receiver *SongService) QueryUserSongList(req models.QueryUserSongListReq) ([]dbModel.UserSong, error) {
+	receiver.BeforeLog("QueryUserSongList")
 
-	db,err := receiver.GetConn()
+	db, err := receiver.GetConn()
 	var result []dbModel.UserSong
-	if err !=nil{
-		logs.Error("根据歌单id查询歌曲列表-数据库链接错误：(%v)",err.Error())
-		return result,utils.NewDBErr("数据库链接错误",err)
+	if err != nil {
+		logs.Error("根据歌单id查询歌曲列表-数据库链接错误：(%v)", err.Error())
+		return result, utils.NewDBErr("数据库链接错误", err)
 	}
 	defer db.Close()
 
 	sql := dbModel.QUERY_USER_SONG_LIST
 	sqlParam := []interface{}{req.SongCoverId}
 
-	err = db.Raw(sql,sqlParam...).Find(&result).Error
-	if err !=nil && err != gorm.ErrRecordNotFound{
-		logs.Error("根据歌单id查询歌曲列表错误：(%v)",err.Error())
-		return result,utils.NewDBErr("根据歌单id查询歌曲列表错误",err)
+	err = db.Raw(sql, sqlParam...).Find(&result).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		logs.Error("根据歌单id查询歌曲列表错误：(%v)", err.Error())
+		return result, utils.NewDBErr("根据歌单id查询歌曲列表错误", err)
 	}
 
-	return result,nil
+	return result, nil
+}
+
+/*
+*@Title:添加歌曲
+*@Description: 根据歌曲id，将歌曲信息进行爬虫，然后添加歌曲，添加歌曲到选定的歌单中
+*@User: 徐鹏豪
+*@Date 2019/4/16 0016
+*@Param
+*@Return
+ */
+func (receiver *SongService) CreateSong(req models.CreateSongReq) error {
+	receiver.BeforeLog("CreateSong")
+
+	db, err := receiver.GetConn()
+	if err != nil {
+		logs.Error("添加歌曲-数据库链接错误：(%v)", err.Error())
+		return utils.NewDBErr("数据库链接错误", err)
+	}
+	defer db.Close()
+
+	//不可重复添加同一首歌曲到同一个歌单中
+	var counts int
+	err = db.Table("tb_song_cover_song").Where("song_id = ?", req.SongId).Where("song_cover_id = ?", req.SongCoverId).
+		Where("user_id = ? ", receiver.BaseRequest.UserID).Count(&counts).Error
+	if err != nil {
+		logs.Error("添加歌曲-根据歌曲id，歌单id，用户id查询歌单歌曲数失败：(%v)", err.Error())
+		return utils.NewDBErr("根据歌曲id，歌单id，用户id查询歌单歌曲数失败", err)
+	}
+
+	if counts > 0 {
+		logs.Error("添加歌曲-重复添加同一个首歌曲到歌单中，歌单id(%v),歌曲id(%v),用户id:(%v)", req.SongCoverId, req.SongId,
+			receiver.BaseRequest.UserID)
+		return utils.NewSysErr("不能重复添加同一个首歌曲到歌单中")
+	}
+
+	nowTime := time.Now()
+	//创建歌曲
+	song := dbModel.SongTable{
+		SongId:       req.SongInfo.SongId,
+		SongName:     req.SongInfo.SongName,
+		Singer:       req.SongInfo.Singer,
+		SongAlbum:    req.SongInfo.SongAlbum,
+		SongCoverUrl: req.SongInfo.SongCoverUrl,
+		SongPlayUrl:  req.SongInfo.SongPlayUrl,
+		SongLyric:    req.SongInfo.SongLyric,
+		DelState:     constants.USER_NO_DEL_STATUS,
+		CreatTime:    nowTime,
+		CreateUser:   receiver.BaseRequest.UserName,
+		CreateUserId: receiver.BaseRequest.UserID,
+		UpdateTime:   nowTime,
+		UpdateUser:   receiver.BaseRequest.UserName,
+		UpdateUserId: receiver.BaseRequest.UserID,
+	}
+	//创建歌单歌曲信息
+	songCoverSong := dbModel.SongCoverSongTable{
+		SongCoverSongId: utils.GetUUID(),
+		SongCoverId:     req.SongCoverId,
+		UserId:          receiver.BaseRequest.UserID,
+		SongId:          song.SongId,
+		DelState:        constants.USER_NO_DEL_STATUS,
+		CreatTime:       nowTime,
+		CreateUser:      receiver.BaseRequest.UserName,
+		CreateUserId:    receiver.BaseRequest.UserID,
+		UpdateTime:      nowTime,
+		UpdateUser:      receiver.BaseRequest.UserName,
+		UpdateUserId:    receiver.BaseRequest.UserID,
+	}
+
+	//更新用户歌单图片为最新歌曲的封面链接
+	updeteSongCoverField := map[string]interface{}{
+		"cover_url":      song.SongCoverUrl,
+		"update_time":    nowTime,
+		"update_user":    receiver.BaseRequest.UserName,
+		"update_user_id": receiver.BaseRequest.UserID,
+	}
+
+	tx := db.Begin()
+	err = tx.Table("tb_song").Create(&song).Error
+	if err != nil {
+		tx.Rollback()
+		logs.Error("添加歌曲失败:(%v)", err.Error())
+		return utils.NewDBErr("添加歌曲失败", err)
+	}
+
+	err = tx.Table("tb_song_cover_song").Create(&songCoverSong).Error
+	if err != nil {
+		tx.Rollback()
+		logs.Error("添加歌曲-添加歌单歌曲失败:(%v)", err.Error())
+		return utils.NewDBErr("添加歌单歌曲失败", err)
+	}
+
+	err = tx.Table("tb_song_cover").Where("song_cover_id = ?", req.SongCoverId).
+		Update(updeteSongCoverField).Error
+	if err != nil {
+		tx.Rollback()
+		logs.Error("添加歌曲-更新歌单信息失败:(%v)", err.Error())
+		return utils.NewDBErr("更新歌单信息失败", err)
+	}
+
+	tx.Commit()
+	return nil
 }

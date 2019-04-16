@@ -28,7 +28,6 @@ type QuerySongDetailResp struct {
 	Song
 }
 
-
 //查询自定义歌曲列表
 type QueryUserSongListReq struct {
 	//歌曲id
@@ -41,7 +40,21 @@ type QueryUserSongListResp struct {
 	//歌单url
 	SongCoverImgUrl string
 	//歌单名称
-	SongName string
+	SongCoverName string
 	//用户歌曲列表
 	UserSongList []Song
+}
+
+//添加歌曲
+type CreateSongReq struct {
+	//歌曲id
+	SongId string `json:"songId"`
+	//歌单id
+	SongCoverId string `json:"songCoverId"`
+	//歌曲信息 忽略
+	SongInfo Song `json:"-"`
+}
+
+type CreateSongResp struct {
+	baseResp
 }

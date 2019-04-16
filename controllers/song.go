@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/json"
 	"github.com/astaxie/beego/logs"
 	"net/http"
 	"online-music/models"
@@ -56,28 +57,28 @@ func (receiver *SongController) QuerySongDetail() error {
 // @Param songCoverId path string true "歌单id"
 // @Failure exec error
 // @router /queryUserSongList/:songCoverId [get]
-func (receiver *SongController)QueryUserSongList()error{
+func (receiver *SongController) QueryUserSongList() error {
 	receiver.BeforeStart("CustomerSongCoverList")
 
 	req := models.QueryUserSongListReq{
-		SongCoverId:receiver.GetString(":songCoverId"),
+		SongCoverId: receiver.GetString(":songCoverId"),
 	}
 
 	songService := service.NewSongService(receiver.GetServiceInit())
-	result,err := songService.QueryUserSongList(req)
-	if err !=nil{
+	result, err := songService.QueryUserSongList(req)
+	if err != nil {
 		logs.Error("根据歌单id得到歌曲列表-service返回错误：(%v)", err.Error())
 		return receiver.returnError("service返回错误：(%v)", err.Error())
 	}
 	songCoverService := service.NewSongCoverService(receiver.GetServiceInit())
-	songCover,err := songCoverService.QuerySongCoverById(models.QueryCoverSongByIdReq{SongCoverId:req.SongCoverId})
-	if err !=nil{
+	songCover, err := songCoverService.QuerySongCoverById(models.QueryCoverSongByIdReq{SongCoverId: req.SongCoverId})
+	if err != nil {
 		logs.Error("根据歌单id得到歌曲列表-查询歌单详情service返回错误：(%v)", err.Error())
 		return receiver.returnError("查询歌单详情service返回错误：(%v)", err.Error())
 	}
 	var resp models.QueryUserSongListResp
 	var song models.Song
-	for _,v := range result{
+	for _, v := range result {
 		song.SongId = v.SongId
 		song.Singer = v.Singer
 		song.SongName = v.SongName
@@ -85,15 +86,62 @@ func (receiver *SongController)QueryUserSongList()error{
 		song.SongLyric = v.SongLyric
 		song.SongPlayUrl = v.SongPlayUrl
 		song.SongCoverUrl = v.SongCoverUrl
-		resp.UserSongList = append(resp.UserSongList,song)
+		resp.UserSongList = append(resp.UserSongList, song)
 	}
 
-	resp.SongCoverId =songCover.ID
-	resp.SongName =songCover.SongCoverName
+	resp.SongCoverId = songCover.ID
+	resp.SongCoverName = songCover.SongCoverName
 	resp.SongCoverImgUrl = songCover.CoverUrl
 
 	receiver.Data["resp"] = resp
 	receiver.TplName = "song/customerSongList.html"
 
 	return nil
+}
+
+// @Title CreateSong
+// @Description 添加歌曲，添加歌曲到歌单
+// @Param info body models.CreateSongReq true "req"
+// @Success 200 {object} models.CreateSongResp "resp"
+// @Failure exec error
+// @router /createSong [post]
+func (receiver *SongController) CreateSong() error {
+	receiver.BeforeStart("CreateSong")
+
+	if receiver.Session.UserId == "" {
+		logs.Error("添加歌曲-用户未登录不能创建歌单")
+		return receiver.returnJSONError("对不起，您未登录，不能创建歌单，请登录后操作")
+	}
+
+	var req models.CreateSongReq
+	var resp models.CreateSongResp
+	err := json.Unmarshal(receiver.Ctx.Input.RequestBody, &req)
+	if err != nil {
+		logs.Error("添加歌曲-解析参数失败(%v)", err.Error())
+		return receiver.returnJSONError("解析参数失败")
+	}
+
+	songService := service.NewSongService(receiver.GetServiceInit())
+	//爬虫获取歌曲详情
+	song, err := songService.QuerySongDetail(models.QuerySongDetailReq{SongId: req.SongId})
+	if err != nil {
+		logs.Error("添加歌曲-根据歌曲id爬取歌曲详情service返回错误：(%v)", err.Error())
+		return receiver.returnJSONError("根据歌曲id爬取歌曲详情service返回错误:(%v)", err.Error())
+	}
+
+	//爬虫到的歌曲进行赋值
+	req.SongInfo.SongId = song.SongId
+	req.SongInfo.SongName = song.SongName
+	req.SongInfo.Singer = song.Singer
+	req.SongInfo.SongAlbum = song.SongAlbum
+	req.SongInfo.SongCoverUrl = song.SongCoverUrl
+	req.SongInfo.SongPlayUrl = song.SongPlayUrl
+	req.SongInfo.SongLyric = song.SongLyric
+	err = songService.CreateSong(req)
+	if err != nil {
+		logs.Error("添加歌曲-service返回错误：(%v)", err.Error())
+		return receiver.returnJSONError("service返回错误:(%v)", err.Error())
+	}
+
+	return receiver.returnJSONSuccess(resp)
 }

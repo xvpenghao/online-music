@@ -11,7 +11,7 @@ const (
                            where song_cover_id = ? `
 )
 
-type SongDb struct {
+type SongTable struct {
 	//歌曲ID
 	SongId string `gorm:"column:song_id"`
 	//歌曲名称
@@ -42,9 +42,33 @@ type SongDb struct {
 	UpdateUser string `gorm:"column:update_user"`
 	//更新人ID
 	UpdateUserId string `gorm:"column:update_user_id"`
-
 }
 
+//歌单歌曲表
+type SongCoverSongTable struct {
+	//歌单歌曲id
+	SongCoverSongId string `gorm:"column:song_cover_song_id"`
+	//歌单id
+	SongCoverId string `gorm:"column:song_cover_id"`
+	//用户id
+	UserId string `gorm:"column:user_id"`
+	//歌曲id
+	SongId string `gorm:"column:song_id"`
+	//删除的状态 1删除 2不删除
+	DelState int `gorm:"column:del_status"`
+	//创建时间
+	CreatTime time.Time `gorm:"column:create_time"`
+	//创建人
+	CreateUser string `gorm:"column:create_user"`
+	//创建人ID
+	CreateUserId string `gorm:"column:create_user_id"`
+	//更新时间
+	UpdateTime time.Time `gorm:"column:update_time"`
+	//更新人
+	UpdateUser string `gorm:"column:update_user"`
+	//更新人ID
+	UpdateUserId string `gorm:"column:update_user_id"`
+}
 
 //歌曲信息
 type Song struct {
@@ -63,8 +87,6 @@ type Song struct {
 	//歌词
 	SongLyric string
 }
-
-
 
 //用户歌曲
 type UserSong struct {

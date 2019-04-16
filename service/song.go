@@ -13,7 +13,9 @@ type (
 		//查询歌曲的基本信息
 		QuerySongBaseInfo(req models.QuerySongDetailReq) (dbModel.Song, error)
 		//歌曲歌单id查询歌曲列表
-		QueryUserSongList(req models.QueryUserSongListReq)([]dbModel.UserSong,error)
+		QueryUserSongList(req models.QueryUserSongListReq) ([]dbModel.UserSong, error)
+		//添加歌曲
+		CreateSong(req models.CreateSongReq) error
 	}
 )
 

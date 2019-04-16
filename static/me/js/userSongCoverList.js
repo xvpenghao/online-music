@@ -23,15 +23,17 @@ function loadUserSongList() {
 
 //用户歌单
 function userSongCover(data,id,url) {
+
+   /* {
+        'songId':${songId},
+        'songCoverId':${ele.songCoverId},
+    }*/
     let userSongCoverList = "";
     let songId = $('#songId').val();
     data.map((ele,i)=>{
         let songCoverName = getSplitSongCoverName(ele.songCoverName,7);
         let $div = `
-                 <li class="playlist" onclick="addSongToSongCover({
-                                     'songId':${songId},
-                                     'songCoverId':${ele.songCoverId},
-                                     })"
+                 <li class="playlist" songId="${songId}" songCoverId ="${ele.songCoverId}" onclick="addSongToSongCover(this)"
                                       onmouseover="songCoveMouseover(this)"
                                       onmouseout="songCoveMouseout(this)"
                      >
@@ -71,4 +73,32 @@ function closeUserCoverList() {
     parent.layer.close(index);
     //弹窗添加用户自定义歌单按钮
     parent.parent.alertCreateSongCoverWindow();
+}
+
+//添加歌曲到歌单中
+function addSongToSongCover(ele) {
+
+    let index = parent.ADD_SONG_TO_SONGCOVER_WINDOW_INDEX;
+    let songId = $(ele).attr('songId');
+    //TODO 假象，后台在执行
+
+
+    let songCoverId = $(ele).attr('songCoverId');
+    let data = {'songId':songId,'songCoverId':songCoverId};
+    //发送ajax请求
+    $.ajax({
+        contentType:'application/json;charset=UTF-8',
+        url:"http://localhost:8080/v1/song/createSong",
+        type:'POST',
+        data:JSON.stringify(data),
+        dataType:'json',
+        success:function (msg) {
+            parent.layer.msg('添加成功');
+            parent.layer.close(index);
+        },
+        error:function (err) {
+            parent.layer.msg('提示：'+err.responseJSON.resultMsg);
+            parent.layer.close(index);
+        }
+    });
 }
