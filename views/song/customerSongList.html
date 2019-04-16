@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="/static/me/js/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="/static/layui-v2.4.5/layui/layui.js" ></script>
+    <script type="text/javascript" src="/static/layui-v2.4.5/layui/layui.all.js"></script>
+
     <link href="/static/me/css/tracklist.css" rel="stylesheet">
     <link href="/static/me/css/index.css" rel="stylesheet">
-    <script src="/static/me/js/jquery-3.3.1.js"></script>
+
     <script src="/static/me/js/songList.js"></script>
 </head>
 <body>
 <div>
     <div class="playlist-detail">
-        <!--歌单详情头-->
+        <!--用户的歌曲列表-->
         <div class="detail-head">
             <div class="detail-head-cover">
                 <img src="{{.resp.SongCoverImgUrl}}">
@@ -76,20 +80,14 @@
                                 <img class="li-handle-img" src="/static/me/imgs/add2.png">
                             </span>
                         </a>
-                        <a title="添加到歌单" class="detail-fav-button">
+                        <a title="添加到歌单" class="detail-fav-button" onclick="addSongToSongCoverWindow({{.SongId}})">
                             <span class=" li-song-list">
                                 <img  class="li-handle-img" class="li-handle-img" src="/static/me/imgs/folder_add.png">
                             </span>
                         </a>
-                        <!--不是自己的歌单不能显示删除操作-->
-                        <a title="从歌单删除" class="detail-delete-button ng-hide ">
+                        <a title="从歌单删除" class="detail-delete-button ">
                             <span class="li-del">
                                  <img  class="li-handle-img" src="/static/me/imgs/del.png">
-                            </span>
-                        </a>
-                        <a title="链接" class="source-button">
-                            <span class=" li-link ">
-                               <img class="li-handle-img" src="/static/me/imgs/linked.png">
                             </span>
                         </a>
                     </div>

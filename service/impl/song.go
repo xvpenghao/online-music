@@ -238,6 +238,13 @@ func (receiver *SongService) CreateSong(req models.CreateSongReq) error {
 		return utils.NewSysErr("不能重复添加同一个首歌曲到歌单中")
 	}
 
+	//可能出现，同一个首个存放到其他的歌单中
+	err = db.Table("tb_song").Where("song_id = ?", req.SongId).Count(&counts).Error
+	if err != nil {
+		logs.Error("添加歌曲-根据歌曲id查询歌曲数失败：(%v)", err.Error())
+		return utils.NewDBErr("根据歌曲id，歌曲数失败", err)
+	}
+
 	nowTime := time.Now()
 	//创建歌曲
 	song := dbModel.SongTable{
@@ -280,13 +287,15 @@ func (receiver *SongService) CreateSong(req models.CreateSongReq) error {
 	}
 
 	tx := db.Begin()
-	err = tx.Table("tb_song").Create(&song).Error
-	if err != nil {
-		tx.Rollback()
-		logs.Error("添加歌曲失败:(%v)", err.Error())
-		return utils.NewDBErr("添加歌曲失败", err)
+	//当歌曲不存在是，则添加
+	if counts == 0 {
+		err = tx.Table("tb_song").Create(&song).Error
+		if err != nil {
+			tx.Rollback()
+			logs.Error("添加歌曲失败:(%v)", err.Error())
+			return utils.NewDBErr("添加歌曲失败", err)
+		}
 	}
-
 	err = tx.Table("tb_song_cover_song").Create(&songCoverSong).Error
 	if err != nil {
 		tx.Rollback()
