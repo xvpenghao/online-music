@@ -318,3 +318,27 @@ func (receiver *SongCoverController) ModifySongCover() error {
 
 	return receiver.returnJSONSuccess(resp)
 }
+
+// @Title DeleteSongCover
+// @Description 删除歌单
+// @Param songCoverId path string true "req"
+// @Success 200 {object} models.DeleteSongCoverResp "resp"
+// @Failure exec error
+// @router /deleteSongCover/:songCoverId [delete]
+func (receiver *SongCoverController) DeleteSongCover() error {
+	receiver.BeforeStart("DeleteSongCover")
+
+	req := models.DeleteSongCoverReq{
+		SongCoverId: receiver.GetString(":songCoverId"),
+	}
+
+	songCoverService := service.NewSongCoverService(receiver.GetServiceInit())
+	err := songCoverService.DeleteSongCover(req)
+	if err != nil {
+		logs.Error("删除歌单-service返回错误:(%v)", err.Error())
+		return receiver.returnJSONError("service返回错误:(%v)", err.Error())
+	}
+
+	var resp models.DeleteSongCoverResp
+	return receiver.returnJSONSuccess(resp)
+}

@@ -122,21 +122,37 @@ func (receiver *SongController) CreateSong() error {
 	}
 
 	songService := service.NewSongService(receiver.GetServiceInit())
-	//爬虫获取歌曲详情
-	song, err := songService.QuerySongDetail(models.QuerySongDetailReq{SongId: req.SongId})
+	//查询库中歌曲是否存在，若存在则不需要爬虫
+	dbSong, err := songService.QuerySongInfoById(models.QuerySongDetailReq{SongId: req.SongId})
 	if err != nil {
-		logs.Error("添加歌曲-根据歌曲id爬取歌曲详情service返回错误：(%v)", err.Error())
-		return receiver.returnJSONError("根据歌曲id爬取歌曲详情service返回错误:(%v)", err.Error())
+		logs.Error("添加歌曲-根据歌曲id查询歌曲详情service返回错误：(%v)", err.Error())
+		return receiver.returnJSONError("根据歌曲id查询歌曲详情service返回错误:(%v)", err.Error())
+	}
+
+	if dbSong.SongId == "" {
+		//爬虫获取歌曲详情
+		song, err := songService.QuerySongDetail(models.QuerySongDetailReq{SongId: req.SongId})
+		if err != nil {
+			logs.Error("添加歌曲-根据歌曲id爬取歌曲详情service返回错误：(%v)", err.Error())
+			return receiver.returnJSONError("根据歌曲id爬取歌曲详情service返回错误:(%v)", err.Error())
+		}
+		dbSong.SongId = song.SongId
+		dbSong.SongName = song.SongName
+		dbSong.Singer = song.Singer
+		dbSong.SongAlbum = song.SongAlbum
+		dbSong.SongCoverUrl = song.SongCoverUrl
+		dbSong.SongPlayUrl = song.SongPlayUrl
+		dbSong.SongLyric = song.SongLyric
 	}
 
 	//爬虫到的歌曲进行赋值
-	req.SongInfo.SongId = song.SongId
-	req.SongInfo.SongName = song.SongName
-	req.SongInfo.Singer = song.Singer
-	req.SongInfo.SongAlbum = song.SongAlbum
-	req.SongInfo.SongCoverUrl = song.SongCoverUrl
-	req.SongInfo.SongPlayUrl = song.SongPlayUrl
-	req.SongInfo.SongLyric = song.SongLyric
+	req.SongInfo.SongId = dbSong.SongId
+	req.SongInfo.SongName = dbSong.SongName
+	req.SongInfo.Singer = dbSong.Singer
+	req.SongInfo.SongAlbum = dbSong.SongAlbum
+	req.SongInfo.SongCoverUrl = dbSong.SongCoverUrl
+	req.SongInfo.SongPlayUrl = dbSong.SongPlayUrl
+	req.SongInfo.SongLyric = dbSong.SongLyric
 	err = songService.CreateSong(req)
 	if err != nil {
 		logs.Error("添加歌曲-service返回错误：(%v)", err.Error())

@@ -391,3 +391,42 @@ func (receiver *SongCoverService) ModifySongCover(req models.ModifySongCoverReq)
 	tx.Commit()
 	return nil
 }
+
+/*
+*@Title:删除歌单
+*@Description:删除用户歌单，并且删除用户歌单和歌曲之间的关系
+*@User: 徐鹏豪
+*@Date 2019/4/17 0017
+*@Param
+*@Return
+ */
+func (receiver *SongCoverService) DeleteSongCover(req models.DeleteSongCoverReq) error {
+	receiver.BeforeLog("DeleteSongCover")
+
+	db, err := receiver.GetConn()
+	if err != nil {
+		logs.Error("删除歌单-数据库链接错误：(%v)", err.Error())
+		return utils.NewDBErr("数据库链接错误", err)
+	}
+	defer db.Close()
+
+	tx := db.Begin()
+	var songCover dbModel.SongCoverInfo
+	err = tx.Table("tb_song_cover").Where("song_cover_id = ?", req.SongCoverId).Delete(songCover).Error
+	if err != nil {
+		tx.Rollback()
+		logs.Error("删除歌单-失败：(%v)", err.Error())
+		return utils.NewDBErr("数据库链接错误", err)
+	}
+	var songCoverSong dbModel.SongCoverSongTable
+	err = tx.Table("tb_song_cover_song").Where("song_cover_id = ?", req.SongCoverId).Where("user_id = ?",
+		receiver.BaseRequest.UserID).Delete(songCoverSong).Error
+	if err != nil {
+		tx.Rollback()
+		logs.Error("删除歌单-根据歌单id和用户id删除歌单歌曲失败：(%v)", err.Error())
+		return utils.NewDBErr("根据歌单id和用户id删除歌单歌曲失败", err)
+	}
+
+	tx.Commit()
+	return nil
+}

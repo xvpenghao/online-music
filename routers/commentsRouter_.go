@@ -99,6 +99,15 @@ func init() {
 
 	beego.GlobalControllerRouter["online-music/controllers:SongCoverController"] = append(beego.GlobalControllerRouter["online-music/controllers:SongCoverController"],
 		beego.ControllerComments{
+			Method:           "DeleteSongCover",
+			Router:           `/deleteSongCover/:songCoverId`,
+			AllowHTTPMethods: []string{"delete"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
+	beego.GlobalControllerRouter["online-music/controllers:SongCoverController"] = append(beego.GlobalControllerRouter["online-music/controllers:SongCoverController"],
+		beego.ControllerComments{
 			Method:           "ModifySongCover",
 			Router:           `/modifySongCover`,
 			AllowHTTPMethods: []string{"post"},

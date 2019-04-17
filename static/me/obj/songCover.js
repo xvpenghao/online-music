@@ -36,7 +36,7 @@ SongCover.prototype.songCoverListFunc = function (data,id,url) {
     data.map((ele,i)=>{
         let songCoverName = utilsObj.getSplitSongCoverName(ele.songCoverName,7);
         let $div = `
-                 <div class="collect-list gd-select">
+                 <div class="collect-list gd-select" id="songCover-${ele.songCoverId}">
                      <span>
                          <img src="/static/me/imgs/music.png">
                     </span>
@@ -227,4 +227,27 @@ SongCover.prototype.modifySongCoverFunc = function (formData,index) {
 
         }
     });
-}
+};
+
+//删除用户的歌单
+SongCover.prototype.deleteSongCoverFunc = function (songCoverId,index) {
+    console.log('songCoverId',songCoverId);
+    console.log('index',index);
+    //删除歌单，删除组件
+    $.ajax({
+        contentType:'application/json;charset=UTF-8',
+        url:"http://localhost:8080/v1/songCover/deleteSongCover/"+songCoverId,
+        type:"DELETE",
+        dataType:"json",
+        success:function (data) {
+            parent.layer.close(index);
+            parent.layer.msg('删除成功');
+            //加载自定义歌单列表
+            parent.parent.songCoverObj.queryUserSongCoverListFunc();
+        },
+        error:function (err) {
+            parent.layer.close(index);
+            parent.layer.msg('提示：'+err.responseJSON.resultMsg);
+        }
+    });
+};

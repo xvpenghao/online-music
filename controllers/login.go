@@ -46,7 +46,7 @@ func (receiver *LoginController) LoginIn() error {
 	loginService := service.NewLoginService(receiver.GetServiceInit())
 	result, err := loginService.DoLogin(req)
 	if err != nil {
-		logs.Error("添加用户-service返回错误:%s", err.Error())
+		logs.Error("登录-service返回错误:%s", err.Error())
 		return receiver.returnError("添加用户-(%v)", err.Error())
 	}
 	session := models.Session{
@@ -65,9 +65,9 @@ func (receiver *LoginController) LoginIn() error {
 	value, _ := json.Marshal(session)
 
 	//session存放用户信息
-	sessionService.SetSession(key, string(value), constants.COOKIE_EXPIRE)
+	err = sessionService.SetSession(key, string(value), constants.COOKIE_EXPIRE)
 	if err != nil {
-		logs.Error("添加用户-service返回错误:%s", err.Error())
+		logs.Error("登录-service返回错误:%s", err.Error())
 		return receiver.returnError("添加用户-(%v)", err.Error())
 	}
 

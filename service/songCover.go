@@ -22,6 +22,8 @@ type (
 		QuerySongCoverById(req models.QueryCoverSongByIdReq) (dbModel.SongCoverInfo, error)
 		//编辑歌单
 		ModifySongCover(req models.ModifySongCoverReq) error
+		//删除歌单
+		DeleteSongCover(req models.DeleteSongCoverReq) error
 	}
 )
 

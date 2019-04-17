@@ -112,6 +112,12 @@ type ModifySongCoverResp struct {
 
 //删除歌单
 type DeleteSongCoverReq struct {
+	//歌单id
+	SongCoverId string `json:"songCoverId"`
+}
+
+type DeleteSongCoverResp struct {
+	baseResp
 }
 
 //根据id查询歌单信息

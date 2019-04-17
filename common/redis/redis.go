@@ -21,7 +21,14 @@ func init() {
 	})
 	//初始化map
 	redisMap = make(map[string]*redis.Client)
-	logs.Debug("redis链接成功：", client.Ping().Name())
+	ping, err := client.Ping().Result()
+	if err != nil {
+		logs.Error("redis链接失败:(%v)", err.Error())
+		panic("redis链接失败")
+	} else {
+		logs.Debug("redis链接成功：", ping)
+	}
+
 	redisMap[constants.REDIS_CLIENT] = client
 }
 

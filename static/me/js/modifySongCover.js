@@ -11,9 +11,9 @@ function modifySongCover(){
     songCoverObj.modifySongCoverFunc(formData,index)
 }
 
-
 //删除歌单-则会删除该歌单中的歌曲
-function deleteSongCover(songId){
-
-    console.log('songId',songId)
+function deleteSongCover(songCoverId){
+    let songCover = new SongCover();
+    let index = parent.MODIFY_SONG_COVER_WINDOW_INDEX;
+    songCover.deleteSongCoverFunc(songCoverId,index);
 }

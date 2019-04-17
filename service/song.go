@@ -16,6 +16,8 @@ type (
 		QueryUserSongList(req models.QueryUserSongListReq) ([]dbModel.UserSong, error)
 		//添加歌曲
 		CreateSong(req models.CreateSongReq) error
+		//通过歌曲id查询歌曲信息
+		QuerySongInfoById(req models.QuerySongDetailReq) (dbModel.SongTable, error)
 	}
 )
 

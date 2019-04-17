@@ -314,3 +314,31 @@ func (receiver *SongService) CreateSong(req models.CreateSongReq) error {
 	tx.Commit()
 	return nil
 }
+
+/*
+*@Title:通过歌曲id查询歌曲信息
+*@Description:
+*@User: 徐鹏豪
+*@Date 2019/4/17 0017
+*@Param
+*@Return
+ */
+func (receiver *SongService) QuerySongInfoById(req models.QuerySongDetailReq) (dbModel.SongTable, error) {
+	receiver.BeforeLog("QuerySongInfoById")
+
+	var result dbModel.SongTable
+	db, err := receiver.GetConn()
+	if err != nil {
+		logs.Error("通过歌曲id查询歌曲信息-数据库链接错误：(%v)", err.Error())
+		return result, utils.NewDBErr("数据库链接错误", err)
+	}
+	defer db.Close()
+
+	err = db.Table("tb_song").Where("song_id = ?", req.SongId).First(&result).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		logs.Error("通过歌曲id查询歌曲信息错误：(%v)", err.Error())
+		return result, utils.NewDBErr("通过歌曲id查询歌曲信息错误", err)
+	}
+
+	return result, nil
+}
