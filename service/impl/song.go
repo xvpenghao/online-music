@@ -279,7 +279,7 @@ func (receiver *SongService) CreateSong(req models.CreateSongReq) error {
 	}
 
 	//更新用户歌单图片为最新歌曲的封面链接
-	updeteSongCoverField := map[string]interface{}{
+	updateSongCoverField := map[string]interface{}{
 		"cover_url":      song.SongCoverUrl,
 		"update_time":    nowTime,
 		"update_user":    receiver.BaseRequest.UserName,
@@ -304,7 +304,7 @@ func (receiver *SongService) CreateSong(req models.CreateSongReq) error {
 	}
 
 	err = tx.Table("tb_song_cover").Where("song_cover_id = ?", req.SongCoverId).
-		Update(updeteSongCoverField).Error
+		Update(updateSongCoverField).Error
 	if err != nil {
 		tx.Rollback()
 		logs.Error("添加歌曲-更新歌单信息失败:(%v)", err.Error())

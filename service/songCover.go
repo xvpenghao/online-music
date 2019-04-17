@@ -19,7 +19,9 @@ type (
 		//创建收藏歌单
 		CreateCollectSongCover(req models.CreateCollectSongCoverReq) error
 		//根据歌单id查询信息
-		QuerySongCoverById(req models.QueryCoverSongByIdReq)(dbModel.SongCoverInfo,error)
+		QuerySongCoverById(req models.QueryCoverSongByIdReq) (dbModel.SongCoverInfo, error)
+		//编辑歌单
+		ModifySongCover(req models.ModifySongCoverReq) error
 	}
 )
 

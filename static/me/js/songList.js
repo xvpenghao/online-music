@@ -66,55 +66,12 @@ function playSongByUrl(song) {
 
 //创建收藏歌单
 function createCollectSongCover(songCover) {
-    console.log('songCover',songCover);
-    let songCoverName = getSplitSongCoverName(songCover.songCoverName,7);
-    $.ajax({
-        contentType:'application/json;charset=UTF-8',
-        url:"http://localhost:8080/v1/songCover/createCollectSongCover",
-        type:"POST",
-        data:JSON.stringify(songCover),
-        dataType:"json",
-        success:function (data,status) {
-            //layer.msg('提示：收藏成功');
-            //添加收藏
-            let $div = `
-                 <div class="collect-list gd-select" id="${songCover.songCoverId}">
-                    <span>
-                         <img src="/static/me/imgs/music.png">
-                    </span>
-                    <a href="/v1/song/songListUI" target="main">${songCoverName}</a>
-                </div>
-            `;
-            parent.$('#userCollectSongCover').append($div);
-        },
-        error:function (err) {
-            //错误提示
-            layer.msg('提示：'+err.responseJSON.msg);
-        }
-    });
-}
-
-//切割字符0-6，多于的加...
-function getSplitSongCoverName(str,endIndex) {
-    if (endIndex >= str.length){
-        return str
-    }
-    if (str.length <7){
-        return str
-    }
-    let result = str.slice(0,endIndex) + '...';
-    return result
-
+    var songCoverObj = new SongCover();
+    songCoverObj.createCollectSongCoverFunc(songCover);
 }
 
 var ADD_SONG_TO_SONGCOVER_WINDOW_INDEX;
 function addSongToSongCoverWindow(songId) {
-    ADD_SONG_TO_SONGCOVER_WINDOW_INDEX = layer.open({
-        type: 2,
-        title: '添加歌曲',
-        shadeClose: true,
-        shade: 0,
-        area: ['285px', '430px'],
-        content: `http://localhost:8080/v1/songCover/userSongCoverListUI/${songId}` //iframe的url
-    });
+    var songCoverObj = new SongCover();
+    ADD_SONG_TO_SONGCOVER_WINDOW_INDEX = songCoverObj.addSongToSongCoverWindowFunc(songId);
 }

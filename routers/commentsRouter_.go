@@ -99,6 +99,24 @@ func init() {
 
 	beego.GlobalControllerRouter["online-music/controllers:SongCoverController"] = append(beego.GlobalControllerRouter["online-music/controllers:SongCoverController"],
 		beego.ControllerComments{
+			Method:           "ModifySongCover",
+			Router:           `/modifySongCover`,
+			AllowHTTPMethods: []string{"post"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
+	beego.GlobalControllerRouter["online-music/controllers:SongCoverController"] = append(beego.GlobalControllerRouter["online-music/controllers:SongCoverController"],
+		beego.ControllerComments{
+			Method:           "ModifySongCoverUI",
+			Router:           `/modifySongCoverUI`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
+	beego.GlobalControllerRouter["online-music/controllers:SongCoverController"] = append(beego.GlobalControllerRouter["online-music/controllers:SongCoverController"],
+		beego.ControllerComments{
 			Method:           "QuerySongCoverList",
 			Router:           `/querySongCoverList`,
 			AllowHTTPMethods: []string{"get"},

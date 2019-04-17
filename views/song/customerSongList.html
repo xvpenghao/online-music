@@ -10,7 +10,10 @@
     <link href="/static/me/css/tracklist.css" rel="stylesheet">
     <link href="/static/me/css/index.css" rel="stylesheet">
 
+    <script src="/static/me/common/common.js"></script>
+    <script src="/static/me/obj/songCover.js"></script>
     <script src="/static/me/js/songList.js"></script>
+    <script src="/static/me/js/customerSongList.js"></script>
 </head>
 <body>
 <div>
@@ -32,7 +35,9 @@
                             <img src="/static/me/imgs/add2.png">
                         </div>
                     </div>
-                    <div class="playlist-button edit-button">
+                    <div class="playlist-button edit-button" onclick="modifySongCoverLayer(
+                        {'songCoverId':{{.resp.SongCoverId}},'songCoverName':{{.resp.SongCoverName}}})"
+                    >
                         <div class="play-list">
                             <img class="fadd" src="/static/me/imgs/folder_add.png">
                             <span>编辑歌单</span>

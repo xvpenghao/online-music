@@ -265,7 +265,56 @@ func (receiver *SongCoverController) UserSongCoverListUI() error {
 	receiver.BeforeStart("UserSongCoverListUI")
 
 	receiver.Data["songId"] = receiver.GetString(":songId")
-	receiver.TplName = "song/userSongCoverList.html"
 
+	receiver.TplName = "song/userSongCoverList.html"
 	return nil
+}
+
+// @Title ModifySongCoverUI
+// @Description 修改歌单UI
+// @Param songCoverId query string true "歌单id"
+// @Param songCoverName query string true "歌单名称"
+// @Failure exec error
+// @router /modifySongCoverUI [get]
+func (receiver *SongCoverController) ModifySongCoverUI() error {
+	receiver.BeforeStart("ModifySongCoverUI")
+
+	receiver.Data["songCoverId"] = receiver.GetString("songCoverId")
+	receiver.Data["songCoverName"] = receiver.GetString("songCoverName")
+
+	receiver.TplName = "song/modifySongCover.html"
+	return nil
+}
+
+// @Title ModifySongCover
+// @Description 编辑歌单
+// @Param info body models.ModifySongCoverReq true "req"
+// @Success 200 {object} models.ModifySongCoverResp "resp"
+// @Failure exec error
+// @router /modifySongCover [post]
+func (receiver *SongCoverController) ModifySongCover() error {
+	receiver.BeforeStart("ModifySongCover")
+
+	if receiver.Session.UserId == "" {
+		logs.Error("编辑歌单-用户未登录不能创建歌单")
+		return receiver.returnJSONError("对不起，您未登录，不能创建歌单，请登录后操作")
+	}
+
+	var req models.ModifySongCoverReq
+	err := json.Unmarshal(receiver.Ctx.Input.RequestBody, &req)
+	if err != nil {
+		logs.Error("编辑歌单-解析参数错误：(%v),请求参数(%s)", err.Error(), receiver.Ctx.Input.RequestBody)
+		return receiver.returnJSONError("请求参数错误:(%v)", err.Error())
+	}
+
+	songCoverService := service.NewSongCoverService(receiver.GetServiceInit())
+	err = songCoverService.ModifySongCover(req)
+	if err != nil {
+		logs.Error("编辑歌单-service返回错误:(%v)", err.Error())
+		return receiver.returnJSONError("service返回错误:(%v)", err.Error())
+	}
+
+	var resp models.ModifySongCoverResp
+
+	return receiver.returnJSONSuccess(resp)
 }

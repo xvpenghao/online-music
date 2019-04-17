@@ -312,31 +312,82 @@ func (receiver *SongCoverService) CreateCollectSongCover(req models.CreateCollec
 
 /*
 *@Title:根据歌单id查询信息
-*@Description: 
+*@Description:
 *@User: 徐鹏豪
-*@Date 2019/4/15 0015 
-*@Param 
-*@Return 
-*/
-func (receiver *SongCoverService)QuerySongCoverById(req models.QueryCoverSongByIdReq)(dbModel.SongCoverInfo,error){
-    receiver.BeforeLog("QuerySongCoverById")
+*@Date 2019/4/15 0015
+*@Param
+*@Return
+ */
+func (receiver *SongCoverService) QuerySongCoverById(req models.QueryCoverSongByIdReq) (dbModel.SongCoverInfo, error) {
+	receiver.BeforeLog("QuerySongCoverById")
 
-	db,err := receiver.GetConn()
+	db, err := receiver.GetConn()
 	var result dbModel.SongCoverInfo
-	if err !=nil{
-		logs.Error("根据歌单id查询信息-数据库链接错误：(%v)",err.Error())
-		return result,utils.NewDBErr("数据库链接错误",err)
+	if err != nil {
+		logs.Error("根据歌单id查询信息-数据库链接错误：(%v)", err.Error())
+		return result, utils.NewDBErr("数据库链接错误", err)
 	}
 	defer db.Close()
 
 	sql := dbModel.QUERY_SONG_COVER_BY_ID
 	sqlParam := []interface{}{req.SongCoverId}
 
-	err = db.Raw(sql,sqlParam...).First(&result).Error
-	if err !=nil{
-		logs.Error("根据歌单id查询信息错误：(%v)",err.Error())
-		return result,utils.NewDBErr("根据歌单id查询信息错误",err)
+	err = db.Raw(sql, sqlParam...).First(&result).Error
+	if err != nil {
+		logs.Error("根据歌单id查询信息错误：(%v)", err.Error())
+		return result, utils.NewDBErr("根据歌单id查询信息错误", err)
 	}
 
-	return result,nil
+	return result, nil
+}
+
+/*
+*@Title:编辑歌单
+*@Description:
+*@User: 徐鹏豪
+*@Date 2019/4/16 0016
+*@Param
+*@Return
+ */
+func (receiver *SongCoverService) ModifySongCover(req models.ModifySongCoverReq) error {
+	receiver.BeforeLog("ModifySongCover")
+
+	db, err := receiver.GetConn()
+	if err != nil {
+		logs.Error("编辑歌单-数据库链接错误：(%v)", err.Error())
+		return utils.NewDBErr("数据库链接错误", err)
+	}
+	defer db.Close()
+
+	//该用户的歌单名称不能重复
+	sql := dbModel.QUERY_USER_SONG_COVER_COUNTS_BY_NAME
+	sqlParam := []interface{}{req.SongCoverName, receiver.BaseRequest.UserID}
+	var counts int
+	err = db.Raw(sql, sqlParam...).Count(&counts).Error
+	if err != nil {
+		logs.Error("编辑歌单-根据歌单名查询用户歌单数量失败：(%v)", err.Error())
+		return utils.NewDBErr("根据歌单名查询用户歌单数量失败", err)
+	}
+	if counts > 0 {
+		logs.Error("编辑歌单-歌单名重复：(%v)", req.SongCoverName)
+		return utils.NewSysErr("歌单名重复")
+	}
+	nowTime := time.Now()
+	updateField := map[string]interface{}{
+		"song_cover_name": req.SongCoverName,
+		"update_time":     nowTime,
+		"update_user":     receiver.BaseRequest.UserName,
+		"update_user_id":  receiver.BaseRequest.UserID,
+	}
+
+	tx := db.Begin()
+	err = tx.Table("tb_song_cover").Where("song_cover_id = ?", req.SongCoverId).Update(updateField).Error
+	if err != nil {
+		tx.Rollback()
+		logs.Error("编辑歌单失败:(%v)", err.Error())
+		return utils.NewDBErr("编辑歌单失败", err)
+	}
+
+	tx.Commit()
+	return nil
 }

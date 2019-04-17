@@ -1,61 +1,10 @@
+
+
+
 $(function () {
-
-    //加载用户歌单列表
-    loadUserSongList();
+    var songCoverObj = new SongCover();
+    songCoverObj.loadUserSongListFunc();
 });
-
-function loadUserSongList() {
-    $.ajax({
-        url: "http://localhost:8080/v1/songCover/queryUserSongCoverList",
-        type: "GET",
-        sync:false,
-        dataType: "json",
-        success: function (data) {
-            if (data.songCoverList != null) {
-                userSongCover(data.songCoverList, '#dialog-playlist', '');
-            }
-        },
-        error: function (err) {
-            layer.msg('提示：' + err.responseJSON.resultMsg);
-        }
-    });
-}
-
-//用户歌单
-function userSongCover(data,id,url) {
-
-   /* {
-        'songId':${songId},
-        'songCoverId':${ele.songCoverId},
-    }*/
-    let userSongCoverList = "";
-    let songId = $('#songId').val();
-    data.map((ele,i)=>{
-        let songCoverName = getSplitSongCoverName(ele.songCoverName,7);
-        let $div = `
-                 <li class="playlist" songId="${songId}" songCoverId ="${ele.songCoverId}" onclick="addSongToSongCover(this)"
-                                      onmouseover="songCoveMouseover(this)"
-                                      onmouseout="songCoveMouseout(this)"
-                     >
-                    <img src="${ele.songCoverUrl}"/>
-                    <h2>${songCoverName}</h2>
-                </li>`;
-        userSongCoverList  += $div
-    });
-    $(id).append(userSongCoverList);
-}
-
-//切割字符0-6，多于的加...
-function getSplitSongCoverName(str,endIndex) {
-    if (endIndex >= str.length){
-        return str
-    }
-    if (str.length <7){
-        return str
-    }
-    let result = str.slice(0,endIndex) + '...';
-    return result
-}
 
 function songCoveMouseover(ele) {
     $(ele).css("background-color","#E3E3E5");
@@ -72,33 +21,12 @@ function closeUserCoverList() {
     console.log('parent.ADD_SONG_TO_SONGCOVER_WINDOW_INDEX',);
     parent.layer.close(index);
     //弹窗添加用户自定义歌单按钮
-    parent.parent.alertCreateSongCoverWindow();
+    parent.parent.songCoverObj.alertCreateSongCoverWindowFunc();
 }
 
 //添加歌曲到歌单中
 function addSongToSongCover(ele) {
-
+    var songCoverObj = new SongCover();
     let index = parent.ADD_SONG_TO_SONGCOVER_WINDOW_INDEX;
-    let songId = $(ele).attr('songId');
-    //TODO 假象，后台在执行
-
-
-    let songCoverId = $(ele).attr('songCoverId');
-    let data = {'songId':songId,'songCoverId':songCoverId};
-    //发送ajax请求
-    $.ajax({
-        contentType:'application/json;charset=UTF-8',
-        url:"http://localhost:8080/v1/song/createSong",
-        type:'POST',
-        data:JSON.stringify(data),
-        dataType:'json',
-        success:function (msg) {
-            parent.layer.msg('添加成功');
-            parent.layer.close(index);
-        },
-        error:function (err) {
-            parent.layer.msg('提示：'+err.responseJSON.resultMsg);
-            parent.layer.close(index);
-        }
-    });
+    songCoverObj.addSongToSongCoverFunc(ele,index);
 }

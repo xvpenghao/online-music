@@ -100,6 +100,14 @@ type CreateCollectSongCoverResp struct {
 
 //修改歌单
 type ModifySongCoverReq struct {
+	//歌单Id
+	SongCoverId string `json:"songCoverId"`
+	//歌单名称
+	SongCoverName string `json:"songCoverName"`
+}
+
+type ModifySongCoverResp struct {
+	baseResp
 }
 
 //删除歌单

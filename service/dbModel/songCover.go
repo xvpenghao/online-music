@@ -19,6 +19,14 @@ const (
 	QUERY_SONG_COVER_BY_ID = `select song_cover_id,song_cover_name,cover_url
                               from tb_song_cover tsc
                               where song_cover_id = ?`
+	//查询用户歌单数量根据歌单名
+	QUERY_USER_SONG_COVER_COUNTS_BY_NAME = `select count(*) 
+                                            from tb_song_cover as tbsc
+                                            inner join tb_song_cover_song tbscs 
+                                            on tbsc.song_cover_id = tbscs.song_cover_id
+                                            where tbsc.song_cover_name = ? and tbscs.user_id = ?
+
+`
 )
 
 type SongCoverInfo struct {
