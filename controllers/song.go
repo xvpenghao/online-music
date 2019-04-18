@@ -224,3 +224,29 @@ func (receiver *SongController) QueryCollectSCoverSongList() error {
 
 	return nil
 }
+
+// @Title DeleteSong
+// @Description 删除歌曲
+// @Param info body models.DeleteSongReq true "req"
+// @Success 200 {object} models.DeleteSongResp "resp"
+// @Failure exec error
+// @router /deleteSong [delete]
+func (receiver *SongController) DeleteSong() error {
+	receiver.BeforeStart("DeleteSong")
+	var req models.DeleteSongReq
+	err := json.Unmarshal(receiver.Ctx.Input.RequestBody, &req)
+	if err != nil {
+		logs.Error("删除歌曲-解析参数错误：(%v),请求参数(%s)", err.Error(), receiver.Ctx.Input.RequestBody)
+		return receiver.returnJSONError("请求参数错误:(%v)", err.Error())
+	}
+
+	songService := service.NewSongService(receiver.GetServiceInit())
+	err = songService.DeleteSong(req)
+	if err != nil {
+		logs.Error("删除歌曲-service返回错误(%s)", err.Error())
+		return receiver.returnJSONError("service返回错误:(%v)", err.Error())
+	}
+
+	var resp models.DeleteSongResp
+	return receiver.returnJSONSuccess(resp)
+}

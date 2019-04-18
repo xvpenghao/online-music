@@ -12,6 +12,7 @@
 
     <script src="/static/me/common/common.js"></script>
     <script src="/static/me/obj/songCover.js"></script>
+    <script src="/static/me/obj/song.js"></script>
     <script src="/static/me/js/songList.js"></script>
     <script src="/static/me/js/customerSongList.js"></script>
 </head>
@@ -62,7 +63,7 @@
                 </li>
                 {{range .resp.UserSongList}}
                 <li  class="ng-scope" onmouseover="songHandleMouseOver(this)"
-                     onmouseout="songHandleMouseOut(this)">
+                     onmouseout="songHandleMouseOut(this)" id="deleteSong-{{.SongId}}">
                     <div class="title"
                          onclick="playSongByUrl({'playUrl':{{.SongPlayUrl}},
                                                 'songCoverUrl':{{.SongCoverUrl}},
@@ -79,7 +80,7 @@
                     <div class="album">
                         <a class="ng-binding">{{.SongAlbum}}</a>
                     </div>
-                    <div class="tools tools2 tools-hide" id="{{.SongId}}">
+                    <div class="tools tools2 tools-hide">
                         <a title="添加到当前播放" class="detail-add-button" >
                             <span class=" li-add">
                                 <img class="li-handle-img" src="/static/me/imgs/add2.png">
@@ -90,7 +91,8 @@
                                 <img  class="li-handle-img" class="li-handle-img" src="/static/me/imgs/folder_add.png">
                             </span>
                         </a>
-                        <a title="从歌单删除" class="detail-delete-button " onclick="">
+                        <a title="从歌单删除" class="detail-delete-button " onclick="deleteSong(
+                                {'songCoverId':{{$.resp.SongCoverId}},'songId':{{.SongId}}})">
                             <span class="li-del">
                                  <img  class="li-handle-img" src="/static/me/imgs/del.png">
                             </span>

@@ -389,3 +389,37 @@ func (receiver *SongService) QuerySongBaseInfoChan(req models.QuerySongDetailReq
 	result.SongPlayUrl = fmt.Sprintf(constants.SONG_PLAY_URL, req.SongId)
 	song <- result
 }
+
+/*
+*@Title:删除歌曲
+*@Description: 删除该用户歌单中歌曲
+*@User: 徐鹏豪
+*@Date 2019/4/18 0018
+*@Param
+*@Return
+ */
+func (receiver *SongService) DeleteSong(req models.DeleteSongReq) error {
+	receiver.BeforeLog("DeleteSong")
+
+	db, err := receiver.GetConn()
+	if err != nil {
+		logs.Error("删除歌曲-数据库链接错误：(%v)", err.Error())
+		return utils.NewDBErr("数据库链接错误", err)
+	}
+	defer db.Close()
+
+	tx := db.Begin()
+	var songCoverSong dbModel.SongCoverSongTable
+	err = tx.Table("tb_song_cover_song").Where("song_id = ?", req.SongId).
+		Where("song_cover_id = ?", req.SongCoverId).
+		Where("user_id = ?", receiver.BaseRequest.UserID).
+		Delete(songCoverSong).Error
+	if err != nil {
+		tx.Rollback()
+		logs.Error("删除歌曲失败：(%v)", err.Error())
+		return utils.NewDBErr("删除歌曲失败", err)
+	}
+
+	tx.Commit()
+	return nil
+}

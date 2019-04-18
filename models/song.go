@@ -58,3 +58,15 @@ type CreateSongReq struct {
 type CreateSongResp struct {
 	baseResp
 }
+
+//删除歌曲
+type DeleteSongReq struct {
+	//歌曲id
+	SongId string `json:"songId"`
+	//歌单id
+	SongCoverId string `json:"songCoverId"`
+}
+
+type DeleteSongResp struct {
+	baseResp
+}
