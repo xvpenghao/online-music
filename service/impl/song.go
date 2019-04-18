@@ -342,3 +342,50 @@ func (receiver *SongService) QuerySongInfoById(req models.QuerySongDetailReq) (d
 
 	return result, nil
 }
+
+/*
+*@Title:查询歌曲详情Chan
+*@Description:
+*@User: 徐鹏豪
+*@Date 2019/4/13
+ */
+func (receiver *SongService) QuerySongBaseInfoChan(req models.QuerySongDetailReq, song chan dbModel.Song) {
+	receiver.BeforeLog("QuerySongBaseInfoChan")
+	var result dbModel.Song
+	var err error
+
+	c := colly.NewCollector(
+		colly.UserAgent(constants.USER_AGENT))
+
+	var keywords string
+	var imageUrl string
+	c.OnHTML("meta[name='keywords'],meta[property='og:image']", func(e *colly.HTMLElement) {
+		switch {
+		case e.Attr("name") == "keywords":
+			keywords = e.Attr("content")
+		case e.Attr("property") == "og:image":
+			imageUrl = e.Attr("content")
+		}
+	})
+
+	c.OnError(func(response *colly.Response, e error) {
+		if e != nil {
+			err = e
+		}
+	})
+
+	reqUrl := fmt.Sprintf(constants.SONG_URL, req.SongId)
+
+	c.Visit(reqUrl)
+
+	//设置专辑，歌手，歌曲封面链接，歌曲链接，歌词
+	keywordss := strings.Split(keywords, "，")
+	result.SongId = req.SongId
+	result.SongName = keywordss[0]
+	result.SongAlbum = keywordss[1]
+	result.Singer = keywordss[2]
+	result.SongCoverUrl = imageUrl
+	//歌曲url
+	result.SongPlayUrl = fmt.Sprintf(constants.SONG_PLAY_URL, req.SongId)
+	song <- result
+}

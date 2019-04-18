@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/static/me/js/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="/static/layui-v2.4.5/layui/layui.js" ></script>
+    <script type="text/javascript" src="/static/layui-v2.4.5/layui/layui.all.js"></script>
+
+    <link href="/static/me/css/tracklist.css" rel="stylesheet">
+    <link href="/static/me/css/index.css" rel="stylesheet">
+
+    <script src="/static/me/common/common.js"></script>
+    <script src="/static/me/obj/songCover.js"></script>
+    <script src="/static/me/js/songList.js"></script>
+    <script src="/static/me/js/customerSongList.js"></script>
+    <script src="/static/me/js/collectSongList.js"></script>
+</head>
+<body>
+<div>
+    <div class="playlist-detail">
+        <!--用户的歌曲列表-->
+        <div class="detail-head">
+            <div class="detail-head-cover">
+                <img src="{{.resp.SongCoverImgUrl}}">
+            </div>
+            <div class="detail-head-title">
+                <h2 class="ng-binding">{{.resp.SongCoverName}}</h2>
+                <div class="playlist-button-list">
+                    <div class="playlist-button playadd-button">
+                        <div class="play-list ng-binding">
+                            <img src="/static/me/imgs/play.png">
+                            <span> 播放全部</span>
+                        </div>
+                        <div class="add-list">
+                            <img src="/static/me/imgs/add2.png">
+                        </div>
+                    </div>
+                    <div class="playlist-button edit-button" onclick="deleteCollectSongCover({{.resp.SongCoverId}})"
+                    >
+                        <div class="play-list">
+                            <img class="fadd" src="/static/me/imgs/folder_add.png">
+                            <span>删除歌单</span>
+                        </div>
+                    </div>
+                    <div class="playlist-button clone-button">
+                        <div class="play-list">
+                            <img class="fadd" src="/static/me/imgs/linked.png">
+                            <span>外部链接</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="detail-list">
+            <ul class="detail-song-list">
+                <li class="head">
+                    <div class="title"><a class="ng-binding">歌曲名</a></div>
+                    <div class="artist"><a class="ng-binding">歌手</a></div>
+                    <div class="album"><a class="ng-binding">专辑名</a></div>
+                    <div class="tools ng-binding">操作</div>
+                </li>
+                {{range .resp.UserSongList}}
+                <li  class="ng-scope" onmouseover="songHandleMouseOver(this)"
+                     onmouseout="songHandleMouseOut(this)">
+                    <div class="title"
+                         onclick="playSongByUrl({'playUrl':{{.SongPlayUrl}},
+                                                'songCoverUrl':{{.SongCoverUrl}},
+                                                 'songID':{{.SongId}},
+                                                  'songName':{{.SongName}} })">
+                        <img src="/static/me/imgs/play_song.png"/>
+                        <a class="ng-binding " style="position: relative;top: -4px;left: 4px;">
+                            {{.SongName}}
+                        </a>
+                    </div>
+                    <div class="artist">
+                        <a class="ng-binding">{{.Singer}}</a>
+                    </div>
+                    <div class="album">
+                        <a class="ng-binding">{{.SongAlbum}}</a>
+                    </div>
+                    <div class="tools tools2 tools-hide" id="{{.SongId}}">
+                        <a title="添加到当前播放" class="detail-add-button" >
+                            <span class=" li-add">
+                                <img class="li-handle-img" src="/static/me/imgs/add2.png">
+                            </span>
+                        </a>
+                        <a title="添加到歌单" class="detail-fav-button" onclick="addSongToSongCoverWindow({{.SongId}})">
+                            <span class=" li-song-list">
+                                <img  class="li-handle-img" class="li-handle-img" src="/static/me/imgs/folder_add.png">
+                            </span>
+                        </a>
+                    </div>
+                </li>
+                {{end}}
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

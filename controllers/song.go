@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"github.com/astaxie/beego/logs"
 	"net/http"
+	"online-music/common/constants"
 	"online-music/models"
 	"online-music/service"
+	"online-music/service/dbModel"
 )
 
 type SongController struct {
@@ -160,4 +162,65 @@ func (receiver *SongController) CreateSong() error {
 	}
 
 	return receiver.returnJSONSuccess(resp)
+}
+
+// @Title ModifySongCoverList
+// @Description 根据收藏歌单id得到歌曲列表信息
+// @Param songCoverId path string true "歌单id"
+// @Failure exec error
+// @router /queryCollectSCoverSongList/:songCoverId [get]
+func (receiver *SongController) QueryCollectSCoverSongList() error {
+	receiver.BeforeStart("CustomerSongCoverList")
+
+	req := models.QueryUserSongListReq{
+		SongCoverId: receiver.GetString(":songCoverId"),
+	}
+
+	songService := service.NewSongService(receiver.GetServiceInit())
+	songCoverService := service.NewSongCoverService(receiver.GetServiceInit())
+	songCover, err := songCoverService.QuerySongCoverById(models.QueryCoverSongByIdReq{SongCoverId: req.SongCoverId})
+	if err != nil {
+		logs.Error("根据歌单id得到歌曲列表-查询歌单详情service返回错误：(%v)", err.Error())
+		return receiver.returnError("查询歌单详情service返回错误：(%v)", err.Error())
+	}
+
+	collectSongList, err := songCoverService.QuerySongList(models.QuerySongListReq{SongCoverId: req.SongCoverId})
+	if err != nil {
+		logs.Error("根据歌单id得到歌曲列表-爬取歌曲信息service返回错误：(%v)", err.Error())
+		return receiver.returnError("爬取歌曲信息service返回错误：(%v)", err.Error())
+	}
+	var resp models.QueryUserSongListResp
+	var querySongDetailReq models.QuerySongDetailReq
+	var dbSong dbModel.Song
+	var song models.Song
+	for i, v := range collectSongList {
+		//FIXME 这里需要优化，目前先定位3首歌曲
+		if i == constants.SPIDER_SONG_COUNT && constants.SPIDER_SONG_COUNT > 0 {
+			break
+		}
+		querySongDetailReq.SongId = v.SongId
+		//FIXME 这里需要优化,考虑使用携程
+		dbSong, err = songService.QuerySongBaseInfo(querySongDetailReq)
+		if err != nil {
+			logs.Error("根据歌单id获取歌曲列表-查询歌单详情service返回错误：(%v)", err.Error())
+			return receiver.returnError("查询歌单详情service返回错误：(%v)", err.Error())
+		}
+		song.SongId = dbSong.SongId
+		song.Singer = dbSong.Singer
+		song.SongName = dbSong.SongName
+		song.SongAlbum = dbSong.SongAlbum
+		song.SongLyric = dbSong.SongLyric
+		song.SongPlayUrl = dbSong.SongPlayUrl
+		song.SongCoverUrl = dbSong.SongCoverUrl
+		resp.UserSongList = append(resp.UserSongList, song)
+	}
+
+	resp.SongCoverId = songCover.ID
+	resp.SongCoverName = songCover.SongCoverName
+	resp.SongCoverImgUrl = songCover.CoverUrl
+
+	receiver.Data["resp"] = resp
+	receiver.TplName = "song/collectSongList.html"
+
+	return nil
 }

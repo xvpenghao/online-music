@@ -17,7 +17,7 @@ SongCover.prototype.queryUserSongCoverListFunc = function () {
                 songCoverObj.songCoverListFunc(data.songCoverList,'#userSongCoverList','/v1/song/queryUserSongList');
             }
             if (data.collectList != null){
-                songCoverObj.songCoverListFunc(data.collectList,'#userCollectSongCover','/v1/song/songListUI');
+                songCoverObj.songCoverListFunc(data.collectList,'#userCollectSongCover','/v1/song/queryCollectSCoverSongList');
             }
 
         },
@@ -50,7 +50,8 @@ SongCover.prototype.songCoverListFunc = function (data,id,url) {
 
 //弹出创建歌单窗口
 SongCover.prototype.alertCreateSongCoverWindowFunc = function () {
-    var utilsObj = new Utils();
+    let utilsObj = new Utils();
+    let songCoverUrl = '/v1/song/queryUserSongList';
     layer.config({title:"创建歌单"});
     layer.prompt(function(val, index){
         //得到输入的信息，并请求添加歌单请求，发送ajax
@@ -69,7 +70,7 @@ SongCover.prototype.alertCreateSongCoverWindowFunc = function () {
                      <span>
                          <img src="/static/me/imgs/music.png">
                     </span>
-                    <a href="/v1/song/songListUI" target="main">${songCoverName}</a>
+                    <a href="${songCoverUrl}/${data.songCoverId}" target="main">${songCoverName}</a>
                 </div> `;
                 $('#userSongCoverList').append($div);
             },
@@ -218,8 +219,8 @@ SongCover.prototype.modifySongCoverFunc = function (formData,index) {
         success:function (data) {
             parent.layer.close(index);
             parent.layer.msg('编辑成功');
-            //加载自定义歌单列表
-            parent.parent.songCoverObj.queryUserSongCoverListFunc();
+            //重写加载页面
+            parent.parent.window.location.reload();
         },
         error:function (err) {
             parent.layer.close(index);
@@ -242,8 +243,8 @@ SongCover.prototype.deleteSongCoverFunc = function (songCoverId,index) {
         success:function (data) {
             parent.layer.close(index);
             parent.layer.msg('删除成功');
-            //加载自定义歌单列表
-            parent.parent.songCoverObj.queryUserSongCoverListFunc();
+            //页面再次刷新
+            parent.parent.window.location.reload();
         },
         error:function (err) {
             parent.layer.close(index);

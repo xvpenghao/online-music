@@ -97,9 +97,10 @@ func (receiver *SongCoverController) QuerySongList() error {
 	var dbSong dbModel.Song
 	var resp models.QuerySongListResp
 	logs.Debug(len(result))
+	//我知道歌曲的数量
 	for i, v := range result {
 		//FIXME 这里需要优化，目前先定位3首歌曲
-		if i == 3 {
+		if i == constants.SPIDER_SONG_COUNT && constants.SPIDER_SONG_COUNT > 0 {
 			break
 		}
 		querySongDetailReq.SongId = v.SongId

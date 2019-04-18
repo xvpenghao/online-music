@@ -18,6 +18,8 @@ type (
 		CreateSong(req models.CreateSongReq) error
 		//通过歌曲id查询歌曲信息
 		QuerySongInfoById(req models.QuerySongDetailReq) (dbModel.SongTable, error)
+		//协程版查询歌曲信息
+		QuerySongBaseInfoChan(req models.QuerySongDetailReq, song chan dbModel.Song)
 	}
 )
 

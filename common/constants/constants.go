@@ -90,3 +90,9 @@ const (
 	//歌单默认封面图片
 	SONG_COVER_DEFAULT_COVER_URL = "/static/me/temp/default_cover.png"
 )
+
+//爬取歌曲的数量
+const (
+	//爬虫歌曲的数量
+	SPIDER_SONG_COUNT = 3
+)
