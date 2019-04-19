@@ -20,6 +20,7 @@
     <link href="/static/me/css/index.css" rel="stylesheet">
     <link href="/static/me/css/tracklist.css" rel="stylesheet">
     <link href="/static/me/css/footer.css" rel="stylesheet">
+    <link href="/static/me/css/songPlayHistory.css" rel="stylesheet">
     <!--歌曲详情-->
     <link href="/static/me/css/lyric.css" rel="stylesheet">
 
@@ -163,6 +164,94 @@
             </div>
         </div>
     </div>
+    <!--音乐播放历史-->
+    <div class="song-play-history  ng-hide" id="song-play-history">
+        <div class="menu-header">
+            <span class="menu-title">共19首</span>
+            <a href="#" class="add-all">
+                <img  class="li-handle-img" title="添加到歌单" src="/static/me/imgs/folder_add.png">
+                <span style="position: relative;top: 2px;left: -5px;">添加到歌单</span>
+            </a>
+            <a href="#" class="remove-all">
+                <!--删除图标-->
+                <img  class="li-handle-img" title="清空" src="/static/me/imgs/del.png">
+                <span style="position: relative;top: 2px;left: -10px;">清空</span>
+            </a>
+            <a class="close" onclick="songPlayHistoryLayer()">
+                <img src="/static/me/imgs/close.png" title="关闭" style="width: 14px;
+                                                           height: 14px;
+                                                           margin-right: 10px;
+                                                           margin-left: 10px"/>
+            </a>
+        </div>
+        <!--歌曲的播放列表-->
+        <ul class="menu-list">
+            <li onmouseout="playHistoryMouseout(this)" onmouseover="playHistoryMouseover(this)"
+                id="li-play-history-123456">
+                <!--歌曲播放图标-->
+                <div class="song-status">
+                    <img style="display: none;" class="song-status-img" id="img-play-history-123456" src="/static/me/imgs/play_history2.png" title="播放"/>
+                </div>
+                <div class="song-title" onclick="selectPlayHistorySong('123456')">
+                    <!-- <a href="#">当你老了</a>-->
+                    <span style="cursor: pointer;">当你老了</span>
+                </div>
+                <div class="song-singer">
+                    <span style="cursor: pointer;">赵照</span>
+                </div>
+                <div class="tools">
+                    <a title="删除播放历史" class="detail-delete-button ng-hide" >
+                        <span class="li-del" style="cursor: pointer;">
+                             <img  class="li-handle-img" src="/static/me/imgs/del.png">
+                        </span>
+                    </a>
+                </div>
+            </li>
+            <li onmouseout="playHistoryMouseout(this)" onmouseover="playHistoryMouseover(this)"
+                id="li-play-history-1234567">
+                <!--歌曲播放图标-->
+                <div class="song-status">
+                    <img style="display: none;" class="song-status-img" id="img-play-history-1234567" src="/static/me/imgs/play_history2.png" title="播放"/>
+                </div>
+                <div class="song-title" onclick="selectPlayHistorySong('1234567')">
+                    <!-- <a href="#">当你老了</a>-->
+                    <span style="cursor: pointer;">当你老了</span>
+                </div>
+                <div class="song-singer">
+                    <span style="cursor: pointer;">赵照</span>
+                </div>
+                <div class="tools">
+                    <a title="删除播放历史" class="detail-delete-button ng-hide" >
+                        <span class="li-del" style="cursor: pointer;">
+                             <img  class="li-handle-img" src="/static/me/imgs/del.png">
+                        </span>
+                    </a>
+                </div>
+            </li>
+            <li onmouseout="playHistoryMouseout(this)" onmouseover="playHistoryMouseover(this)"
+                id="li-play-history-12345678">
+                <!--歌曲播放图标-->
+                <div class="song-status">
+                    <img style="display: none;" class="song-status-img" id="img-play-history-12345678" src="/static/me/imgs/play_history2.png" title="播放"/>
+                </div>
+                <div class="song-title" onclick="selectPlayHistorySong('12345678')">
+                    <!-- <a href="#">当你老了</a>-->
+                    <span style="cursor: pointer;">当你老了</span>
+                </div>
+                <div class="song-singer">
+                    <span style="cursor: pointer;">赵照</span>
+                </div>
+                <div class="tools">
+                    <a title="删除播放历史" class="detail-delete-button ng-hide" >
+                        <span class="li-del" style="cursor: pointer;">
+                             <img  class="li-handle-img" src="/static/me/imgs/del.png">
+                        </span>
+                    </a>
+                </div>
+            </li>
+
+        </ul>
+    </div>
     <!--底边栏-->
     <div class="footer">
         <!--左边控制-->
@@ -202,17 +291,17 @@
         </div>
         <div class="right-control">
             <!--播放列表-->
-            <div class="playlist-toggle">
+            <div class="playlist-toggle" onclick="songPlayHistoryLayer()">
                 <img src="/static/me/imgs/plarer_list.png" title="播放列表">
             </div>
             <!--音量控制-->
             <div class="volume-ctrl">
                 <span>
-                    <img class="on-off"  src="/static/me/imgs/no_volume.png">
+                    <img class="on-off"  src="/static/me/imgs/volume.png">
                 </span>
                 <!--音量的控制-->
                 <div class="range">
-                    <input type="range" min="0" max="10" step="1" value="0">
+                    <input type="range" min="0" max="10" step="1" value="5">
                     <p class="rang_width"></p>
                 </div>
             </div>

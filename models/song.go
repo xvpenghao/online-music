@@ -70,3 +70,52 @@ type DeleteSongReq struct {
 type DeleteSongResp struct {
 	baseResp
 }
+
+//创建歌曲播放历史
+type CreateSongPlayHistoryReq struct {
+	//歌曲ID
+	SongId string `json:"songId"`
+	//歌曲名称
+	SongName string `json:"songName"`
+	//歌曲播放Url
+	SongPlayUrl string `json:"songPlayUrl"`
+	//歌曲封面URL
+	SongCoverUrl string `json:"songCoverUrl"`
+	//歌手
+	Singer string `json:"singer"`
+}
+
+type CreateSongPlayHistoryResp struct {
+	baseResp
+}
+
+//删除歌曲播放历史
+type DeleteSongPlayHistoryReq struct {
+	SongId string
+}
+
+type DeleteSongPlayHistoryResp struct {
+	baseResp
+}
+
+//歌曲播放历史列表
+type QuerySongPlayHistoryListReq struct {
+}
+
+type SongPlayHistory struct {
+	//歌曲ID
+	SongId string `json:"songId"`
+	//歌曲名称
+	SongName string `json:"songName"`
+	//歌曲播放Url
+	SongPlayUrl string `json:"songPlayUrl"`
+	//歌曲封面URL
+	SongCoverUrl string `json:"songCoverUrl"`
+	//歌手
+	Singer string `json:"singer"`
+}
+
+type QuerySongPlayHistoryListResp struct {
+	//歌曲播放历史
+	List []SongPlayHistory `json:"list"`
+}

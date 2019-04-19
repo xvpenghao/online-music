@@ -12,10 +12,10 @@ const data =[
 
 $(function () {
     let audio = $('#audioTag').get(0);
-    audio.src = data[0].song
-    audio.setAttribute("songIndex",0)
+    audio.src = data[0].song;
+    audio.setAttribute("songIndex",0);
 
-    audio.volume = 0.0;
+    audio.volume = 0.5;
     //歌曲的播放暂停
     playOrPause();
     //歌曲上下首切换
@@ -36,7 +36,7 @@ $(function () {
     setVolume();
     /*音量开关*/
     volumeOnOrOff();
-
+    setInitVolume();
     //设置歌词播放时间
     setLyricTime(lyricData);
     //设置歌词详情和main的切换
@@ -171,6 +171,18 @@ function changePlaymode() {
             })
         })
     })
+}
+
+//设置初始化音量
+function setInitVolume() {
+    let elem = document.querySelector('input[type="range"]');
+    //设置音量
+    let audio = $('#audioTag').get(0);
+    let newValue = elem.value;
+    let max = elem.getAttribute("max");
+    audio.volume = (newValue /max);
+    let width = (91.3 / max * newValue) +"%";    //这里的91.3是用了整个滑块的宽度300减去拖动的那个圆形滑块的宽度30再加上圆形滑块的边框宽度4然后再除以300得来的，因为显示拖动距离的rang_width在绝对定位后在滑动过程中会遮挡住圆形滑块，导致圆形滑块无法被拖动，所以要适当的减少rang_width在滑动时的宽度，当然rang_width的宽度是根据你自己的实际需求来计算出来的，并不是一成不变的91.3%
+    document.querySelector('.rang_width').style.width = width;
 }
 
 //设置音量

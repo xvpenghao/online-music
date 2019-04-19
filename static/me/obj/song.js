@@ -20,3 +20,21 @@ Song.prototype.deleteSongFunc = function (obj,index) {
         }
     });
 };
+
+//创建歌曲播放历史
+Song.prototype.createSongPlayHistory = function (song) {
+    console.log('song',song);
+    $.ajax({
+        contentType:'application/json;charset=UTF-8',
+        url:"http://localhost:8080/v1/song/createSongPlayHistory",
+        type:"POST",
+        data:JSON.stringify(song),
+        dataType:"json",
+        success:function (data) {
+            //播放记录框中添加一条记录
+        },
+        error:function (err) {
+            parent.layer.msg('提示：'+err.responseJSON.resultMsg);
+        }
+    });
+};

@@ -7,6 +7,7 @@ import (
 	"github.com/gocolly/colly"
 	"github.com/jinzhu/gorm"
 	"online-music/common/constants"
+	"online-music/common/redis"
 	"online-music/common/utils"
 	"online-music/models"
 	"online-music/service/dbModel"
@@ -422,4 +423,103 @@ func (receiver *SongService) DeleteSong(req models.DeleteSongReq) error {
 
 	tx.Commit()
 	return nil
+}
+
+/*
+*@Title: 创建歌曲播放历史
+*@Description:
+*@User: 徐鹏豪
+*@Date 2019/4/19 0019
+*@Param
+*@Return
+ */
+func (receiver *SongService) CreateSongPlayHistory(req models.CreateSongPlayHistoryReq) error {
+	receiver.BeforeLog("CreateSongPlayHistory")
+
+	client := redis.GetRedis()
+	key := fmt.Sprintf(constants.CREATE_SONG_PLAY_HISTORY, receiver.BaseRequest.UserID)
+	songLen, err := client.LLen(key).Result()
+	if err != nil {
+		logs.Error("创建歌曲播放历史：根据key(%v)获取用户播放历史记录数错误:(%v)", key, err.Error())
+		return utils.NewDBErr("据key获取用户播放历史记录数错误:(%v)", err)
+	}
+
+	value, _ := json.Marshal(req)
+	delCount, err := client.LRem(key, 0, string(value)).Result()
+	if err != nil {
+		logs.Error("创建歌曲播放历史-删除与歌曲(%v)重复的values失败", req.SongName, err.Error())
+		return utils.NewDBErr("删除重复歌曲失败", err)
+	}
+	logs.Debug("删除的数量：(%v)", delCount)
+
+	//如果歌曲播放历史大于20则删除右边的
+	if songLen >= constants.SONG_PLAY_HISTORY_MAX_COUNT {
+		err = client.RPop(key).Err()
+		if err != nil {
+			logs.Error("创建歌曲播放历史：根据key从右删除多于的播放记录错误:(%v)", key, err.Error())
+			return utils.NewDBErr("根据key从右删除多于的播放记录错误:(%v)", err)
+		}
+	}
+
+	err = client.LPush(key, string(value)).Err()
+	if err != nil {
+		logs.Error("创建歌曲播放历史失败：(%v)", err.Error())
+		return utils.NewDBErr("创建歌曲播放历史失败", err)
+	}
+	return nil
+}
+
+/*
+*@Title: 删除歌曲播放历史
+*@Description:
+*@User: 徐鹏豪
+*@Date 2019/4/19 0019
+*@Param
+*@Return
+ */
+func (receiver *SongService) DeleteSongPlayHistory(req models.DeleteSongPlayHistoryReq) error {
+	receiver.BeforeLog("DeleteSongPlayHistory")
+
+	client := redis.GetRedis()
+	key := fmt.Sprintf(constants.CREATE_SONG_PLAY_HISTORY, receiver.BaseRequest.UserID)
+	value, _ := json.Marshal(req)
+	//删除列表中所有与value一样的值
+	err := client.LRem(key, 0, string(value)).Err()
+	if err != nil {
+		logs.Error("删除歌曲播放历史失败：(%v)", err.Error())
+		return utils.NewDBErr("删除歌曲播放历史失败", err)
+	}
+
+	return nil
+}
+
+/*
+*@Title: 查询歌曲播放历史列表
+*@Description:
+*@User: 徐鹏豪
+*@Date 2019/4/19 0019
+*@Param
+*@Return
+ */
+func (receiver *SongService) QuerySongPlayHistoryList(req models.QuerySongPlayHistoryListReq) ([]dbModel.SongPlayHistory, error) {
+	receiver.BeforeLog("QuerySongPlayHistoryList")
+
+	var result []dbModel.SongPlayHistory
+	client := redis.GetRedis()
+	key := fmt.Sprintf(constants.CREATE_SONG_PLAY_HISTORY, receiver.BaseRequest.UserID)
+	values, err := client.LRange(key, 0, -1).Result()
+	if err != nil {
+		logs.Error("查询歌曲播放历史列表失败：(%v)", err.Error())
+		return result, utils.NewDBErr("查询歌曲播放历史列表", err)
+	}
+	newValues := strings.Join(values, ",")
+	newValues = "[" + newValues + "]"
+
+	err = json.Unmarshal([]byte(newValues), &result)
+	if err != nil {
+		logs.Error("查询歌曲播放历史列表-Unmarshal失败：(%v)", err.Error())
+		return result, utils.NewSysErr("Unmarshal失败", err)
+	}
+	return result, nil
+
 }

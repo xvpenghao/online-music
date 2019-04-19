@@ -11,6 +11,7 @@
     <script src="/static/me/js/songList.js"></script>
     <script src="/static/me/common/common.js"></script>
     <script src="/static/me/obj/songCover.js"></script>
+    <script src="/static/me/obj/song.js"></script>
 
     <link href="/static/me/css/tracklist.css" rel="stylesheet">
     <link href="/static/me/css/index.css" rel="stylesheet">
@@ -69,7 +70,9 @@
                          onclick="playSongByUrl({'playUrl':{{.SongPlayUrl}},
                                                 'songCoverUrl':{{.SongCoverUrl}},
                                                  'songID':{{.SongId}},
-                                                  'songName':{{.SongName}} })">
+                                                  'songName':{{.SongName}},
+                                                  'singer':{{.Singer}},
+                                 })">
                         <img src="/static/me/imgs/play_song.png"/>
                         <a class="ng-binding " style="position: relative;top: -4px;left: 4px;">
                             {{.SongName}}
@@ -110,8 +113,5 @@
         </div>
     </div>
 </div>
-
-
-
 </body>
 </html>

@@ -1,0 +1,105 @@
+.song-play-history{
+    flex: 1;
+    background: #ffffff;
+    border: solid 1px #e5e5e5;
+    border-radius: 3px;
+    position: fixed;
+    height: 365px;
+    bottom: 60px;
+    left: 300px;
+    right: 300px;
+    z-index: 9999;
+}
+.menu-header{
+    height: 30px;
+    border-bottom: solid 1px #e7e7e7;
+    display: flex;
+    align-items: center;
+    color: #9e9e9e;
+    font-size: 12px;
+
+}
+.menu-title{
+    flex: 1;
+    padding: 20px
+}
+.add-all{
+    border-right: solid 1px #e5e5e5;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    padding-right: 10px;
+}
+
+.menu-list{
+    overflow-y: scroll;
+    height: 340px;
+    font-size: 12px;
+}
+
+/*正在播的歌曲*/
+.playing-song{
+    color:#ff4444;
+}
+
+
+
+.menu-list li{
+    display: flex;
+    align-items: center;
+    height: 30px;
+    padding-right: 20px;
+}
+
+.menu-list li .song-title{
+    flex: 2;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.menu-list li .song-singer {
+    flex: 2;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.menu-list li .tools{
+    flex: 0 0 42px;
+    width: 42px;
+}
+.song-status{
+    flex: 0 0 20px;
+    width: 20px;
+    height: 30px;
+    text-align: center;
+    display: flex;
+    align-items: center
+}
+
+
+
+
+/*设置边框的样式*/
+::-webkit-scrollbar {
+    width: 14px;
+    height: 18px;
+    background: transparent;
+}
+
+::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+    display: none;
+}
+::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+    height: 49px;
+    border: 5px solid rgba(0, 0, 0, 0);
+    background-clip: padding-box;
+    -webkit-border-radius: 7px;
+    background-color: #c2c2c2;
+}

@@ -96,3 +96,11 @@ const (
 	//爬虫歌曲的数量
 	SPIDER_SONG_COUNT = 3
 )
+
+//播放历史
+const (
+	//%s代表的是当前登录用户id
+	CREATE_SONG_PLAY_HISTORY = "create_song_play_history:ph:%s"
+	//播放历史存储的最大数量
+	SONG_PLAY_HISTORY_MAX_COUNT = 20
+)

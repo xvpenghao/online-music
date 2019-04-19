@@ -63,6 +63,15 @@ func init() {
 
 	beego.GlobalControllerRouter["online-music/controllers:SongController"] = append(beego.GlobalControllerRouter["online-music/controllers:SongController"],
 		beego.ControllerComments{
+			Method:           "CreateSongPlayHistory",
+			Router:           `/createSongPlayHistory`,
+			AllowHTTPMethods: []string{"post"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
+	beego.GlobalControllerRouter["online-music/controllers:SongController"] = append(beego.GlobalControllerRouter["online-music/controllers:SongController"],
+		beego.ControllerComments{
 			Method:           "DeleteSong",
 			Router:           `/deleteSong`,
 			AllowHTTPMethods: []string{"delete"},

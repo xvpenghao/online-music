@@ -22,6 +22,12 @@ type (
 		QuerySongBaseInfoChan(req models.QuerySongDetailReq, song chan dbModel.Song)
 		//删除歌曲
 		DeleteSong(req models.DeleteSongReq) error
+		//添加歌曲播放历史
+		CreateSongPlayHistory(req models.CreateSongPlayHistoryReq) error
+		//删除歌曲播放历史
+		DeleteSongPlayHistory(req models.DeleteSongPlayHistoryReq) error
+		//查询歌曲播放历史列表
+		QuerySongPlayHistoryList(req models.QuerySongPlayHistoryListReq) ([]dbModel.SongPlayHistory, error)
 	}
 )
 

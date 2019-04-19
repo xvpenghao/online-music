@@ -19,7 +19,8 @@ SongCover.prototype.queryUserSongCoverListFunc = function () {
             if (data.collectList != null){
                 songCoverObj.songCoverListFunc(data.collectList,'#userCollectSongCover','/v1/song/queryCollectSCoverSongList');
             }
-
+            //加载歌单列表点单击事件
+            songCoverObj.addSongCoverListSelect();
         },
         error:function (err) {
             layer.msg('提示：'+err.responseJSON.resultMsg);
@@ -250,5 +251,21 @@ SongCover.prototype.deleteSongCoverFunc = function (songCoverId,index) {
             parent.layer.close(index);
             parent.layer.msg('提示：'+err.responseJSON.resultMsg);
         }
+    });
+};
+
+//给歌单列表添加事件
+SongCover.prototype.addSongCoverListSelect = function () {
+    var $gdSelect = $(".gd-select"); //返回jq对象
+    $.each($gdSelect, function (index, val) {
+        //添加单击事件
+        $(val).click(index, function () {
+            $(this).addClass(SELECT_STYLE_CLASS);
+            $.each($gdSelect, function (i, v) {
+                if (i != index) {
+                    $(v).removeClass(SELECT_STYLE_CLASS);
+                }
+            })
+        })
     });
 };

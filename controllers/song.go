@@ -250,3 +250,31 @@ func (receiver *SongController) DeleteSong() error {
 	var resp models.DeleteSongResp
 	return receiver.returnJSONSuccess(resp)
 }
+
+// @Title CreateSongPlayHistory
+// @Description 添加歌曲播放历史
+// @Param info body models.CreateSongPlayHistoryReq true "req"
+// @Success 200 {object} models.CreateSongPlayHistoryResp "resp"
+// @Failure exec error
+// @router /createSongPlayHistory [post]
+func (receiver *SongController) CreateSongPlayHistory() error {
+	receiver.BeforeStart("CreateSongPlayHistory")
+
+	var req models.CreateSongPlayHistoryReq
+	err := json.Unmarshal(receiver.Ctx.Input.RequestBody, &req)
+	if err != nil {
+		logs.Error("添加歌曲播放历史-解析参数错误(%s)", err.Error())
+		return receiver.returnJSONError("解析参数错误:(%v)", err.Error())
+	}
+	songService := service.NewSongService(receiver.GetServiceInit())
+
+	err = songService.CreateSongPlayHistory(req)
+	if err != nil {
+		logs.Error("添加歌曲播放历史-service返回错误(%s)", err.Error())
+		return receiver.returnJSONError("service返回错误:(%v)", err.Error())
+	}
+
+	var resp models.CreateSongPlayHistoryReq
+
+	return receiver.returnJSONSuccess(resp)
+}

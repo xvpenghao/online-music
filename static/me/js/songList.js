@@ -54,14 +54,35 @@ function songHandleMouseOut(obj) {
 
 //设置播放歌曲的url
 function playSongByUrl(song) {
-    console.log(song);
     //子页面获取父页面的数据
     let audio = parent.$('#audioTag').get(0);
     audio.src = song.playUrl;
+
+    //切换播放图片
+    parent.$('#playPause').attr({src:"/static/me/imgs/bf_play.png",title:parent.PAUSE_TITLE});
+    audio.play();
+
+    //选中第一个
+    let $lrcP = $(".lrc-line");
+    //当页面打开时，首先选中第一行
+    $($lrcP[0]).removeClass("lyric");
+    $($lrcP[0]).addClass("lrc-height-line");
+
+
     parent.$("#songCoverImg").attr({src:song.songCoverUrl});
     //设置图片的name为歌曲id
     parent.$("#songCoverImg").attr({name:song.songID});
     parent.$('.play-title').text(song.songName);
+
+    //保存用户播放歌曲历史
+    createSongPlayHistory(song);
+}
+
+function createSongPlayHistory(song) {
+    console.log('createPlayHistorySong');
+    let songObj = new Song();
+    songObj.createSongPlayHistory(song)
+
 }
 
 //创建收藏歌单
