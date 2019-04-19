@@ -266,15 +266,68 @@ func (receiver *SongController) CreateSongPlayHistory() error {
 		logs.Error("添加歌曲播放历史-解析参数错误(%s)", err.Error())
 		return receiver.returnJSONError("解析参数错误:(%v)", err.Error())
 	}
-	songService := service.NewSongService(receiver.GetServiceInit())
 
+	songService := service.NewSongService(receiver.GetServiceInit())
 	err = songService.CreateSongPlayHistory(req)
 	if err != nil {
 		logs.Error("添加歌曲播放历史-service返回错误(%s)", err.Error())
 		return receiver.returnJSONError("service返回错误:(%v)", err.Error())
 	}
 
-	var resp models.CreateSongPlayHistoryReq
+	var resp models.CreateSongPlayHistoryResp
+
+	return receiver.returnJSONSuccess(resp)
+}
+
+// @Title QuerySongPlayHistoryList
+// @Description 查询歌曲播放历史列表
+// @Param info body models.QuerySongPlayHistoryListReq true "req"
+// @Success 200 {object} models.QuerySongPlayHistoryListResp "resp"
+// @Failure exec error
+// @router /querySongPlayHistoryList [get]
+func (receiver *SongController) QuerySongPlayHistoryList() error {
+	receiver.BeforeStart("QuerySongPlayHistoryList")
+
+	var req models.QuerySongPlayHistoryListReq
+
+	songService := service.NewSongService(receiver.GetServiceInit())
+	result, err := songService.QuerySongPlayHistoryList(req)
+	if err != nil {
+		logs.Error("查询歌曲播放历史列表-service返回错误(%s)", err.Error())
+		return receiver.returnJSONError("service返回错误:(%v)", err.Error())
+	}
+
+	var resp models.QuerySongPlayHistoryListResp
+	var song models.SongPlayHistory
+	for _, v := range result {
+		song.Singer = v.Singer
+		song.SongId = v.SongId
+		song.SongName = v.SongName
+		song.SongPlayUrl = v.SongPlayUrl
+		song.SongCoverUrl = v.SongCoverUrl
+		resp.List = append(resp.List, song)
+	}
+
+	return receiver.returnJSONSuccess(resp)
+}
+
+// @Title DeleteAllSongPlayHistory
+// @Description 删除所有歌曲播放历史
+// @Success 200 {object} models.DeleteAllSongPlayHistoryResp "resp"
+// @Failure exec error
+// @router /deleteAllSongPlayHistory [delete]
+func (receiver *SongController) DeleteAllSongPlayHistory() error {
+	receiver.BeforeStart("DeleteAllSongPlayHistory")
+
+	var req models.DeleteAllSongPlayHistoryReq
+	songService := service.NewSongService(receiver.GetServiceInit())
+	err := songService.DeleteAllSongPlayHistory(req)
+	if err != nil {
+		logs.Error("删除所有歌曲播放历史-service返回错误(%s)", err.Error())
+		return receiver.returnJSONError("service返回错误:(%v)", err.Error())
+	}
+
+	var resp models.DeleteAllSongPlayHistoryResp
 
 	return receiver.returnJSONSuccess(resp)
 }

@@ -16,6 +16,7 @@
 
     <script src="/static/me/common/common.js"></script>
     <script src="/static/me/obj/songCover.js"></script>
+    <script src="/static/me/obj/song.js"></script>
 
     <link href="/static/me/css/index.css" rel="stylesheet">
     <link href="/static/me/css/tracklist.css" rel="stylesheet">
@@ -172,7 +173,7 @@
                 <img  class="li-handle-img" title="添加到歌单" src="/static/me/imgs/folder_add.png">
                 <span style="position: relative;top: 2px;left: -5px;">添加到歌单</span>
             </a>
-            <a href="#" class="remove-all">
+            <a href="#" class="remove-all" onclick="clearAllHistorySong()">
                 <!--删除图标-->
                 <img  class="li-handle-img" title="清空" src="/static/me/imgs/del.png">
                 <span style="position: relative;top: 2px;left: -10px;">清空</span>
@@ -186,69 +187,6 @@
         </div>
         <!--歌曲的播放列表-->
         <ul class="menu-list">
-            <li onmouseout="playHistoryMouseout(this)" onmouseover="playHistoryMouseover(this)"
-                id="li-play-history-123456">
-                <!--歌曲播放图标-->
-                <div class="song-status">
-                    <img style="display: none;" class="song-status-img" id="img-play-history-123456" src="/static/me/imgs/play_history2.png" title="播放"/>
-                </div>
-                <div class="song-title" onclick="selectPlayHistorySong('123456')">
-                    <!-- <a href="#">当你老了</a>-->
-                    <span style="cursor: pointer;">当你老了</span>
-                </div>
-                <div class="song-singer">
-                    <span style="cursor: pointer;">赵照</span>
-                </div>
-                <div class="tools">
-                    <a title="删除播放历史" class="detail-delete-button ng-hide" >
-                        <span class="li-del" style="cursor: pointer;">
-                             <img  class="li-handle-img" src="/static/me/imgs/del.png">
-                        </span>
-                    </a>
-                </div>
-            </li>
-            <li onmouseout="playHistoryMouseout(this)" onmouseover="playHistoryMouseover(this)"
-                id="li-play-history-1234567">
-                <!--歌曲播放图标-->
-                <div class="song-status">
-                    <img style="display: none;" class="song-status-img" id="img-play-history-1234567" src="/static/me/imgs/play_history2.png" title="播放"/>
-                </div>
-                <div class="song-title" onclick="selectPlayHistorySong('1234567')">
-                    <!-- <a href="#">当你老了</a>-->
-                    <span style="cursor: pointer;">当你老了</span>
-                </div>
-                <div class="song-singer">
-                    <span style="cursor: pointer;">赵照</span>
-                </div>
-                <div class="tools">
-                    <a title="删除播放历史" class="detail-delete-button ng-hide" >
-                        <span class="li-del" style="cursor: pointer;">
-                             <img  class="li-handle-img" src="/static/me/imgs/del.png">
-                        </span>
-                    </a>
-                </div>
-            </li>
-            <li onmouseout="playHistoryMouseout(this)" onmouseover="playHistoryMouseover(this)"
-                id="li-play-history-12345678">
-                <!--歌曲播放图标-->
-                <div class="song-status">
-                    <img style="display: none;" class="song-status-img" id="img-play-history-12345678" src="/static/me/imgs/play_history2.png" title="播放"/>
-                </div>
-                <div class="song-title" onclick="selectPlayHistorySong('12345678')">
-                    <!-- <a href="#">当你老了</a>-->
-                    <span style="cursor: pointer;">当你老了</span>
-                </div>
-                <div class="song-singer">
-                    <span style="cursor: pointer;">赵照</span>
-                </div>
-                <div class="tools">
-                    <a title="删除播放历史" class="detail-delete-button ng-hide" >
-                        <span class="li-del" style="cursor: pointer;">
-                             <img  class="li-handle-img" src="/static/me/imgs/del.png">
-                        </span>
-                    </a>
-                </div>
-            </li>
 
         </ul>
     </div>

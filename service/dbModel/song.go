@@ -113,7 +113,7 @@ type SongPlayHistory struct {
 	//歌曲名称
 	SongName string `json:"songName"`
 	//歌曲播放Url
-	SongPlayUrl string `json:"songPlayUrl"`
+	SongPlayUrl string `json:"playUrl"`
 	//歌曲封面URL
 	SongCoverUrl string `json:"songCoverUrl"`
 	//歌手

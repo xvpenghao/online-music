@@ -13,6 +13,9 @@ $(function(){ //页面加载完毕后再执行js
 
     //查询用户歌单信息
     songCoverObj.queryUserSongCoverListFunc();
+    //加载歌曲播放历史
+    let songObj = new Song();
+    songObj.querySongPlayHistoryListFunc();
 
 });
 
@@ -70,12 +73,12 @@ function playHistoryMouseout(ele) {
 
 }
 
-function selectPlayHistorySong(id) {
+function selectPlayHistorySong(song) {
 
-    let liEle = '#li-play-history-'+id;
-    let imgEle ='#img-play-history-'+id;
+    console.log('selectPlayHistorySong-song',song);
 
-    console.log('id',id);
+    let liEle = '#li-play-history-'+song.songId;
+    let imgEle ='#img-play-history-'+song.songId;
 
     //清除全部的
     $('.menu-list li').each(function () {
@@ -89,4 +92,37 @@ function selectPlayHistorySong(id) {
     $(imgEle).css({'display':'inline'});
     //给选择的li添加样式
     $(liEle).addClass('playing-song');
+
+    //播放歌曲
+    playSongHistory(song)
+}
+
+function playSongHistory(song) {
+    let audio = $('#audioTag').get(0);
+    audio.src = song.playUrl;
+    //切换播放图片
+    $('#playPause').attr({src:"/static/me/imgs/bf_play.png",title:PAUSE_TITLE});
+    audio.play();
+
+    //选中第一个
+    let $lrcP = $(".lrc-line");
+    //当页面打开时，首先选中第一行
+    $($lrcP[0]).removeClass("lyric");
+    $($lrcP[0]).addClass("lrc-height-line");
+
+    $("#songCoverImg").attr({src:song.songCoverUrl});
+    //设置图片的name为歌曲id
+    $("#songCoverImg").attr({name:song.songId});
+    $('.play-title').text(song.songName);
+}
+
+function deleteSongPlayHistory(songId) {
+    
+}
+
+//情况歌曲播放历史
+function clearAllHistorySong() {
+    let songObj = new Song();
+    songObj.clearAllHistorySongFunc();
+
 }

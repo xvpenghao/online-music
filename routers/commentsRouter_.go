@@ -72,6 +72,15 @@ func init() {
 
 	beego.GlobalControllerRouter["online-music/controllers:SongController"] = append(beego.GlobalControllerRouter["online-music/controllers:SongController"],
 		beego.ControllerComments{
+			Method:           "DeleteAllSongPlayHistory",
+			Router:           `/deleteAllSongPlayHistory`,
+			AllowHTTPMethods: []string{"delete"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
+	beego.GlobalControllerRouter["online-music/controllers:SongController"] = append(beego.GlobalControllerRouter["online-music/controllers:SongController"],
+		beego.ControllerComments{
 			Method:           "DeleteSong",
 			Router:           `/deleteSong`,
 			AllowHTTPMethods: []string{"delete"},
@@ -92,6 +101,15 @@ func init() {
 		beego.ControllerComments{
 			Method:           "QuerySongDetail",
 			Router:           `/querySongDetail/:songID`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
+	beego.GlobalControllerRouter["online-music/controllers:SongController"] = append(beego.GlobalControllerRouter["online-music/controllers:SongController"],
+		beego.ControllerComments{
+			Method:           "QuerySongPlayHistoryList",
+			Router:           `/querySongPlayHistoryList`,
 			AllowHTTPMethods: []string{"get"},
 			MethodParams:     param.Make(),
 			Filters:          nil,

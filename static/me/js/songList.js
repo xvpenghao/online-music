@@ -81,7 +81,7 @@ function playSongByUrl(song) {
 function createSongPlayHistory(song) {
     console.log('createPlayHistorySong');
     let songObj = new Song();
-    songObj.createSongPlayHistory(song)
+    songObj.createSongPlayHistoryFunc(song)
 
 }
 

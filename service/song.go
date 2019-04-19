@@ -28,6 +28,8 @@ type (
 		DeleteSongPlayHistory(req models.DeleteSongPlayHistoryReq) error
 		//查询歌曲播放历史列表
 		QuerySongPlayHistoryList(req models.QuerySongPlayHistoryListReq) ([]dbModel.SongPlayHistory, error)
+		//删除所有歌曲播放历史
+		DeleteAllSongPlayHistory(req models.DeleteAllSongPlayHistoryReq) error
 	}
 )
 
