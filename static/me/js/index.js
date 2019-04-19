@@ -114,10 +114,13 @@ function playSongHistory(song) {
     //设置图片的name为歌曲id
     $("#songCoverImg").attr({name:song.songId});
     $('.play-title').text(song.songName);
+
+    //设置当前播放的歌曲的id
+    $('#play-history-sasc').attr({'name':song.songId});
 }
 
 function deleteSongPlayHistory(songId) {
-    
+
 }
 
 //情况歌曲播放历史
@@ -125,4 +128,12 @@ function clearAllHistorySong() {
     let songObj = new Song();
     songObj.clearAllHistorySongFunc();
 
+}
+
+//历史歌曲添加到歌单
+function historySongAddToSC() {
+
+    let songCoverObj = new SongCover();
+    let songId = $('#play-history-sasc').attr('name');
+    songCoverObj.addSongToSongCoverWindowFunc(songId)
 }
