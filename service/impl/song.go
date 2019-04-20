@@ -482,10 +482,24 @@ func (receiver *SongService) DeleteSongPlayHistory(req models.DeleteSongPlayHist
 
 	client := redis.GetRedis()
 	key := fmt.Sprintf(constants.CREATE_SONG_PLAY_HISTORY, receiver.BaseRequest.UserID)
+	songPlayHistorys, err := receiver.QuerySongPlayHistoryList(models.QuerySongPlayHistoryListReq{})
+	if err != nil {
+		logs.Error("删除歌曲播放历史-查询歌曲播放历史列表失败：(%v)", err.Error())
+		return utils.NewDBErr("查询歌曲播放历史列表失败", err)
+	}
+
+	var songPlayHistory dbModel.SongPlayHistory
+	for _, v := range songPlayHistorys {
+		if v.SongId == req.SongId {
+			songPlayHistory = v
+			break
+		}
+	}
+
 	//查询全部，然后匹配，然后删除
-	value, _ := json.Marshal(req)
+	value, _ := json.Marshal(songPlayHistory)
 	//删除列表中所有与value一样的值
-	err := client.LRem(key, 0, string(value)).Err()
+	err = client.LRem(key, 0, string(value)).Err()
 	if err != nil {
 		logs.Error("删除歌曲播放历史失败：(%v)", err.Error())
 		return utils.NewDBErr("删除歌曲播放历史失败", err)

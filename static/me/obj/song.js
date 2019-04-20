@@ -107,6 +107,9 @@ Song.prototype.querySongPlayHistoryListFunc = function () {
                 //liEles += liEle;
                 $('.menu-list').append(liEle);
             });
+            //设置歌曲总数
+            let counts = $('.menu-list').children().length;
+            $('#menu-title-total-song').text(`共${counts}首`);
         },
         error:function (err) {
             parent.layer.msg('提示：'+err.responseJSON.resultMsg);
@@ -117,7 +120,6 @@ Song.prototype.querySongPlayHistoryListFunc = function () {
 
 //查询歌曲播放历史
 Song.prototype.querySongPlayHistoryList2Func = function () {
-
     let liEles = '';
     $.ajax({
         contentType:'application/json;charset=UTF-8',
@@ -158,6 +160,9 @@ Song.prototype.querySongPlayHistoryList2Func = function () {
                 //liEles += liEle;
                 parent.$('.menu-list').append(liEle);
             });
+            //设置歌曲总数
+            let counts = parent.$('.menu-list').children().length;
+            parent.$('#menu-title-total-song').text(`共${counts}首`);
         },
         error:function (err) {
             parent.layer.msg('提示：'+err.responseJSON.resultMsg);
@@ -176,7 +181,32 @@ Song.prototype.clearAllHistorySongFunc = function () {
         dataType:"json",
         success:function (data) {
             $('.menu-list').empty();
-            layer.msg('播放历史成功情况');
+            layer.msg('清空播放历史成功');
+            //设置歌曲总数
+            $('#menu-title-total-song').text(`共0首`);
+        },
+        error:function (err) {
+            layer.msg('提示：'+err.responseJSON.resultMsg);
+        }
+    });
+};
+
+//删除播放历史歌曲
+Song.prototype.deleteSongPlayHistory = function (songId) {
+    console.log('deleteSongPlayHistory');
+    let songObj = this;
+    $.ajax({
+        contentType:'application/json;charset=UTF-8',
+        url:"http://localhost:8080/v1/song/deleteSongPlayHistory/"+songId,
+        type:"DELETE",
+        dataType:"json",
+        success:function (data) {
+            //删除节点
+            let li = '#li-play-history-'+songId;
+            $(li).remove();
+            let counts = $('.menu-list').children().length;
+            $('#menu-title-total-song').text(`共${counts}首`);
+            layer.msg('删除成功');
         },
         error:function (err) {
             layer.msg('提示：'+err.responseJSON.resultMsg);

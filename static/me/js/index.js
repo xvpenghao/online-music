@@ -120,7 +120,8 @@ function playSongHistory(song) {
 }
 
 function deleteSongPlayHistory(songId) {
-
+    let songObj = new Song();
+    songObj.deleteSongPlayHistory(songId);
 }
 
 //情况歌曲播放历史

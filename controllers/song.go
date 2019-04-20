@@ -331,3 +331,28 @@ func (receiver *SongController) DeleteAllSongPlayHistory() error {
 
 	return receiver.returnJSONSuccess(resp)
 }
+
+// @Title DeleteSongPlayHistory
+// @Description 删除播放历史歌曲
+// @Param songId path string true "歌曲Id"
+// @Success 200 {object} models.DeleteSongPlayHistoryResp "resp"
+// @Failure exec error
+// @router /deleteSongPlayHistory/:songId [delete]
+func (receiver *SongController) DeleteSongPlayHistory() error {
+	receiver.BeforeStart("DeleteSongPlayHistory")
+
+	req := models.DeleteSongPlayHistoryReq{
+		SongId: receiver.GetString(":songId"),
+	}
+
+	songService := service.NewSongService(receiver.GetServiceInit())
+	err := songService.DeleteSongPlayHistory(req)
+	if err != nil {
+		logs.Error("删除播放历史歌曲-service返回错误(%s)", err.Error())
+		return receiver.returnJSONError("service返回错误:(%v)", err.Error())
+	}
+
+	var resp models.DeleteSongPlayHistoryResp
+
+	return receiver.returnJSONSuccess(resp)
+}
