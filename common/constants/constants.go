@@ -104,3 +104,31 @@ const (
 	//播放历史存储的最大数量
 	SONG_PLAY_HISTORY_MAX_COUNT = 20
 )
+
+//歌曲搜索
+const (
+	//请求秘钥 579621905(默认值) =>key
+	SEARCH_REQUEST_SECRET = "579621905"
+	//搜索类型 =>type  song,video,.....
+	SEARCH_TYPE_STATUS = "song"
+	//请求的数量默认 100  =>limit
+	SEARCH_LIMIT = 5
+	//分页 默认第一页  => offset
+	SEARCH_OFFSET = 0
+)
+
+//来源渠道
+const (
+	//网易平台
+	CHANNEL_WANGYI_PLATFORM = "1"
+	//QQ平台
+	CHANNEL_QQ_PLATFORM = "2"
+)
+
+//音乐平台url
+const (
+	//网易云音乐搜索url
+	SEARCH_WANGYI_PLATFORM_URL = "https://api.itooi.cn/music/netease/search?key=%s&s=%s&type=%s&limit=%d&offset=%d"
+	//QQ音乐搜索的url
+	SEARCH_QQ_PLATFORM_URL = "https://api.itooi.cn/music/tencent/search?key=%s&s=%s&type=%s&limit=%d&offset=%d"
+)

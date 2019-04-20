@@ -117,6 +117,24 @@ func init() {
 
 	beego.GlobalControllerRouter["online-music/controllers:SongController"] = append(beego.GlobalControllerRouter["online-music/controllers:SongController"],
 		beego.ControllerComments{
+			Method:           "QuerySongListByKeyWord",
+			Router:           `/querySongListByKeyWord`,
+			AllowHTTPMethods: []string{"post"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
+	beego.GlobalControllerRouter["online-music/controllers:SongController"] = append(beego.GlobalControllerRouter["online-music/controllers:SongController"],
+		beego.ControllerComments{
+			Method:           "QuerySongListByKeyWordUI",
+			Router:           `/querySongListByKeyWordUI`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
+	beego.GlobalControllerRouter["online-music/controllers:SongController"] = append(beego.GlobalControllerRouter["online-music/controllers:SongController"],
+		beego.ControllerComments{
 			Method:           "QuerySongPlayHistoryList",
 			Router:           `/querySongPlayHistoryList`,
 			AllowHTTPMethods: []string{"get"},

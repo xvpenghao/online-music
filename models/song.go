@@ -127,3 +127,13 @@ type DeleteAllSongPlayHistoryReq struct {
 type DeleteAllSongPlayHistoryResp struct {
 	baseResp
 }
+
+//查询歌曲列表通过关键字
+type QuerySongListByKeyWordReq struct {
+	KeyWord   string `json:"keyWord"`
+	ChannelId string `json:"channelId"`
+}
+
+type QuerySongListByKeyWordResp struct {
+	List []Song `json:"list"`
+}

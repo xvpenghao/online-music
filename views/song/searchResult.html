@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>歌曲列表</title>
+
+    <script src="/static/me/js/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="/static/layui-v2.4.5/layui/layui.js" ></script>
+    <script type="text/javascript" src="/static/layui-v2.4.5/layui/layui.all.js"></script>
+
+    <script src="/static/me/js/songList.js"></script>
+    <script src="/static/me/common/common.js"></script>
+    <script src="/static/me/obj/songCover.js"></script>
+    <script src="/static/me/obj/song.js"></script>
+    <script src="/static/me/js/searchResult.js"></script>
+
+    <link href="/static/me/css/tracklist.css" rel="stylesheet">
+    <link href="/static/me/css/index.css" rel="stylesheet">
+</head>
+<body>
+<!--第三方的歌单详情-->
+<div>
+    <div class="playlist-detail" style="margin-top: 20px;">
+        <div class="detail-list">
+            <ul class="detail-song-list" id="ul-search-song">
+                <li class="head">
+                    <div class="title"><a class="ng-binding">歌曲名</a></div>
+                    <div class="artist"><a class="ng-binding">歌手</a></div>
+                    <div class="tools ng-binding">操作</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -138,3 +138,18 @@ function historySongAddToSC() {
     let songId = $('#play-history-sasc').attr('name');
     songCoverObj.addSongToSongCoverWindowFunc(songId)
 }
+
+let MUSIC_PLATFORM = 1;
+function changeSelectMusicPlatform(ele) {
+
+    MUSIC_PLATFORM = ele.options[ele.options.selectedIndex].value;
+    $(ele).attr({'name':MUSIC_PLATFORM});
+}
+
+let reqData = {};
+
+function Search() {
+    //切换界面
+    $('#my-iframe').attr({'src':'http://localhost:8080/v1/song/querySongListByKeyWordUI'});
+    //获取搜索的key 和选择的平台
+}

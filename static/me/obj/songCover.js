@@ -31,7 +31,7 @@ SongCover.prototype.queryUserSongCoverListFunc = function () {
 //遍历歌单列表
 SongCover.prototype.songCoverListFunc = function (data,id,url) {
     //将子元素变为空
-    var utilsObj = new Utils();
+    let utilsObj = new Utils();
     $(id).empty();
     let userSongCoverList = "";
     data.map((ele,i)=>{

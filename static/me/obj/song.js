@@ -213,3 +213,77 @@ Song.prototype.deleteSongPlayHistory = function (songId) {
         }
     });
 };
+
+//查询歌曲列表通过关键字
+Song.prototype.querySongListByKeyWordFunc = function (reqData) {
+    console.log('querySongListByKeyWordFunc');
+    let songObj = this;
+    $.ajax({
+        contentType:'application/json;charset=UTF-8',
+        url:"http://localhost:8080/v1/song/querySongListByKeyWord",
+        type:"POST",
+        data:JSON.stringify(reqData),
+        dataType:"json",
+        success:function (data) {
+            if (data.list == null || data.list.length ===0){
+                return
+            }
+
+            $('#ul-search-song').empty();
+            songObj.searchSongListFunc(data);
+        },
+        error:function (err) {
+            layer.msg('提示：'+err.responseJSON.resultMsg);
+        }
+    });
+};
+
+Song.prototype.searchSongListFunc = function (data) {
+
+    let lis = `
+                 <li class="head">
+                    <div class="title"><a class="ng-binding">歌曲名</a></div>
+                    <div class="artist"><a class="ng-binding">歌手</a></div>
+                    <div class="tools ng-binding">操作</div>
+                </li>
+    `;
+    data.list.map((ele,i)=>{
+
+        let newSongData = {'songId':ele.songId, 'songName':ele.songName,
+                          'playUrl':ele.songPlayUrl, 'songCoverUrl':ele.songCoverUrl,
+                          'singer':ele.singer,};
+        let songData = JSON.stringify(newSongData);
+        songData = songData.replace(/"/g,"'");
+
+        let li = `
+         <li  class="ng-scope" onmouseover="songHandleMouseOver(this)"
+                     onmouseout="songHandleMouseOut(this)">
+                    <div class="title"
+                         onclick="playSongByUrl(${songData})">
+                        <img src="/static/me/imgs/play_song.png"/>
+                        <a class="ng-binding " style="position: relative;top: -4px;left: 4px;">
+                           ${ele.songName}
+                        </a>
+                    </div>
+                    <div class="artist">
+                        <a class="ng-binding">${ele.singer}</a>
+                    </div>
+                    <div class="tools tools2 tools-hide" id="${ele.songId}">
+                        <a title="添加到当前播放" class="detail-add-button" >
+                            <span class=" li-add">
+                                <img class="li-handle-img" src="/static/me/imgs/add2.png">
+                            </span>
+                        </a>
+                        <a title="添加到歌单" class="detail-fav-button" onclick="addSongToSongCoverWindow(${ele.songId})">
+                            <span class=" li-song-list">
+                                <img  class="li-handle-img" class="li-handle-img" src="/static/me/imgs/folder_add.png">
+                            </span>
+                        </a>
+                    </div>
+                </li> 
+        `
+        lis += li;
+    });
+
+    $('#ul-search-song').append(lis)
+};

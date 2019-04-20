@@ -119,3 +119,26 @@ type SongPlayHistory struct {
 	//歌手
 	Singer string `json:"singer"`
 }
+
+//搜索歌曲结构体
+type SearchSong struct {
+	SongId string `json:"id"`
+	//歌曲名称
+	SongName string `json:"name"`
+	//歌手
+	Singer string `json:"singer"`
+	//歌曲封面Url
+	SongCoverUrl string `json:"pic"`
+	//歌曲播放链接
+	SongPlayUrl string `json:"url"`
+	//歌词
+	SongLyric string `json:"lrc"`
+	//播放时间
+	PlayTime int `json:"time"`
+}
+
+type SongSearchResult struct {
+	Songs  []SearchSong `json:"data"`
+	Code   int          `json:"code"`
+	Result string       `json:"result"`
+}

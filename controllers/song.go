@@ -356,3 +356,52 @@ func (receiver *SongController) DeleteSongPlayHistory() error {
 
 	return receiver.returnJSONSuccess(resp)
 }
+
+// @Title QuerySongListByKeyWordUI
+// @Description 查询歌曲列表通过关键字UI
+// @Failure exec error
+// @router /querySongListByKeyWordUI [get]
+func (receiver *SongController) QuerySongListByKeyWordUI() error {
+	receiver.BeforeStart("SearchSong")
+
+	receiver.TplName = "song/searchResult.html"
+	return nil
+}
+
+// @Title QuerySongListByKeyWord
+// @Description 查询歌曲列表通过关键字
+// @Param info body models.QuerySongListByKeyWordReq true "req"
+// @Success 200 {object} models.QuerySongListByKeyWordResp "resp"
+// @Failure exec error
+// @router /querySongListByKeyWord [post]
+func (receiver *SongController) QuerySongListByKeyWord() error {
+	receiver.BeforeStart("QuerySongListByKeyWord")
+
+	var req models.QuerySongListByKeyWordReq
+	err := json.Unmarshal(receiver.Ctx.Input.RequestBody, &req)
+	if err != nil {
+		logs.Error("查询歌曲列表通过关键字-解析参数错误(%s)", err.Error())
+		return receiver.returnJSONError("解析参数错误:(%v)", err.Error())
+	}
+
+	songService := service.NewSongService(receiver.GetServiceInit())
+
+	result, err := songService.QuerySongListByKeyWord(req)
+	if err != nil {
+		logs.Error("查询歌曲列表通过关键字-service错误(%s)", err.Error())
+		return receiver.returnJSONError("service错误:(%v)", err.Error())
+	}
+
+	var resp models.QuerySongListByKeyWordResp
+	var song models.Song
+	for _, v := range result.Songs {
+		song.SongId = v.SongId
+		song.SongName = v.SongName
+		song.Singer = v.Singer
+		song.SongCoverUrl = v.SongCoverUrl
+		song.SongPlayUrl = v.SongPlayUrl
+		resp.List = append(resp.List, song)
+	}
+
+	return receiver.returnJSONSuccess(resp)
+}

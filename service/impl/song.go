@@ -6,6 +6,7 @@ import (
 	"github.com/astaxie/beego/logs"
 	"github.com/gocolly/colly"
 	"github.com/jinzhu/gorm"
+	url2 "net/url"
 	"online-music/common/constants"
 	"online-music/common/redis"
 	"online-music/common/utils"
@@ -558,4 +559,53 @@ func (receiver *SongService) DeleteAllSongPlayHistory(req models.DeleteAllSongPl
 		return utils.NewDBErr("删除所有歌曲播放历史失败", err)
 	}
 	return nil
+}
+
+/*
+*@Title:查询歌曲列表通过关键字
+*@Description:
+*@User: 徐鹏豪
+*@Date 2019/4/20 0020
+*@Param
+*@Return
+ */
+func (receiver *SongService) QuerySongListByKeyWord(req models.QuerySongListByKeyWordReq) (dbModel.SongSearchResult, error) {
+	receiver.BeforeLog("QuerySongListByKeyWord")
+
+	platformMap := map[string]string{
+		constants.CHANNEL_WANGYI_PLATFORM: constants.SEARCH_WANGYI_PLATFORM_URL,
+		constants.CHANNEL_QQ_PLATFORM:     constants.SEARCH_QQ_PLATFORM_URL,
+	}
+
+	var result dbModel.SongSearchResult
+	var err error
+	col := colly.NewCollector(
+		colly.UserAgent(constants.USER_AGENT))
+
+	req.KeyWord = url2.QueryEscape(req.KeyWord)
+
+	url := platformMap[req.ChannelId]
+	reqUrl := fmt.Sprintf(url, constants.SEARCH_REQUEST_SECRET, req.KeyWord,
+		constants.SEARCH_TYPE_STATUS, constants.SEARCH_LIMIT, constants.SEARCH_OFFSET)
+
+	col.OnResponse(func(resp *colly.Response) {
+		fmt.Println(string(resp.Body))
+		err := json.Unmarshal(resp.Body, &result)
+		if err != nil {
+			logs.Error("查询歌曲列表通过关键字-解析相应数据错误:(%v)", err.Error())
+		}
+	})
+
+	err = col.Visit(reqUrl)
+	if err != nil {
+		logs.Error("查询歌曲列表通过关键字-访问链接错误:(%v)", err.Error())
+		return result, err
+	}
+
+	for i, v := range result.Songs {
+		//只取一个歌手
+		result.Songs[i].SongName = strings.Split(v.SongName, "/")[0]
+	}
+
+	return result, nil
 }
