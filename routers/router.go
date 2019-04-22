@@ -21,5 +21,13 @@ func init() {
 		beego.NSNamespace("/songCover", beego.NSInclude(&controllers.SongCoverController{})),
 	)
 
-	beego.AddNamespace(ns)
+	//后台页面
+	ns2 := beego.NewNamespace("admin",
+		//首页
+		beego.NSNamespace("/index", beego.NSInclude(&controllers.AdminIndexController{})),
+		//数据
+		beego.NSNamespace("/data", beego.NSInclude(&controllers.DataController{})),
+	)
+
+	beego.AddNamespace(ns, ns2)
 }

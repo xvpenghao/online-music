@@ -56,9 +56,12 @@ function songHandleMouseOut(obj) {
 function playSongByUrl(song) {
     //子页面获取父页面的数据
     let audio = parent.$('#audioTag').get(0);
-    audio.src = song.playUrl;
+    //audio.src = song.playUrl;
     //TODO 播放音乐播放版权提示问题
-   /* let flag = 'success';
+    if (song.playUrl.search(".mp3") !=-1){
+        song.playUrl = `https://api.itooi.cn/music/netease/url?id=${song.songId}&key=579621905`
+    }
+    let flag = 'success';
     //检查是否有版权
     //https://api.itooi.cn/music/netease/url?id=459159104&key=579621905
     $.ajax({
@@ -75,11 +78,11 @@ function playSongByUrl(song) {
             parent.layer.msg('版权原因，无法播放，请选择其他平台');
         }
     });
+
     if (flag ==='error'){
         console.log('请求播放歌曲error');
         return
     }
-    console.log('请求播放歌曲okokokok');*/
 
     //切换播放图片
     parent.$('#playPause').attr({src:"/static/me/imgs/bf_play.png",title:parent.PAUSE_TITLE});

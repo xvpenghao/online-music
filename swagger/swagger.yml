@@ -2,6 +2,24 @@ swagger: "2.0"
 info: {}
 basePath: v1
 paths:
+  /data/queryWebsiteUserGroup:
+    get:
+      tags:
+      - data
+      description: 查询网站使用群体
+      operationId: DataController.QueryWebsiteUserGroup
+      responses:
+        exec:
+          description: error
+  /index/:
+    get:
+      tags:
+      - index
+      description: 后台首页UI
+      operationId: IndexController.IndexUI
+      responses:
+        exec:
+          description: error
   /index/errorUI:
     get:
       tags:
@@ -17,6 +35,15 @@ paths:
       - index
       description: 首页页面
       operationId: IndexController.IndexUI
+      responses:
+        exec:
+          description: error
+  /index/welcomeUI:
+    get:
+      tags:
+      - index
+      description: 欢迎页
+      operationId: IndexController.WelcomeUI
       responses:
         exec:
           description: error
@@ -38,6 +65,113 @@ paths:
       - login
       description: 登录UI
       operationId: LoginController.LoginUI
+  /song/createSong:
+    post:
+      tags:
+      - song
+      description: 添加歌曲，添加歌曲到歌单
+      operationId: SongController.CreateSong
+      parameters:
+      - in: body
+        name: info
+        description: req
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateSongReq'
+      responses:
+        "200":
+          description: '"resp"'
+          schema:
+            $ref: '#/definitions/models.CreateSongResp'
+        exec:
+          description: error
+  /song/createSongPlayHistory:
+    post:
+      tags:
+      - song
+      description: 添加歌曲播放历史
+      operationId: SongController.CreateSongPlayHistory
+      parameters:
+      - in: body
+        name: info
+        description: req
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateSongPlayHistoryReq'
+      responses:
+        "200":
+          description: '"resp"'
+          schema:
+            $ref: '#/definitions/models.CreateSongPlayHistoryResp'
+        exec:
+          description: error
+  /song/deleteAllSongPlayHistory:
+    delete:
+      tags:
+      - song
+      description: 删除所有歌曲播放历史
+      operationId: SongController.DeleteAllSongPlayHistory
+      responses:
+        "200":
+          description: '"resp"'
+          schema:
+            $ref: '#/definitions/models.DeleteAllSongPlayHistoryResp'
+        exec:
+          description: error
+  /song/deleteSong:
+    delete:
+      tags:
+      - song
+      description: 删除歌曲
+      operationId: SongController.DeleteSong
+      parameters:
+      - in: body
+        name: info
+        description: req
+        required: true
+        schema:
+          $ref: '#/definitions/models.DeleteSongReq'
+      responses:
+        "200":
+          description: '"resp"'
+          schema:
+            $ref: '#/definitions/models.DeleteSongResp'
+        exec:
+          description: error
+  /song/deleteSongPlayHistory/{songId}:
+    delete:
+      tags:
+      - song
+      description: 删除播放历史歌曲
+      operationId: SongController.DeleteSongPlayHistory
+      parameters:
+      - in: path
+        name: songId
+        description: 歌曲Id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '"resp"'
+          schema:
+            $ref: '#/definitions/models.DeleteSongPlayHistoryResp'
+        exec:
+          description: error
+  /song/queryCollectSCoverSongList/{songCoverId}:
+    get:
+      tags:
+      - song
+      description: 根据收藏歌单id得到歌曲列表信息
+      operationId: SongController.ModifySongCoverList
+      parameters:
+      - in: path
+        name: songCoverId
+        description: 歌单id
+        required: true
+        type: string
+      responses:
+        exec:
+          description: error
   /song/querySongDetail/{songID}:
     get:
       tags:
@@ -57,6 +191,70 @@ paths:
           description: true "返回歌曲相应信息"
           schema:
             $ref: '#/definitions/models.QuerySongDetailResp'
+  /song/querySongListByKeyWord:
+    post:
+      tags:
+      - song
+      description: 查询歌曲列表通过关键字
+      operationId: SongController.QuerySongListByKeyWord
+      parameters:
+      - in: body
+        name: info
+        description: req
+        required: true
+        schema:
+          $ref: '#/definitions/models.QuerySongListByKeyWordReq'
+      responses:
+        "200":
+          description: '"resp"'
+          schema:
+            $ref: '#/definitions/models.QuerySongListByKeyWordResp'
+        exec:
+          description: error
+  /song/querySongListByKeyWordUI:
+    get:
+      tags:
+      - song
+      description: 查询歌曲列表通过关键字UI
+      operationId: SongController.QuerySongListByKeyWordUI
+      responses:
+        exec:
+          description: error
+  /song/querySongPlayHistoryList:
+    get:
+      tags:
+      - song
+      description: 查询歌曲播放历史列表
+      operationId: SongController.QuerySongPlayHistoryList
+      parameters:
+      - in: body
+        name: info
+        description: req
+        required: true
+        schema:
+          $ref: '#/definitions/models.QuerySongPlayHistoryListReq'
+      responses:
+        "200":
+          description: '"resp"'
+          schema:
+            $ref: '#/definitions/models.QuerySongPlayHistoryListResp'
+        exec:
+          description: error
+  /song/queryUserSongList/{songCoverId}:
+    get:
+      tags:
+      - song
+      description: 根据歌单id得到歌曲列表
+      operationId: SongController.ModifySongCoverList
+      parameters:
+      - in: path
+        name: songCoverId
+        description: 歌单id
+        required: true
+        type: string
+      responses:
+        exec:
+          description: error
   /songCover/createCollectSongCover:
     post:
       tags:
@@ -90,6 +288,69 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.CreateSongCoverReq'
+      responses:
+        exec:
+          description: error
+        res:
+          description: true "resp"
+          schema:
+            $ref: '#/definitions/models.CreateCollectSongCoverResp'
+  /songCover/deleteSongCover/{songCoverId}:
+    delete:
+      tags:
+      - songCover
+      description: 删除歌单
+      operationId: SongCoverController.DeleteSongCover
+      parameters:
+      - in: path
+        name: songCoverId
+        description: req
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '"resp"'
+          schema:
+            $ref: '#/definitions/models.DeleteSongCoverResp'
+        exec:
+          description: error
+  /songCover/modifySongCover:
+    post:
+      tags:
+      - songCover
+      description: 编辑歌单
+      operationId: SongCoverController.ModifySongCover
+      parameters:
+      - in: body
+        name: info
+        description: req
+        required: true
+        schema:
+          $ref: '#/definitions/models.ModifySongCoverReq'
+      responses:
+        "200":
+          description: '"resp"'
+          schema:
+            $ref: '#/definitions/models.ModifySongCoverResp'
+        exec:
+          description: error
+  /songCover/modifySongCoverUI:
+    get:
+      tags:
+      - songCover
+      description: 修改歌单UI
+      operationId: SongCoverController.ModifySongCoverUI
+      parameters:
+      - in: query
+        name: songCoverId
+        description: 歌单id
+        required: true
+        type: string
+      - in: query
+        name: songCoverName
+        description: 歌单名称
+        required: true
+        type: string
       responses:
         exec:
           description: error
@@ -160,6 +421,21 @@ paths:
       responses:
         exec:
           description: error
+  /songCover/userSongCoverListUI/{songId}:
+    get:
+      tags:
+      - songCover
+      description: 用户歌单列表UI
+      operationId: SongCoverController.UserSongCoverListUI
+      parameters:
+      - in: path
+        name: singId
+        description: 歌曲id
+        required: true
+        type: string
+      responses:
+        exec:
+          description: error
   /user/createUser:
     post:
       tags:
@@ -217,7 +493,101 @@ definitions:
     title: CreateSongCoverReq
     type: object
     properties:
-      SongCoverName:
+      songCoverName:
+        type: string
+  models.CreateSongPlayHistoryReq:
+    title: CreateSongPlayHistoryReq
+    type: object
+    properties:
+      playUrl:
+        type: string
+      singer:
+        type: string
+      songCoverUrl:
+        type: string
+      songId:
+        type: string
+      songName:
+        type: string
+  models.CreateSongPlayHistoryResp:
+    title: CreateSongPlayHistoryResp
+    type: object
+    properties:
+      resultCode:
+        type: string
+      resultMsg:
+        type: string
+  models.CreateSongReq:
+    title: CreateSongReq
+    type: object
+    properties:
+      songCoverId:
+        type: string
+      songId:
+        type: string
+  models.CreateSongResp:
+    title: CreateSongResp
+    type: object
+    properties:
+      resultCode:
+        type: string
+      resultMsg:
+        type: string
+  models.DeleteAllSongPlayHistoryResp:
+    title: DeleteAllSongPlayHistoryResp
+    type: object
+    properties:
+      resultCode:
+        type: string
+      resultMsg:
+        type: string
+  models.DeleteSongCoverResp:
+    title: DeleteSongCoverResp
+    type: object
+    properties:
+      resultCode:
+        type: string
+      resultMsg:
+        type: string
+  models.DeleteSongPlayHistoryResp:
+    title: DeleteSongPlayHistoryResp
+    type: object
+    properties:
+      resultCode:
+        type: string
+      resultMsg:
+        type: string
+  models.DeleteSongReq:
+    title: DeleteSongReq
+    type: object
+    properties:
+      songCoverId:
+        type: string
+      songId:
+        type: string
+  models.DeleteSongResp:
+    title: DeleteSongResp
+    type: object
+    properties:
+      resultCode:
+        type: string
+      resultMsg:
+        type: string
+  models.ModifySongCoverReq:
+    title: ModifySongCoverReq
+    type: object
+    properties:
+      songCoverId:
+        type: string
+      songCoverName:
+        type: string
+  models.ModifySongCoverResp:
+    title: ModifySongCoverResp
+    type: object
+    properties:
+      resultCode:
+        type: string
+      resultMsg:
         type: string
   models.QuerySongDetailResp:
     title: QuerySongDetailResp
@@ -237,6 +607,33 @@ definitions:
         type: string
       SongPlayUrl:
         type: string
+  models.QuerySongListByKeyWordReq:
+    title: QuerySongListByKeyWordReq
+    type: object
+    properties:
+      channelId:
+        type: string
+      keyWord:
+        type: string
+  models.QuerySongListByKeyWordResp:
+    title: QuerySongListByKeyWordResp
+    type: object
+    properties:
+      list:
+        type: array
+        items:
+          $ref: '#/definitions/models.Song'
+  models.QuerySongPlayHistoryListReq:
+    title: QuerySongPlayHistoryListReq
+    type: object
+  models.QuerySongPlayHistoryListResp:
+    title: QuerySongPlayHistoryListResp
+    type: object
+    properties:
+      list:
+        type: array
+        items:
+          $ref: '#/definitions/models.SongPlayHistory'
   models.QueryUserSongCoverListReq:
     title: QueryUserSongCoverListReq
     type: object
@@ -263,4 +660,26 @@ definitions:
       songName:
         type: string
       songPlayUrl:
+        type: string
+  models.SongPlayHistory:
+    title: SongPlayHistory
+    type: object
+    properties:
+      playUrl:
+        type: string
+      singer:
+        type: string
+      songCoverUrl:
+        type: string
+      songId:
+        type: string
+      songName:
+        type: string
+  models.baseResp:
+    title: baseResp
+    type: object
+    properties:
+      resultCode:
+        type: string
+      resultMsg:
         type: string
