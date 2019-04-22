@@ -1,0 +1,92 @@
+<!doctype html>
+<html class="x-admin-sm">
+    <head>
+        <meta charset="UTF-8">
+        <title>后台登录-X-admin2.2</title>
+        <meta name="renderer" content="webkit|ie-comp|ie-stand">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+        <script src="/static/me/js/jquery-3.3.1.js"></script>
+        <link rel="stylesheet" href="/static/x-admin/css/font.css">
+        <link rel="stylesheet" href="/static/x-admin/css/xadmin.css">
+        
+    </head>
+    <body>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                            <blockquote class="layui-elem-quote">
+                                展示网站的使用群体数：划分规则为：儿童（5～11）、少年（12～18）、青年（19～35）、中年（36～59）、老年（60～）。
+                            </blockquote>
+                            <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+                            <div id="main" style="width: 100%;height:400px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <script src="/static/x-admin/js/echarts.min.js"></script>
+        <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        let myChart = echarts.init(document.getElementById('main'));
+
+        let listStr = {{.resp}};
+        let listObj = $.parseJSON(listStr);
+        console.log('listStr',listObj);
+        let dataValues = [];
+        let dataName = [];
+
+
+        listObj.list.map((ele,i)=>{
+            dataValues.push(ele.value);
+            dataName.push(ele.name);
+        });
+
+        // 指定图表的配置项和数据
+        let option = {
+            color: ['#3398DB'],
+            tooltip : {
+                trigger: 'axis',
+                axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                    type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis : [
+                {
+                    type : 'category',
+                    data : dataName,
+                    axisTick: {
+                        alignWithLabel: true
+                    }
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value'
+                }
+            ],
+            series : [
+                {
+                    name:'网站使用群体数',
+                    type:'bar',
+                    barWidth: '60%',
+                    data:dataValues,
+                }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+    </body>
+</html>
