@@ -27,6 +27,8 @@ func init() {
 		beego.NSNamespace("/index", beego.NSInclude(&controllers.AdminIndexController{})),
 		//数据
 		beego.NSNamespace("/data", beego.NSInclude(&controllers.DataController{})),
+		//渠道
+		beego.NSNamespace("/channel", beego.NSInclude(&controllers.ChannelController{})),
 	)
 
 	beego.AddNamespace(ns, ns2)

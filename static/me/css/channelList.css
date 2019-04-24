@@ -1,0 +1,34 @@
+.laytable-cell-1-number {
+	width: 100px;
+}
+.laytable-cell-1-channelName {
+	width: 113px;
+}
+
+.laytable-cell-1-createName {
+	width: 125px;
+}
+
+.laytable-cell-1-updateTime {
+	width: 150px;
+}
+
+.laytable-cell-1-handle{
+	width: 255px;
+}
+
+tr,td {
+	text-align: center;
+}
+
+.layui-table-cell {
+	text-align: center;
+}
+
+.layui-laypage a{
+	font-size: 18px;
+}
+
+.layui-laypage span{
+	font-size: 18px;
+}

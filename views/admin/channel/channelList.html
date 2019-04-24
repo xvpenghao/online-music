@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/layui-v2.4.5/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/me/css/channelList.css">
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">搜索栏</a>
+        </div>
+        <form class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+                <button type="button" class="btn btn-default">平台名:</button>
+                <input type="text" name="channelName" value="" class="form-control" placeholder="Search">
+            </div>
+            <input type="hidden" name="pCur" value="1" id="pCurId">
+            <button type="button" class="btn btn-primary">搜索</button>
+        </form>
+    </div>
+</nav>
+<div class="panel panel-default" >
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            平台列表
+        </h3>
+    </div>
+    <div class="panel-body">
+        <div class="layui-form layui-border-box layui-table-view" lay-filter="LAY-table-1" style="margin: 0 auto;width: 750px;">
+            <div class="layui-table-box">
+                <div class="layui-table-header">
+                    <table cellspacing="0" cellpadding="0" border="0" class="layui-table">
+                        <thead>
+                        <tr>
+                            <th data-field="number">
+                                <div class="layui-table-cell laytable-cell-1-number">
+                                    <span>序号</span>
+                                </div>
+                            </th>
+                            <th data-field="channelName">
+                                <div class="layui-table-cell laytable-cell-1-channelName">
+                                    <span>名称</span>
+                                </div>
+                            </th>
+                            <th data-field="createName">
+                                <div class="layui-table-cell laytable-cell-1-createName">
+                                    <span>创建人</span>
+                                </div>
+                            </th>
+                            <th data-field="updateTime">
+                                <div class="layui-table-cell laytable-cell-1-updateTime">
+                                    <span>更新时间</span>
+                                </div>
+                            </th>
+                            <th data-field="handle">
+                                <div class="layui-table-cell laytable-cell-1-handle"><span>操作</span></div>
+                            </th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="layui-table-body layui-table-main">
+                    <table cellspacing="0" cellpadding="0" border="0" class="layui-table">
+                        <tbody>
+                            <tr>
+                                <td data-field="number">
+                                    <div class="layui-table-cell laytable-cell-1-number">1</div>
+                                </td>
+                                <td data-field="channelName">
+                                    <div class="layui-table-cell laytable-cell-1-channelName">平台名称</div>
+                                </td>
+                                <td data-field="createName">
+                                    <div class="layui-table-cell laytable-cell-1-createName">张三</div>
+                                </td>
+                                <td data-field="updateTime">
+                                    <div class="layui-table-cell laytable-cell-1-updateTime">2018-09-03</div>
+                                </td>
+                                <td data-field="handle" align="center" data-off="true">
+
+                                    <div class="layui-table-cell laytable-cell-1-handle">
+                                        &nbsp;&nbsp;
+                                        <a class="layui-btn layui-btn-xs" style="font-size: 14px;"
+                                           href="/admin/channel/queryChannelDetail/123" target="main">编辑</a>
+                                        &nbsp;&nbsp;
+                                        <a class="layui-btn layui-btn-danger layui-btn-xs"
+                                           href="#" style="font-size: 14px;"
+                                           onclick="return confirm('你真的要删除吗？')"
+                                        >删除</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="fenye" style="width: 750px;margin-top:20px; padding: 0 85px;">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let pcount = 10;
+    let plimit = 10;
+    let pcurr = 10;
+    let pgroups = 10;
+</script>
+
+<script src="/static/me/js/jquery-3.3.1.js"></script>
+<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/layui-v2.4.5/layui/layui.js"></script>
+<script src="/static/me/js/pageNavigation.js"></script>
+</body>
+</html>

@@ -17,4 +17,5 @@ func InitServiceMap() {
 	service.SetServiceMap(service.ServiceISongCover, new(SongCoverService))
 	service.SetServiceMap(service.ServiceISong, new(SongService))
 	service.SetServiceMap(service.ServiceIData, new(DataService))
+	service.SetServiceMap(service.ServiceIChannel, new(ChannelService))
 }

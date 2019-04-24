@@ -5,13 +5,27 @@
     },
     "basePath": "v1",
     "paths": {
-        "/data/queryWebsiteUserGroup": {
+        "/data/queryGenderProportion": {
+            "get": {
+                "tags": [
+                    "data"
+                ],
+                "description": "查询性别比例",
+                "operationId": "DataController.QueryGenderProportion",
+                "responses": {
+                    "exec": {
+                        "description": "error"
+                    }
+                }
+            }
+        },
+        "/data/queryWebsiteUseGroup": {
             "get": {
                 "tags": [
                     "data"
                 ],
                 "description": "查询网站使用群体",
-                "operationId": "DataController.QueryWebsiteUserGroup",
+                "operationId": "DataController.QueryWebsiteUseGroup",
                 "responses": {
                     "exec": {
                         "description": "error"
@@ -25,7 +39,7 @@
                     "index"
                 ],
                 "description": "后台首页UI",
-                "operationId": "IndexController.IndexUI",
+                "operationId": "AdminIndexController.IndexUI",
                 "responses": {
                     "exec": {
                         "description": "error"
@@ -67,7 +81,7 @@
                     "index"
                 ],
                 "description": "欢迎页",
-                "operationId": "IndexController.WelcomeUI",
+                "operationId": "AdminIndexController.WelcomeUI",
                 "responses": {
                     "exec": {
                         "description": "error"
@@ -896,6 +910,24 @@
                     "type": "string"
                 },
                 "resultMsg": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.QueryChannelDetailResp": {
+            "title": "QueryChannelDetailResp",
+            "type": "object",
+            "properties": {
+                "ChannelId": {
+                    "type": "string"
+                },
+                "ChannelName": {
+                    "type": "string"
+                },
+                "CreateName": {
+                    "type": "string"
+                },
+                "UpdateTimeStr": {
                     "type": "string"
                 }
             }

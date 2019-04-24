@@ -1,10 +1,19 @@
 package service
 
+import (
+	"online-music/models"
+	"online-music/service/dbModel"
+)
+
 type (
 	IChannelService interface {
 		IBaseService
-		//查询歌单列表
-		QueryAllChannelInfo() error
+		//添加渠道
+		CreateChannel(req models.CreateChannelReq) error
+		//查询渠道详情
+		QueryChannelDetail(req models.QueryChannelDetailReq) (dbModel.ChannelDetail, error)
+		//修改渠道信息
+		ModifyChannel(req models.ModifyChannelReq) error
 	}
 )
 
