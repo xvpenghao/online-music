@@ -130,7 +130,7 @@ func (receiver *ChannelService) ModifyChannel(req models.ModifyChannelReq) error
 	}
 
 	tx := db.Begin()
-	err = tx.Table("tb_channel").Where("channel_id = ?", req.ChannelId).Update(&updateField).Error
+	err = tx.Table("tb_channel").Where("channel_id = ?", req.ChannelId).Update(updateField).Error
 	if err != nil {
 		tx.Rollback()
 		logs.Error("修改渠道信息失败：(%v)", err.Error())

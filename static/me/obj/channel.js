@@ -120,3 +120,25 @@ Channel.prototype.deleteChannelFunc =function (obj,channelId) {
     console.log('deleteChannelFunc',channelId);
     //TODO 成功后删除该节点，后台更新数据
 };
+
+Channel.prototype.modifyChannelFunc =function (formData) {
+    let reqData = {channelName:formData.get('channelName'),
+        channelId:formData.get('channelId'),
+    };
+    console.log('reqData',reqData);
+    $.ajax({
+        contentType:'application/json;charset=UTF-8',
+        url:"http://localhost:8080/admin/channel/modifyChannel",
+        type:"PUT",
+        data:JSON.stringify(reqData),
+        dataType:"json",
+        success:function (data,status) {
+            parent.layer.msg('提示：修改渠道成功');
+            window.location.href = "http://localhost:8080/admin/channel/queryChannelListUI"
+        },
+        error:function (err) {
+            //错误提示
+            parent.layer.msg('提示：'+err.responseJSON.resultMsg);
+        }
+    });
+};

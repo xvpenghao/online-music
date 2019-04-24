@@ -62,7 +62,6 @@ func (receiver *ChannelController) CreateChannel() error {
 // @Title QueryChannelDetail
 // @Description 查询渠道详情
 // @Param channelId path string true "渠道id"
-// @Success 200 {object} models.QueryChannelDetailResp "resp"
 // @Failure exec error
 // @router /queryChannelDetail/:channelId [get]
 func (receiver *ChannelController) QueryChannelDetail() error {
@@ -121,5 +120,31 @@ func (receiver *ChannelController) QueryChannelList() error {
 		resp.List = append(resp.List, c)
 	}
 
+	return receiver.returnJSONSuccess(resp)
+}
+
+// @Title ModifyChannel
+// @Description 修改渠道信息
+// @Param info body models.ModifyChannelReq true "req"
+// @Success 200 {object} models.ModifyChannelResp "resp"
+// @Failure exec error
+// @router /modifyChannel [put]
+func (receiver *ChannelController) ModifyChannel() error {
+	receiver.BeforeStart("ModifyChannel")
+
+	var req models.ModifyChannelReq
+	err := json.Unmarshal(receiver.Ctx.Input.RequestBody, &req)
+	if err != nil {
+		logs.Error("修改渠道信息-参数解析错误(%v)", err.Error())
+		return receiver.returnJSONError("参数解析错误")
+	}
+
+	channelService := service.NewChannelService(receiver.GetServiceInit())
+	err = channelService.ModifyChannel(req)
+	if err != nil {
+		logs.Error("修改渠道信息-service返回错误(%v)", err.Error())
+		return receiver.returnJSONError("service返回错误")
+	}
+	var resp models.ModifyChannelResp
 	return receiver.returnJSONSuccess(resp)
 }
