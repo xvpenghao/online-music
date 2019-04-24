@@ -2,6 +2,7 @@ package service
 
 import (
 	"online-music/models"
+	"online-music/service/dbModel"
 )
 
 type (
@@ -13,8 +14,8 @@ type (
 		ModifyUser(param models.ModifyUserReq) error
 		//修改密码
 		ModifyPwd(param models.ModifyPwdReq) error
-		//查询用户信息根据用户id
-		/*QueryUserByUID()dbModel.User*/
+		//查询用户列表
+		QueryBUserList(req models.QueryBUserListReq) (dbModel.BUserList, error)
 	}
 )
 

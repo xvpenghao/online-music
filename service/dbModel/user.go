@@ -1,6 +1,9 @@
 package dbModel
 
-import "time"
+import (
+	"online-music/common/utils"
+	"time"
+)
 
 const (
 	//查询用户信息根据用户id
@@ -14,6 +17,14 @@ const (
 	QUERY_USER_COUNTS_BY_UID = `select count(*)
                                 from tb_user tbu
                                 where tbu.user_id <> ? and (tbu.user_name = ? or tbu.email = ?)`
+	//查询用户列表
+	QUERY_USER_LIST = `select user_id,user_name,email,age,birthday,gender
+                       from tb_user
+                       where 1=1 `
+	//查询用户列表数
+	QUERY_USER_LIST_COUNTS = `select count(*)
+                              from tb_user
+                              where 1=1 `
 )
 
 type User struct {
@@ -79,4 +90,23 @@ type LoginUserInfo struct {
 	LoginName string `gorm:"column:login_name"`
 	//登陆邮箱
 	LoginEmail string `gorm:"column:login_email"`
+}
+
+type BUserInfo struct {
+	UserId string `gorm:"column:user_id"`
+	//用户名
+	UserName string `gorm:"column:user_name"`
+	//邮箱
+	Email string `gorm:"column:email"`
+	//年龄
+	Age int `gorm:"column:age"`
+	//生日
+	Birthday time.Time `gorm:"column:birthday"`
+	//性别
+	Gender string `gorm:"column:gender"`
+}
+
+type BUserList struct {
+	Page utils.Page
+	List []BUserInfo
 }

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/layui-v2.4.5/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/me/css/userList.css">
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="layui-card-body ">
+            <div class="layui-collapse" lay-filter="test">
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">条件筛选<i class="layui-icon layui-colla-icon"></i></h2>
+                    <div class="layui-colla-content">
+                        <form class="form-horizontal" id="form-buser" role="form" action="" method="">
+                            <div class="form-group">
+                                <label  class="col-sm-2 control-label">用户名:</label>
+                                <div class="col-sm-10" style="width: 30%;">
+                                    <input type="text"  name="userName" class="form-control"  placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label  class="col-sm-2 control-label">邮&nbsp;&nbsp;&nbsp;&nbsp;箱:</label>
+                                <div class="col-sm-10" style="width: 30%;">
+                                    <input type="text" name="email" class="form-control"  placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label class="col-sm-2 control-label">年&nbsp;&nbsp;&nbsp;&nbsp;龄:</label>
+                                <div class="col-sm-10" style="width: 30%;">
+                                    <input type="text" name="age" class="form-control"   placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label  class="col-sm-2 control-label">生&nbsp;&nbsp;&nbsp;&nbsp;日:</label>
+                                <div class="col-sm-10" style="width: 30%;">
+                                    <input type="text" name="birthday" class="layui-input" id="birthday" placeholder=" - ">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" >性&nbsp;&nbsp;&nbsp;&nbsp;别:</label>
+                                <div class="radio">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <label>
+                                        <input type="radio" name="gender"  value="男" >男
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="gender"  value="女" >女
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="button" onclick="searchUserForm()" class="btn btn-success">确定</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button type="reset" class="btn btn-primary">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<div class="panel panel-default" >
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            平台列表
+        </h3>
+    </div>
+    <div class="panel-body">
+        <div class="layui-form layui-border-box layui-table-view" lay-filter="LAY-table-1" style="margin: 0 auto;width: 930px;">
+            <div class="layui-table-box">
+                <div class="layui-table-header">
+                    <table cellspacing="0" cellpadding="0" border="0" class="layui-table">
+                        <thead>
+                        <tr>
+                            <th data-field="number">
+                                <div class="layui-table-cell laytable-cell-1-number">
+                                    <span>序号</span>
+                                </div>
+                            </th>
+                            <th data-field="name">
+                                <div class="layui-table-cell laytable-cell-1-name">
+                                    <span>姓名</span>
+                                </div>
+                            </th>
+                            <th data-field="gender">
+                                <div class="layui-table-cell laytable-cell-1-gender">
+                                    <span>性别</span>
+                                </div>
+                            </th>
+                            <th data-field="age">
+                                <div class="layui-table-cell laytable-cell-1-age">
+                                    <span>年龄</span>
+                                </div>
+                            </th>
+                            <th data-field="mail">
+                                <div class="layui-table-cell laytable-cell-1-mail">
+                                    <span>邮箱</span>
+                                </div>
+                            </th>
+                            <th data-field="birthday">
+                                <div class="layui-table-cell laytable-cell-1-birthday">
+                                    <span>生日</span>
+                                </div>
+                            </th>
+                            <th data-field="handle">
+                                <div class="layui-table-cell laytable-cell-1-handle"><span>操作</span></div>
+                            </th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="layui-table-body layui-table-main">
+                    <table cellspacing="0" cellpadding="0" border="0" class="layui-table">
+                        <tbody id="tbody-buserList">
+                            <tr>
+                                <td data-field="number">
+                                    <div class="layui-table-cell laytable-cell-1-number">1</div>
+                                </td>
+                                <td data-field="name">
+                                    <div class="layui-table-cell laytable-cell-1-name">张三</div>
+                                </td>
+                                <td data-field="gender">
+                                    <div class="layui-table-cell laytable-cell-1-gender">男</div>
+                                </td>
+                                <td data-field="age">
+                                    <div class="layui-table-cell laytable-cell-1-age">20</div>
+                                </td>
+                                <td data-field="mail">
+                                    <div class="layui-table-cell laytable-cell-1-mail">1433776465@qq.com</div>
+                                </td>
+                                <td data-field="birthday">
+                                    <div class="layui-table-cell laytable-cell-1-birthday">2018-05-04</div>
+                                </td>
+                                <td data-field="handle" align="center" data-off="true">
+
+                                    <div class="layui-table-cell laytable-cell-1-handle">
+                                        &nbsp;&nbsp;
+                                        <a class="layui-btn layui-btn-xs" style="font-size: 14px;"
+                                           href="userModify.html" target="main">编辑</a>
+                                        &nbsp;&nbsp;
+                                        <a class="layui-btn layui-btn-danger layui-btn-xs"
+                                           href="#" style="font-size: 14px;"
+                                           onclick="return confirm('你真的要删除吗？')"
+                                        >删除</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="fenye" style="width: 750px;margin-top:20px; margin-left: auto;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/static/me/js/jquery-3.3.1.js"></script>
+
+<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/layui-v2.4.5/layui/layui.js"></script>
+
+<script type="text/javascript" src="/static/x-admin/js/xadmin.js"></script>
+<script type="text/javascript" src="/static/me/js/buserList.js"></script>
+<script type="text/javascript" src="/static/me/obj/buser.js"></script>
+
+<script>
+    layui.use('laydate', function() {
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#birthday'
+            , range: true
+        });
+    });
+</script>
+</body>
+</html>

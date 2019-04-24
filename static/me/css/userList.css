@@ -1,0 +1,40 @@
+.laytable-cell-1-number {
+	width: 80px;
+}
+.laytable-cell-1-name {
+	width: 100px;
+}
+
+.laytable-cell-1-gender {
+	width: 80px;
+}
+
+.laytable-cell-1-age {
+	width: 80px;
+}
+.laytable-cell-1-mail {
+	width: 200px;
+}
+.laytable-cell-1-birthday {
+	width: 125px;
+}
+
+.laytable-cell-1-handle{
+	width: 255px;
+}
+
+tr,td {
+	text-align: center;
+}
+
+.layui-table-cell {
+	text-align: center;
+}
+
+.layui-laypage a{
+	font-size: 18px;
+}
+
+.layui-laypage span{
+	font-size: 18px;
+}

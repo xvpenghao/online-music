@@ -7,6 +7,7 @@ import (
 	"online-music/common/utils"
 	"online-music/models"
 	"online-music/service/dbModel"
+	"strings"
 	"time"
 )
 
@@ -198,4 +199,89 @@ func (receiver *UserService) ModifyPwd(param models.ModifyPwdReq) error {
 
 	tx.Commit()
 	return nil
+}
+
+/*
+*@Title: 查询用户列表
+*@Description:
+*@User: 徐鹏豪
+*@Date 2019/4/24 0024
+*@Param
+*@Return
+ */
+func (receiver *UserService) QueryBUserList(req models.QueryBUserListReq) (dbModel.BUserList, error) {
+	receiver.BeforeLog("QueryBUserList")
+
+	var result dbModel.BUserList
+	db, err := receiver.GetConn()
+	if err != nil {
+		logs.Error("查询用户列表-数据库链接错误：(%v)", err.Error())
+		return result, utils.NewDBErr("数据库链接错误", err)
+	}
+	defer db.Close()
+
+	var whereSql strings.Builder
+	sqlParam := []interface{}{}
+
+	if req.UserName != "" {
+		whereSql.WriteString(" and instr(user_name,?) ")
+		sqlParam = append(sqlParam, req.UserName)
+	}
+	if req.Email != "" {
+		whereSql.WriteString(" and instr(email,?) ")
+		sqlParam = append(sqlParam, req.Email)
+	}
+	if req.Gender != "" {
+		whereSql.WriteString(" and gender = ? ")
+		sqlParam = append(sqlParam, req.Gender)
+	}
+	if req.Age > 0 {
+		whereSql.WriteString(" age = ? ")
+		sqlParam = append(sqlParam, req.Age)
+	}
+	//TODO 生日的判断
+	if req.Birthday != "" {
+		strs := strings.Split(req.Birthday, " - ")
+		whereSql.WriteString(" and birthday between ? and ? ")
+		sqlParam = append(sqlParam, strs[0], strs[1])
+	}
+
+	//查询总记录数
+	var totalCounts int
+	var queryListSqlCounts strings.Builder
+	queryListSqlCounts.WriteString(dbModel.QUERY_USER_LIST_COUNTS)
+	queryListSqlCounts.WriteString(whereSql.String())
+	err = db.Raw(queryListSqlCounts.String(), sqlParam...).Count(&totalCounts).Error
+	if err != nil {
+		logs.Error("查询用户列表-查询用户列表总数错误：(%v)", err.Error())
+		return result, utils.NewDBErr("查询用户列表总数错误", err)
+	}
+
+	page := utils.Page{
+		CurPage:    req.CurPage,
+		TotalCount: totalCounts,
+		Groups:     constants.PAGE_DEFAULT_GROUPS,
+		Limit:      constants.PAGE_DEFAULT_LIMIT,
+	}
+	curPage := utils.CalPageCount(req.CurPage, page.Limit)
+
+	//查询用户列表
+	var queryListSql strings.Builder
+	queryListSql.WriteString(dbModel.QUERY_USER_LIST)
+	queryListSql.WriteString(whereSql.String())
+
+	queryListSql.WriteString(" order by update_time ")
+	queryListSql.WriteString(" limit ? offset ? ")
+	sqlParam = append(sqlParam, page.Limit, curPage)
+
+	var bUsers []dbModel.BUserInfo
+	err = db.Raw(queryListSql.String(), sqlParam...).Find(&bUsers).Error
+	if err != nil {
+		logs.Error("查询用户列表错误：(%v)", err.Error())
+		return result, utils.NewDBErr("查询用户列表错误", err)
+	}
+
+	result.List = bUsers
+	result.Page = page
+	return result, nil
 }

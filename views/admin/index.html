@@ -9,8 +9,7 @@
         <meta http-equiv="Cache-Control" content="no-siteapp" />
         <link rel="stylesheet" href="/static/x-admin/css/font.css">
         <link rel="stylesheet" href="/static/x-admin/css/xadmin.css">
-        <script src="/static/layui-v2.4.5/layui/layui.js" charset="utf-8"></script>
-        <script type="text/javascript" src="/static/x-admin/js/xadmin.js"></script>
+
     </head>
     <body class="index">
         <!-- 顶部开始 -->
@@ -42,6 +41,20 @@
         <div class="left-nav">
             <div id="side-nav">
                 <ul id="nav">
+                    <li>
+                        <a href="javascript:;">
+                            <i class="iconfont left-nav-li" lay-tips="用户管理">&#xe723;</i>
+                            <cite>用户管理</cite>
+                            <i class="iconfont nav_right">&#xe697;</i></a>
+                        <ul class="sub-menu">
+                            <li>
+                                <a href="/admin/user/bUserListUI" target="main">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>用户列表</cite>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                     <li>
                         <a href="javascript:;">
                             <i class="iconfont left-nav-li" lay-tips="订单管理">&#xe723;</i>
@@ -113,6 +126,8 @@
         <div class="page-content-bg"></div>
         <style id="theme_style"></style>
         <!-- 右侧主体结束 -->
-    </body>
 
+        <script src="/static/layui-v2.4.5/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/static/x-admin/js/xadmin.js"></script>
+    </body>
 </html>
