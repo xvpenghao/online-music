@@ -1,12 +1,25 @@
 package dbModel
 
-import "time"
+import (
+	"online-music/common/utils"
+	"time"
+)
 
 const (
+	//查询渠道详情
 	QUERY_CHANNEL_DETAIL = `select channel_id,channel_name
                             from tb_channel
-                            where channel_id = ?
-`
+                            where channel_id = ?`
+	//查询渠道列表
+	QUERY_CHANNEL_LIST = `select channel_id,channel_name,create_user,update_time 
+                         from tb_channel
+                         where instr(channel_name,?)
+                         order by update_time
+                         limit ? offset ?`
+	//查询渠道列表个数
+	QUERY_CHANNEL_COUNTS = `select COUNT(*) 
+                         from tb_channel
+                         where instr(channel_name,?)`
 )
 
 //来源渠道
@@ -51,4 +64,6 @@ type ChannelInfo struct {
 }
 
 type ChannelInfoList struct {
+	Page utils.Page
+	List []ChannelInfo
 }

@@ -132,3 +132,13 @@ const (
 	//QQ音乐搜索的url
 	SEARCH_QQ_PLATFORM_URL = "https://api.itooi.cn/music/tencent/search?key=%s&s=%s&type=%s&limit=%d&offset=%d"
 )
+
+//分页
+const (
+	//默认页
+	PAGE_DEFAULT_CUR_PAGE = 1
+	//每一页的大小
+	PAGE_DEFAULT_LIMIT = 3
+	//分页的分组
+	PAGE_DEFAULT_GROUPS = 5
+)

@@ -1,5 +1,7 @@
 package models
 
+import "online-music/common/utils"
+
 //添加平台分类
 type CreateChannelReq struct {
 	//平台名称
@@ -33,4 +35,27 @@ type ModifyChannelReq struct {
 
 type ModifyChannelResp struct {
 	baseResp
+}
+
+type QueryChannelListReq struct {
+	//当前页 默认为1
+	CurPage     int    `json:"curPage"`
+	ChannelName string `json:"channelName"`
+}
+
+//渠道信息
+type ChannelInfo struct {
+	//歌曲来源渠道id
+	ChannelId string `json:"channelId"`
+	//渠道名称
+	ChannelName string `json:"channelName"`
+	//创建人
+	CreateUser string `json:"createUser"`
+	//更新时间
+	UpdateTime string `json:"updateTime"`
+}
+
+type QueryChannelListResp struct {
+	Page utils.Page    `json:"page"`
+	List []ChannelInfo `json:"list"`
 }

@@ -14,6 +14,8 @@ type (
 		QueryChannelDetail(req models.QueryChannelDetailReq) (dbModel.ChannelDetail, error)
 		//修改渠道信息
 		ModifyChannel(req models.ModifyChannelReq) error
+		//查询渠道列表
+		QueryChannelList(req models.QueryChannelListReq) (dbModel.ChannelInfoList, error)
 	}
 )
 

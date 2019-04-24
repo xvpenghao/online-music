@@ -22,12 +22,12 @@ func (receiver *ChannelController) CreateChannelUI() error {
 	return nil
 }
 
-// @Title QueryChannelList
-// @Description 平台分类列表
+// @Title QueryChannelListUI
+// @Description 平台分类列表UI
 // @Failure exec error
-// @router /queryChannelList [get]
-func (receiver *ChannelController) QueryChannelList() error {
-	receiver.BeforeStart("QueryChannelList")
+// @router /queryChannelListUI [get]
+func (receiver *ChannelController) QueryChannelListUI() error {
+	receiver.BeforeStart("QueryChannelListUI")
 
 	receiver.TplName = "admin/channel/channelList.html"
 	return nil
@@ -68,6 +68,58 @@ func (receiver *ChannelController) CreateChannel() error {
 func (receiver *ChannelController) QueryChannelDetail() error {
 	receiver.BeforeStart("QueryChannelDetail")
 
+	req := models.QueryChannelDetailReq{
+		ChannelId: receiver.GetString(":channelId"),
+	}
+	channelService := service.NewChannelService(receiver.GetServiceInit())
+	result, err := channelService.QueryChannelDetail(req)
+	if err != nil {
+		logs.Error("查询渠道详情-service返回错误：(%v)", err.Error())
+		return receiver.returnError("service返回错误")
+	}
+	resp := models.QueryChannelDetailResp{
+		ChannelId:   result.ChannelId,
+		ChannelName: result.ChannelName,
+	}
+
+	receiver.Data["channel"] = resp
 	receiver.TplName = "admin/channel/channelModify.html"
 	return nil
+}
+
+// @Title QueryChannelList
+// @Description 查询渠道列表
+// @Param req body models.QueryChannelListReq true "req"
+// @Success resp {object} models.QueryChannelListResp true "resp"
+// @Failure exec error
+// @router /queryChannelList [post]
+func (receiver *ChannelController) QueryChannelList() error {
+	receiver.BeforeStart("QueryChannelList")
+	var req models.QueryChannelListReq
+	err := json.Unmarshal(receiver.Ctx.Input.RequestBody, &req)
+	if err != nil {
+		logs.Error("查询渠道列表-参数解析错误(%v)", err.Error())
+		return receiver.returnJSONError("参数解析错误")
+	}
+
+	channelService := service.NewChannelService(receiver.GetServiceInit())
+	result, err := channelService.QueryChannelList(req)
+	if err != nil {
+		logs.Error("查询渠道列表-service返回错误(%v)", err.Error())
+		return receiver.returnJSONError("service返回错误")
+	}
+
+	var resp models.QueryChannelListResp
+	resp.Page = result.Page
+	var c models.ChannelInfo
+	formStr := "2006-01-02 15:04"
+	for _, v := range result.List {
+		c.ChannelId = v.ChannelId
+		c.ChannelName = v.ChannelName
+		c.CreateUser = v.CreateUser
+		c.UpdateTime = v.UpdateTime.Format(formStr)
+		resp.List = append(resp.List, c)
+	}
+
+	return receiver.returnJSONSuccess(resp)
 }

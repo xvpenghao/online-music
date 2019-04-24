@@ -16,10 +16,9 @@
         <form class="navbar-form navbar-left" role="search">
             <div class="form-group">
                 <button type="button" class="btn btn-default">平台名:</button>
-                <input type="text" name="channelName" value="" class="form-control" placeholder="Search">
+                <input id="channelName" type="text" name="channelName" value="" class="form-control" placeholder="Search">
             </div>
-            <input type="hidden" name="pCur" value="1" id="pCurId">
-            <button type="button" class="btn btn-primary">搜索</button>
+            <button type="button" onclick="searchChannelForm()" class="btn btn-primary">搜索</button>
         </form>
     </div>
 </nav>
@@ -65,34 +64,7 @@
                 </div>
                 <div class="layui-table-body layui-table-main">
                     <table cellspacing="0" cellpadding="0" border="0" class="layui-table">
-                        <tbody>
-                            <tr>
-                                <td data-field="number">
-                                    <div class="layui-table-cell laytable-cell-1-number">1</div>
-                                </td>
-                                <td data-field="channelName">
-                                    <div class="layui-table-cell laytable-cell-1-channelName">平台名称</div>
-                                </td>
-                                <td data-field="createName">
-                                    <div class="layui-table-cell laytable-cell-1-createName">张三</div>
-                                </td>
-                                <td data-field="updateTime">
-                                    <div class="layui-table-cell laytable-cell-1-updateTime">2018-09-03</div>
-                                </td>
-                                <td data-field="handle" align="center" data-off="true">
-
-                                    <div class="layui-table-cell laytable-cell-1-handle">
-                                        &nbsp;&nbsp;
-                                        <a class="layui-btn layui-btn-xs" style="font-size: 14px;"
-                                           href="/admin/channel/queryChannelDetail/123" target="main">编辑</a>
-                                        &nbsp;&nbsp;
-                                        <a class="layui-btn layui-btn-danger layui-btn-xs"
-                                           href="#" style="font-size: 14px;"
-                                           onclick="return confirm('你真的要删除吗？')"
-                                        >删除</a>
-                                    </div>
-                                </td>
-                            </tr>
+                        <tbody id="tbody-channelList">
                         </tbody>
                     </table>
                 </div>
@@ -104,16 +76,10 @@
     </div>
 </div>
 
-<script>
-    let pcount = 10;
-    let plimit = 10;
-    let pcurr = 10;
-    let pgroups = 10;
-</script>
-
 <script src="/static/me/js/jquery-3.3.1.js"></script>
 <script src="/static/bootstrap/js/bootstrap.min.js"></script>
 <script src="/static/layui-v2.4.5/layui/layui.js"></script>
-<script src="/static/me/js/pageNavigation.js"></script>
+<script src="/static/me/js/channelList.js"></script>
+<script src="/static/me/obj/channel.js"></script>
 </body>
 </html>

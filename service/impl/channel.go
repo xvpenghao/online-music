@@ -2,6 +2,8 @@ package impl
 
 import (
 	"github.com/astaxie/beego/logs"
+	"github.com/jinzhu/gorm"
+	"online-music/common/constants"
 	"online-music/common/utils"
 	"online-music/models"
 	"online-music/service/dbModel"
@@ -137,4 +139,56 @@ func (receiver *ChannelService) ModifyChannel(req models.ModifyChannelReq) error
 	tx.Commit()
 
 	return nil
+}
+
+/*
+*@Title: 查询渠道列表
+*@Description:
+*@User: 徐鹏豪
+*@Date 2019/4/24 0024
+*@Param
+*@Return
+ */
+func (receiver *ChannelService) QueryChannelList(req models.QueryChannelListReq) (dbModel.ChannelInfoList, error) {
+	receiver.BeforeLog("QueryChannelList")
+	var result dbModel.ChannelInfoList
+	db, err := receiver.GetConn()
+	if err != nil {
+		logs.Error("查询渠道列表-数据库链接错误：(%v)", err.Error())
+		return result, utils.NewDBErr("数据库链接错误", err)
+	}
+	defer db.Close()
+
+	page := utils.Page{
+		CurPage: req.CurPage,
+		Groups:  constants.PAGE_DEFAULT_GROUPS,
+		Limit:   constants.PAGE_DEFAULT_LIMIT,
+	}
+
+	//查询总记录数
+	sql2 := dbModel.QUERY_CHANNEL_COUNTS
+	var counts int
+	err = db.Raw(sql2, req.ChannelName).Count(&counts).Error
+	if err != nil {
+		logs.Error("查询渠道列表-查询列表个数错误：(%v)", err.Error())
+		return result, utils.NewDBErr("查询列表个数错误", err)
+	}
+
+	//设置总页数
+	page.TotalCount = counts
+
+	var channels []dbModel.ChannelInfo
+	//数据库分页
+	dbPage := utils.CalPageCount(req.CurPage, constants.PAGE_DEFAULT_LIMIT)
+	sql := dbModel.QUERY_CHANNEL_LIST
+	sqlParam := []interface{}{req.ChannelName, page.Limit, dbPage}
+	err = db.Raw(sql, sqlParam...).Find(&channels).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		logs.Error("查询渠道列表错误：(%v)", err.Error())
+		return result, utils.NewDBErr("查询渠道列表错误", err)
+	}
+
+	result.List = channels
+	result.Page = page
+	return result, nil
 }
