@@ -269,3 +269,107 @@ SongCover.prototype.addSongCoverListSelect = function () {
         })
     });
 };
+
+SongCover.prototype.renderObj ={};
+
+//查询分页歌单列表
+SongCover.prototype.queryPageSongCoverListFunc =function (bSongCover,curPage) {
+    console.log('queryPageSongCoverListFunc');
+    let songCoverObj = this;
+
+    let reqData = {...bSongCover,curPage:curPage};
+    $.ajax({
+        contentType:'application/json;charset=UTF-8',
+        url:"http://localhost:8080/admin/songCover/queryPageSongCoverList",
+        type:"POST",
+        data:JSON.stringify(reqData),
+        dataType:"json",
+        success:function (data,status) {
+            if (data.list ==null || data.list.length===0){
+                data.list= [];
+            }
+
+            let pageSize = (data.page.curPage-1)*data.page.limit;
+            songCoverObj.bSongCoverListFunc(data.list,pageSize);
+            //分页的列表的数据遍历
+            songCoverObj.renderObj = {
+                elem: 'fenye' //注意，这里的 test1 是 ID，不用加 # 号
+                ,count: data.page.count //数据总数，从服务端得到
+                ,limit: data.page.limit  //每一页的大小
+                ,curr:data.page.curPage
+                ,groups: data.page.groups //连续出现的页码的个数
+                ,layout: ['count', 'prev', 'page', 'next']
+                ,jump: songCoverObj.jumpFunc//分页切换时候触发
+            };
+            layui.use('laypage',function () {
+                let laypage = layui.laypage;
+                //执行一个laypage实例
+                laypage.render(songCoverObj.renderObj);
+            });
+        },
+        error:function (err) {
+            //错误提示
+            parent.layer.msg('提示：'+err.responseJSON.resultMsg);
+        }
+    });
+};
+
+
+//数据节点的生成
+SongCover.prototype.bSongCoverListFunc = function(list,pageSize) {
+    $('#tbody-queryPageSongCoverList').empty();
+    let trs = '';
+    list.map((ele,index)=>{
+        let tr = `
+            <tr>
+                <td data-field="number">
+                    <div class="layui-table-cell laytable-cell-1-number">${index+1+pageSize}</div>
+                </td>
+                <td data-field="name">
+                    <div class="layui-table-cell laytable-cell-1-name">${ele.userName}</div>
+                </td>
+                <td data-field="songCoverName">
+                    <div class="layui-table-cell laytable-cell-1-songCoverName">${ele.songCoverName}</div>
+                </td>
+                <td data-field="type">
+                    <div class="layui-table-cell laytable-cell-1-type">${ele.type}</div>
+                </td>
+                <td data-field="handle" align="center" data-off="true">
+
+                    <div class="layui-table-cell laytable-cell-1-handle">
+                        &nbsp;&nbsp;
+                        <a class="layui-btn layui-btn-xs" style="font-size: 14px;"
+                           href="/admin/songCover/queryBSongCoverByID/${ele.songCoverId}" target="main">编辑</a>
+                        &nbsp;&nbsp;
+                        <a class="layui-btn layui-btn-danger layui-btn-xs"
+                           href="#" style="font-size: 14px;"
+                           onclick="deleteBSongCover(${ele.songCoverId},${ele.userId})"
+                        >删除</a>
+                    </div>
+                </td>
+            </tr>
+        `;
+
+        trs +=  tr;
+    });
+
+    $('#tbody-queryPageSongCoverList').append(trs);
+
+};
+
+//切换页数是，会触发该事件
+SongCover.prototype.jumpFunc = function (obj,first) {
+    let bSongCoverObj = new SongCover();
+
+    let form = $('#form-queryPageSongCoverList')[0];
+    let formData = new FormData(form);
+    let reqData = {
+        userName :formData.get('userName'),
+        songCoverName:formData.get('songCoverName'),
+        type :parseInt(formData.get('type')),
+    };
+    if(!first) {//首次不会执行
+        //改变也的大小
+        bSongCoverObj.queryPageSongCoverListFunc(reqData,obj.curr)
+    }
+};

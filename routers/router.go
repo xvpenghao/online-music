@@ -31,6 +31,8 @@ func init() {
 		beego.NSNamespace("/channel", beego.NSInclude(&controllers.ChannelController{})),
 		//后台普通用户
 		beego.NSNamespace("/user", beego.NSInclude(&controllers.BUserController{})),
+		//后台歌单
+		beego.NSNamespace("/songCover", beego.NSInclude(&controllers.BSongCoverController{})),
 	)
 
 	beego.AddNamespace(ns, ns2)

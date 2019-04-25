@@ -430,3 +430,78 @@ func (receiver *SongCoverService) DeleteSongCover(req models.DeleteSongCoverReq)
 	tx.Commit()
 	return nil
 }
+
+/*
+*@Title:查询分页歌单列表
+*@Description:
+*@User: 徐鹏豪
+*@Date 2019/4/25 0025
+*@Param
+*@Return
+ */
+func (receiver *SongCoverService) QueryPageSongCoverList(req models.QueryPageSongCoverListReq) (dbModel.BSongCoverList, error) {
+	receiver.BeforeLog("QueryPageSongCoverList")
+
+	var result dbModel.BSongCoverList
+	db, err := receiver.GetConn()
+	if err != nil {
+		logs.Error("查询分页歌单列表-数据库链接错误：(%v)", err.Error())
+		return result, utils.NewDBErr("数据库链接错误", err)
+	}
+	defer db.Close()
+
+	sqlSongCoverListCount := strings.Builder{}
+	sqlSongCoverListCount.WriteString(dbModel.QUERY_PAGE_SONG_COVER_LIST_COUNTS)
+	sqlWhere := strings.Builder{}
+	sqlParam := []interface{}{}
+	if req.UserName != "" {
+		sqlWhere.WriteString(" and instr(tbu.user_name,?) ")
+		sqlParam = append(sqlParam, req.UserName)
+	}
+	if req.SongCoverName != "" {
+		sqlWhere.WriteString(" and instr(tbu.song_cover_name,?) ")
+		sqlParam = append(sqlParam, req.SongCoverName)
+	}
+	if req.Type > 0 {
+		sqlWhere.WriteString(" and tbsc.type = ? ")
+		sqlParam = append(sqlParam, req.Type)
+	}
+	sqlSongCoverListCount.WriteString(sqlWhere.String())
+
+	//计算总记录数
+	var totalCounts int
+	err = db.Raw(sqlSongCoverListCount.String(), sqlParam...).Count(&totalCounts).Error
+	if err != nil {
+		logs.Error("查询分页歌单列表-查询总记录数错误：(%v)", err.Error())
+		return result, utils.NewDBErr("查询总记录数错误", err)
+	}
+
+	page := utils.Page{
+		CurPage:    req.CurPage,
+		TotalCount: totalCounts,
+		Groups:     constants.PAGE_DEFAULT_GROUPS,
+		Limit:      constants.PAGE_DEFAULT_LIMIT,
+	}
+
+	//查询歌单列表信息
+	sqlWhere.WriteString(" order by tbsc.update_time ")
+	sqlWhere.WriteString(" limit ? offset ? ")
+	dbCurPage := utils.CalPageCount(page.CurPage, page.Limit)
+	sqlParam = append(sqlParam, page.Limit, dbCurPage)
+
+	sqlSongCoverList := strings.Builder{}
+	sqlSongCoverList.WriteString(dbModel.QUERY_PAGE_SONG_COVER_LIST)
+	sqlSongCoverList.WriteString(sqlWhere.String())
+
+	var songCovers []dbModel.BSongCover
+	err = db.Raw(sqlSongCoverList.String(), sqlParam...).Find(&songCovers).Error
+	if err != nil {
+		logs.Error("查询分页歌单列表错误：(%v)", err.Error())
+		return result, utils.NewDBErr("查询分页歌单列表错误", err)
+	}
+
+	result.Page = page
+	result.List = songCovers
+
+	return result, nil
+}

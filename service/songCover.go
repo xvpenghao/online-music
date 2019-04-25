@@ -24,6 +24,8 @@ type (
 		ModifySongCover(req models.ModifySongCoverReq) error
 		//删除歌单
 		DeleteSongCover(req models.DeleteSongCoverReq) error
+		//查询分页歌单列表
+		QueryPageSongCoverList(req models.QueryPageSongCoverListReq) (dbModel.BSongCoverList, error)
 	}
 )
 

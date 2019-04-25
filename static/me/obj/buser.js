@@ -71,7 +71,7 @@ BUser.prototype.bUserListFunc = function(list,pageSize) {
                     <div class="layui-table-cell laytable-cell-1-handle">
                         &nbsp;&nbsp;
                         <a class="layui-btn layui-btn-xs" style="font-size: 14px;"
-                           href="/admin/user/queryBUserByID/${ele.userId}" target="main">编辑</a>
+                           href="/admin/user/queryBUserByID/${ele.songCoverId}" target="main">编辑</a>
                         &nbsp;&nbsp;
                         <a class="layui-btn layui-btn-danger layui-btn-xs"
                            href="#" style="font-size: 14px;"
@@ -126,4 +126,6 @@ BUser.prototype.ModifyBUserFunc =function (reqData) {
         }
     });
 };
+
+BUser.prototype.renderObj ={};
 

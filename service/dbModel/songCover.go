@@ -1,6 +1,9 @@
 package dbModel
 
-import "time"
+import (
+	"online-music/common/utils"
+	"time"
+)
 
 const (
 	//查询用户歌单数量，通过歌单名称
@@ -24,9 +27,29 @@ const (
                                             from tb_song_cover as tbsc
                                             inner join tb_song_cover_song tbscs 
                                             on tbsc.song_cover_id = tbscs.song_cover_id
-                                            where tbsc.song_cover_name = ? and tbscs.user_id = ?
-
-`
+                                            where tbsc.song_cover_name = ? and tbscs.user_id = ?`
+	//查询分页歌单列表
+	QUERY_PAGE_SONG_COVER_LIST = `select tbsc.song_cover_id,tbsc.song_cover_name ,tbu.user_name,tbu.user_id,
+                                  case tbsc.type
+                                  when 1 then
+                                      '个人'
+                                  when 2 then 
+                                      '第三方'
+                                  end as sctype
+                                  from tb_song_cover tbsc
+                                  left join  tb_user_song_cover tbusc
+                                  on tbsc.song_cover_id = tbusc.song_cover_id 
+                                  left join  tb_user tbu
+                                  on tbusc.user_id = tbu.user_id 
+                                  where 1=1 `
+	//查询分页歌单列表个数
+	QUERY_PAGE_SONG_COVER_LIST_COUNTS = `select count(*)
+                                         from tb_song_cover tbsc
+                                         left join  tb_user_song_cover tbusc
+                                         on tbsc.song_cover_id = tbusc.song_cover_id 
+                                         left join  tb_user tbu
+                                         on tbusc.user_id = tbu.user_id 
+                                         where 1=1`
 )
 
 type SongCoverInfo struct {
@@ -108,4 +131,22 @@ type CreateSongCoverReply struct {
 	SongCoverId string
 	//歌单名称
 	SongCoverName string
+}
+
+type BSongCover struct {
+	//用户Id
+	UserId string `gorm:"column:user_id"`
+	//歌单id
+	SongCoverId string `gorm:"column:song_cover_id"`
+	//歌单名称
+	SongCoverName string `gorm:"column:song_cover_name"`
+	//用户名称
+	UserName string `gorm:"column:user_name"`
+	//歌单的类型 1自定义 2 其他
+	Type string `gorm:"column:sctype"`
+}
+
+type BSongCoverList struct {
+	Page utils.Page
+	List []BSongCover
 }
