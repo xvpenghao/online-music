@@ -308,6 +308,7 @@ func (receiver *SongCoverController) ModifySongCover() error {
 		return receiver.returnJSONError("请求参数错误:(%v)", err.Error())
 	}
 
+	req.UserId = receiver.Session.UserId
 	songCoverService := service.NewSongCoverService(receiver.GetServiceInit())
 	err = songCoverService.ModifySongCover(req)
 	if err != nil {

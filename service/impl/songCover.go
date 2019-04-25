@@ -361,7 +361,7 @@ func (receiver *SongCoverService) ModifySongCover(req models.ModifySongCoverReq)
 
 	//该用户的歌单名称不能重复
 	sql := dbModel.QUERY_USER_SONG_COVER_COUNTS_BY_NAME
-	sqlParam := []interface{}{req.SongCoverName, receiver.BaseRequest.UserID}
+	sqlParam := []interface{}{req.SongCoverName, req.UserId}
 	var counts int
 	err = db.Raw(sql, sqlParam...).Count(&counts).Error
 	if err != nil {
@@ -459,7 +459,7 @@ func (receiver *SongCoverService) QueryPageSongCoverList(req models.QueryPageSon
 		sqlParam = append(sqlParam, req.UserName)
 	}
 	if req.SongCoverName != "" {
-		sqlWhere.WriteString(" and instr(tbu.song_cover_name,?) ")
+		sqlWhere.WriteString(" and instr(tbsc.song_cover_name,?) ")
 		sqlParam = append(sqlParam, req.SongCoverName)
 	}
 	if req.Type > 0 {

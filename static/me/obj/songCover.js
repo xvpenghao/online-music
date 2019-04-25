@@ -339,7 +339,7 @@ SongCover.prototype.bSongCoverListFunc = function(list,pageSize) {
                     <div class="layui-table-cell laytable-cell-1-handle">
                         &nbsp;&nbsp;
                         <a class="layui-btn layui-btn-xs" style="font-size: 14px;"
-                           href="/admin/songCover/queryBSongCoverByID/${ele.songCoverId}" target="main">编辑</a>
+                           href="/admin/songCover/queryBSongCoverByID/${ele.songCoverId}/${ele.userId}" target="main">编辑</a>
                         &nbsp;&nbsp;
                         <a class="layui-btn layui-btn-danger layui-btn-xs"
                            href="#" style="font-size: 14px;"
@@ -372,4 +372,22 @@ SongCover.prototype.jumpFunc = function (obj,first) {
         //改变也的大小
         bSongCoverObj.queryPageSongCoverListFunc(reqData,obj.curr)
     }
+};
+
+SongCover.prototype.modifyBSongCoverFunc = function (reqData) {
+    $.ajax({
+        contentType:'application/json;charset=UTF-8',
+        url:"http://localhost:8080/admin/songCover/modifyBSongCover",
+        type:"PUT",
+        data:JSON.stringify(reqData),
+        dataType:"json",
+        success:function (data,status) {
+            parent.layer.msg('提示：修改歌单信息成功');
+            window.location.href = "http://localhost:8080/admin/songCover/bSongCoverListUI"
+        },
+        error:function (err) {
+            //错误提示
+            parent.layer.msg('提示：'+err.responseJSON.resultMsg);
+        }
+    });
 };

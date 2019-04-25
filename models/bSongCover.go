@@ -32,3 +32,25 @@ type QueryPageSongCoverListResp struct {
 	//歌单列表
 	List []SongCoverInfo `json:"list"`
 }
+
+type QueQueryBSongCoverByIDResp struct {
+	//歌单ID
+	SongCoverId string
+	//歌单名称
+	SongCoverName string
+	//用户ID
+	UserId string
+}
+
+type ModifyBSongCoverReq struct {
+	//歌单ID
+	SongCoverId string `json:"songCoverId"`
+	//用户Id
+	UserId string `json:"userId"`
+	//歌单名称
+	SongCoverName string `json:"songCoverName"`
+}
+
+type ModifyBSongCoverResp struct {
+	baseResp
+}

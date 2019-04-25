@@ -104,6 +104,8 @@ type ModifySongCoverReq struct {
 	SongCoverId string `json:"songCoverId"`
 	//歌单名称
 	SongCoverName string `json:"songCoverName"`
+	//歌单用户
+	UserId string `json:"-"`
 }
 
 type ModifySongCoverResp struct {
@@ -124,4 +126,6 @@ type DeleteSongCoverResp struct {
 type QueryCoverSongByIdReq struct {
 	//歌单id
 	SongCoverId string
+	//用户id
+	UserId string
 }

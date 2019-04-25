@@ -25,11 +25,29 @@ func (receiver *BSongCoverController) BSongCoverListUI() error {
 // @Title QueryBSongCoverByID
 // @Description 查询歌单根据id
 // @Param songCoverId path string true "歌单ID"
+// @Param userId path string true "用户ID"
 // @Failure exec error
-// @router /queryBSongCoverByID/:songCoverId [get]
+// @router /queryBSongCoverByID/:songCoverId/:userId [get]
 func (receiver *BSongCoverController) QueryBSongCoverByID() error {
 	receiver.BeforeStart("QueryBSongCoverByID")
+	req := models.QueryCoverSongByIdReq{
+		SongCoverId: receiver.GetString(":songCoverId"),
+		UserId:      receiver.GetString(":userId"),
+	}
+	bSongCoverService := service.NewSongCoverService(receiver.GetServiceInit())
+	result, err := bSongCoverService.QuerySongCoverById(req)
+	if err != nil {
+		logs.Error("查询歌单根据id-service返回错误:(%v)", err.Error())
+		return receiver.returnError("service返回错误")
+	}
 
+	resp := models.QueQueryBSongCoverByIDResp{
+		SongCoverId:   result.ID,
+		SongCoverName: result.SongCoverName,
+		UserId:        req.UserId,
+	}
+
+	receiver.Data["songCover"] = resp
 	receiver.TplName = "admin/songCover/songCoverModify.html"
 	return nil
 }
@@ -66,5 +84,37 @@ func (receiver *BSongCoverController) QueryPageSongCoverList() error {
 	}
 
 	resp.Page = result.Page
+	return receiver.returnJSONSuccess(resp)
+}
+
+// @Title ModifyBSongCover
+// @Description 修改歌单信息
+// @Param info body models.ModifyBSongCoverReq true "req"
+// @Success 200 {object} models.resp "resp"
+// @Failure exec error
+// @router /modifyBSongCover [put]
+func (receiver *BSongCoverController) ModifyBSongCover() error {
+	receiver.BeforeStart("ModifyBSongCover")
+	var req models.ModifyBSongCoverReq
+	err := json.Unmarshal(receiver.Ctx.Input.RequestBody, &req)
+	if err != nil {
+		logs.Error("修改歌单信息-参数错误:(%v)", err.Error())
+		return receiver.returnError("参数错误")
+	}
+
+	bSongCoverService := service.NewSongCoverService(receiver.GetServiceInit())
+	modifyReq := models.ModifySongCoverReq{
+		SongCoverId:   req.SongCoverId,
+		SongCoverName: req.SongCoverName,
+		UserId:        req.UserId,
+	}
+	err = bSongCoverService.ModifySongCover(modifyReq)
+	if err != nil {
+		logs.Error("修改歌单信息-service发挥错误:(%v)", err.Error())
+		return receiver.returnError("service返回错误")
+	}
+
+	var resp models.ModifyBSongCoverResp
+
 	return receiver.returnJSONSuccess(resp)
 }
