@@ -54,3 +54,23 @@ type QueryBUserListResp struct {
 	//用户列表
 	List []BUserInfo `json:"list"`
 }
+
+//查询用户根据ID
+type QueryBUserByIDReq struct {
+	//用户ID
+	UserId string
+}
+
+type QueryBUserByIDResp struct {
+	UserId string
+	//用户名
+	UserName string
+	//邮箱
+	Email string
+	//年龄
+	Age int
+	//生日
+	Birthday string
+	//性别
+	Gender string
+}

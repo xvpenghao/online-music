@@ -17,6 +17,7 @@ type ModifyUserReq struct {
 	Age      int    `form:"age"`
 	Birthday string `form:"birthday"`
 	Gender   string `form:"gender"`
+	UserId   string `form:"-"`
 }
 
 //修改用户密码

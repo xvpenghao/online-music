@@ -16,6 +16,8 @@ type (
 		ModifyPwd(param models.ModifyPwdReq) error
 		//查询用户列表
 		QueryBUserList(req models.QueryBUserListReq) (dbModel.BUserList, error)
+		//查询用户根据ID
+		QueryBUserByID(req models.QueryBUserByIDReq) (dbModel.BUserInfo, error)
 	}
 )
 

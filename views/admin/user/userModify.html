@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
 </head>
 <body>
 <div style="width:600px ; margin: auto;">
@@ -12,29 +12,30 @@
             用户信息
         </div>
         <div class="panel-body">
-            <form class="form-horizontal" role="form" action="" method="post">
+            <form class="form-horizontal" id="form-modifyBUser" role="form" action="" method="">
                 <div class="form-group">
                     <label  class="col-sm-2 control-label">用户名:</label>
                     <div class="col-sm-10" >
-                        <input type="text"  style="width:60%;" name="userName" class="form-control"  placeholder="">
+                        <input type="text"  style="width:60%;" name="userName" class="form-control"  value="{{.user.UserName}}" placeholder="">
                     </div>
                 </div>
                 <div class="form-group">
                     <label  class="col-sm-2 control-label">邮&nbsp;&nbsp;&nbsp;&nbsp;箱:</label>
                     <div class="col-sm-10">
-                        <input type="text" style="width:60%;"  name="email" class="form-control"  placeholder="">
+                        <input type="text" style="width:60%;"  name="email" class="form-control" value="{{.user.Email}}"  placeholder="">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">年&nbsp;&nbsp;&nbsp;&nbsp;龄:</label>
                     <div class="col-sm-10">
-                        <input type="text" style="width:60%;" name="userAge" class="form-control"  placeholder="">
+                        <input type="text" style="width:60%;" name="age" class="form-control"  value="{{.user.Age}}">
                     </div>
                 </div>
                 <div class="form-group">
                     <label  class="col-sm-2 control-label">生&nbsp;&nbsp;&nbsp;&nbsp;日:</label>
                     <div class="col-sm-10">
-                        <input type="text"  style="width:60%;" name="userBirthday" class="layui-input form-control" id="birthday" placeholder="">
+                        <input type="text"  style="width:60%;" name="birthday" class="layui-input form-control" value="{{.user.Birthday}}"
+                               id="birthday" placeholder="">
                     </div>
                 </div>
                 <div class="form-group">
@@ -42,27 +43,38 @@
                     <div class="radio">
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <label>
-                            <input type="radio" name="userGender"  value="男" checked>男
+                            <input type="radio" name="gender"  value="男"
+                            {{ if eq .user.Gender "男" }} checked {{end}}
+                            >男
                         </label>
                         <label>
-                            <input type="radio" name="userGender"  value="女" >女
+                            <input type="radio" name="gender"  value="女"
+                             {{ if eq .user.Gender "女" }} checked {{end}}
+                            >女
                         </label>
                     </div>
                 </div>
+                <input type="hidden" name="userId"  value="{{.user.UserId}}" >
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-success">确定</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="button" onclick="modifyBUser()" class="btn btn-success">确定</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <button type="reset" class="btn btn-primary">重置</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="button"  class="btn btn-info" onclick="javascript:history.go(-1)" >返回</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<script src="js/jquery.min.js"></script>
-<script src="bootstrap/js/bootstrap.min.js"></script>
-<script src="lib/layui/layui.js"></script>
+<script src="/static/me/js/jquery-3.3.1.js"></script>
 
+<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/layui-v2.4.5/layui/layui.js"></script>
+
+<script type="text/javascript" src="/static/me/obj/buser.js"></script>
+<script type="text/javascript" src="/static/me/js/buserHandle.js"></script>
 <script>
     layui.use('laydate', function(){
         let laydate = layui.laydate;

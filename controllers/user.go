@@ -89,6 +89,7 @@ func (receiver *UserController) ModifyUser() error {
 	}
 
 	userService := service.NewUserService(receiver.GetServiceInit())
+	req.UserId = receiver.Session.UserId
 	err = userService.ModifyUser(req)
 	if err != nil {
 		logs.Error("修改用户-service返回错误:%s", err.Error())

@@ -5,6 +5,7 @@ import (
 	"github.com/astaxie/beego/logs"
 	"online-music/models"
 	"online-music/service"
+	"online-music/verify"
 )
 
 type BUserController struct {
@@ -23,12 +24,33 @@ func (receiver *BUserController) BUserListUI() error {
 }
 
 // @Title ModifyBUserUI
-// @Description 后台修改用户信息
+// @Description 查询用户根据ID
 // @Param userId path string true "用户id"
 // @Failure exec error
-// @router /modifyBUserUI/:userId [get]
-func (receiver *BUserController) ModifyBUserUI() error {
-	receiver.BeforeStart("ModifyAdminUserUI")
+// @router /queryBUserByID/:userId [get]
+func (receiver *BUserController) QueryBUserByID() error {
+	receiver.BeforeStart("QueryBUserByID")
+
+	req := models.QueryBUserByIDReq{
+		UserId: receiver.GetString(":userId"),
+	}
+	bUserService := service.NewUserService(receiver.GetServiceInit())
+	result, err := bUserService.QueryBUserByID(req)
+	if err != nil {
+		logs.Error("查询用户根据ID-service返回错误：(%v)", err.Error())
+		return receiver.returnError("service返回错误")
+	}
+	formStr := "2006-01-02"
+	resp := models.QueryBUserByIDResp{
+		UserId:   result.UserId,
+		UserName: result.UserName,
+		Email:    result.Email,
+		Age:      result.Age,
+		Birthday: result.Birthday.Format(formStr),
+		Gender:   result.Gender,
+	}
+
+	receiver.Data["user"] = resp
 
 	receiver.TplName = "admin/user/userModify.html"
 	return nil
@@ -41,9 +63,36 @@ func (receiver *BUserController) ModifyBUserUI() error {
 // @Failure exec error
 // @router /modifyBUser [put]
 func (receiver *BUserController) ModifyBUser() error {
-	receiver.BeforeStart("ModifyAdminUser")
+	receiver.BeforeStart("ModifyBUser")
+	var req models.ModifyBUserReq
+	err := json.Unmarshal(receiver.Ctx.Input.RequestBody, &req)
+	if err != nil {
+		logs.Error("查询用户列表-参数解析错误(%v)", err.Error())
+		return receiver.returnJSONError("参数解析错误")
+	}
+	reqU := models.ModifyUserReq{
+		UserId:   req.UserId,
+		UserName: req.UserName,
+		Age:      req.Age,
+		Gender:   req.Gender,
+		Birthday: req.Birthday,
+		Email:    req.Email,
+	}
+	err = verify.ModifyUserReqVerify(reqU)
+	if err != nil {
+		logs.Error("查询用户列表-参数错误(%v)", err.Error())
+		return receiver.returnJSONError("参数错误")
+	}
 
-	return nil
+	bUService := service.NewUserService(receiver.GetServiceInit())
+	err = bUService.ModifyUser(reqU)
+	if err != nil {
+		logs.Error("查询用户列表-service返回错误(%v)", err.Error())
+		return receiver.returnJSONError("service返回错误")
+	}
+
+	var resp models.ModifyBUserResp
+	return receiver.returnJSONSuccess(resp)
 }
 
 // @Title QueryBUserList

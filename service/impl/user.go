@@ -97,7 +97,7 @@ func (receiver *UserService) ModifyUser(param models.ModifyUserReq) error {
 
 	//用户名和邮箱不能重复
 	var counts int
-	err = db.Raw(dbModel.QUERY_USER_COUNTS_BY_UID, receiver.BaseRequest.UserID, param.UserName, param.Email).Count(&counts).Error
+	err = db.Raw(dbModel.QUERY_USER_COUNTS_BY_UID, param.UserId, param.UserName, param.Email).Count(&counts).Error
 	if err != nil {
 		logs.Error("创建用户-根据用户名和邮箱查询用户错误:%s", err.Error())
 		return utils.NewDBErr("根据用户名和邮箱查询用户错误", err)
@@ -133,14 +133,14 @@ func (receiver *UserService) ModifyUser(param models.ModifyUserReq) error {
 	}
 
 	tx := db.Begin()
-	err = tx.Table("tb_user").Where("user_id = ?", receiver.BaseRequest.UserID).Update(updateUserField).Error
+	err = tx.Table("tb_user").Where("user_id = ?", param.UserId).Update(updateUserField).Error
 	if err != nil {
 		tx.Rollback()
 		logs.Error("修改用户-更新用户信息错误:%s", err.Error())
 		return utils.NewDBErr("更新用户信息错误", err)
 	}
 	//登录用户信息
-	err = tx.Table("tb_login").Where("user_id = ?", receiver.BaseRequest.UserID).Update(updateUserLoginField).Error
+	err = tx.Table("tb_login").Where("user_id = ?", param.UserId).Update(updateUserLoginField).Error
 	if err != nil {
 		tx.Rollback()
 		logs.Error("修改用户-更新登录用户信息错误:%s", err.Error())
@@ -239,7 +239,6 @@ func (receiver *UserService) QueryBUserList(req models.QueryBUserListReq) (dbMod
 		whereSql.WriteString(" age = ? ")
 		sqlParam = append(sqlParam, req.Age)
 	}
-	//TODO 生日的判断
 	if req.Birthday != "" {
 		strs := strings.Split(req.Birthday, " - ")
 		whereSql.WriteString(" and birthday between ? and ? ")
@@ -283,5 +282,33 @@ func (receiver *UserService) QueryBUserList(req models.QueryBUserListReq) (dbMod
 
 	result.List = bUsers
 	result.Page = page
+	return result, nil
+}
+
+/*
+*@Title:查询用户根据ID
+*@Description:
+*@User: 徐鹏豪
+*@Date 2019/4/25 0025
+*@Param
+*@Return
+ */
+func (receiver *UserService) QueryBUserByID(req models.QueryBUserByIDReq) (dbModel.BUserInfo, error) {
+	receiver.BeforeLog("QueryBUserByID")
+
+	var result dbModel.BUserInfo
+	db, err := receiver.GetConn()
+	if err != nil {
+		logs.Error("查询用户根据ID-数据库链接错误：(%v)", err.Error())
+		return result, utils.NewDBErr("数据库链接错误", err)
+	}
+	defer db.Close()
+
+	err = db.Table("tb_user").Where("user_id = ?", req.UserId).First(&result).Error
+	if err != nil {
+		logs.Error("查询用户根据ID错误：(%v)", err.Error())
+		return result, utils.NewDBErr("查询用户根据ID错误", err)
+	}
+
 	return result, nil
 }
