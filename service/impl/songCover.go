@@ -420,7 +420,7 @@ func (receiver *SongCoverService) DeleteSongCover(req models.DeleteSongCoverReq)
 	}
 	var songCoverSong dbModel.SongCoverSongTable
 	err = tx.Table("tb_song_cover_song").Where("song_cover_id = ?", req.SongCoverId).Where("user_id = ?",
-		receiver.BaseRequest.UserID).Delete(songCoverSong).Error
+		req.UserId).Delete(songCoverSong).Error
 	if err != nil {
 		tx.Rollback()
 		logs.Error("删除歌单-根据歌单id和用户id删除歌单歌曲失败：(%v)", err.Error())

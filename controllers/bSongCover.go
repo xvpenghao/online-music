@@ -118,3 +118,34 @@ func (receiver *BSongCoverController) ModifyBSongCover() error {
 
 	return receiver.returnJSONSuccess(resp)
 }
+
+// @Title DeleteBSongCover
+// @Description 删除后台用户歌单
+// @Param req body models.DeleteBSongCoverReq true "req"
+// @Success 200 {object} models.DeleteBSongCoverResp "resp"
+// @Failure exec error
+// @router /deleteBSongCover [delete]
+func (receiver *BSongCoverController) DeleteBSongCover() error {
+	receiver.BeforeStart("DeleteBSongCover")
+
+	var req models.DeleteBSongCoverReq
+	err := json.Unmarshal(receiver.Ctx.Input.RequestBody, &req)
+	if err != nil {
+		logs.Error("删除后台用户歌单-参数错误:(%v)", err.Error())
+		return receiver.returnError("参数错误")
+	}
+
+	bSongService := service.NewSongCoverService(receiver.GetServiceInit())
+	req2 := models.DeleteSongCoverReq{
+		SongCoverId: req.UserId,
+		UserId:      req.UserId,
+	}
+	err = bSongService.DeleteSongCover(req2)
+	if err != nil {
+		logs.Error("删除后台用户歌单-service返回错误:(%v)", err.Error())
+		return receiver.returnError("service返回错误")
+	}
+
+	var resp models.DeleteBSongCoverResp
+	return receiver.returnJSONSuccess(resp)
+}

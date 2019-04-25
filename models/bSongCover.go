@@ -54,3 +54,15 @@ type ModifyBSongCoverReq struct {
 type ModifyBSongCoverResp struct {
 	baseResp
 }
+
+//删除后台用户歌单id
+type DeleteBSongCoverReq struct {
+	//歌单id
+	SongCoverId string `json:"songCoverId"`
+	//用户ID
+	UserId string `json:"userId"`
+}
+
+type DeleteBSongCoverResp struct {
+	baseResp
+}

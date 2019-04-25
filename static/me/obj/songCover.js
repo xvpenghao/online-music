@@ -343,7 +343,7 @@ SongCover.prototype.bSongCoverListFunc = function(list,pageSize) {
                         &nbsp;&nbsp;
                         <a class="layui-btn layui-btn-danger layui-btn-xs"
                            href="#" style="font-size: 14px;"
-                           onclick="deleteBSongCover(${ele.songCoverId},${ele.userId})"
+                           onclick="deleteBSongCover('${ele.songCoverId}','${ele.userId}')"
                         >删除</a>
                     </div>
                 </td>
@@ -390,4 +390,26 @@ SongCover.prototype.modifyBSongCoverFunc = function (reqData) {
             parent.layer.msg('提示：'+err.responseJSON.resultMsg);
         }
     });
+};
+
+SongCover.prototype.deleteBSongCoverFunc = function (reqData) {
+    console.log('reqData',reqData);
+    parent.layer.alert('你真的要删除吗?', function(index){
+        $.ajax({
+            contentType:'application/json;charset=UTF-8',
+            url:"http://localhost:8080/admin/songCover/deleteBSongCover",
+            type:"DELETE",
+            data:JSON.stringify(reqData),
+            dataType:'json',
+            success:function (data) {
+                layer.msg('删除成功');
+                window.location.href = "http://localhost:8080/admin/songCover/bSongCoverListUI"
+            },
+            error:function (err) {
+                layer.msg('提示：'+err.responseJSON.resultMsg);
+            }
+        });
+        parent.layer.close(index);
+    });
+    //得到输入的信息，并请求添加歌单请求，发送ajax
 };

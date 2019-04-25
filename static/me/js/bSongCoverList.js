@@ -22,6 +22,12 @@ function searchSongCover() {
 
 //删除歌单
 function deleteBSongCover(songCoverId,userId) {
-    console.log('songCoverId',songCoverId);
-    console.log('userId',userId);
+    let reqData = {
+        songCoverId:songCoverId,
+        userId:userId,
+    };
+    let bSongCoverObj = new SongCover();
+
+    bSongCoverObj.deleteBSongCoverFunc(reqData)
+
 }

@@ -335,6 +335,7 @@ func (receiver *SongCoverController) DeleteSongCover() error {
 	}
 
 	songCoverService := service.NewSongCoverService(receiver.GetServiceInit())
+	req.UserId = receiver.Session.UserId
 	err := songCoverService.DeleteSongCover(req)
 	if err != nil {
 		logs.Error("删除歌单-service返回错误:(%v)", err.Error())
