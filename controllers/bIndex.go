@@ -1,5 +1,7 @@
 package controllers
 
+import "time"
+
 type AdminIndexController struct {
 	BaseController
 }
@@ -18,6 +20,10 @@ func (receiver *AdminIndexController) IndexUI() error {
 //@Failure exec error
 //@router /welcomeUI [get]
 func (receiver *AdminIndexController) WelcomeUI() error {
+
+	formStr := "2006-01-02 15:04"
+	receiver.Data["nowTime"] = time.Now().Format(formStr)
+
 	receiver.TplName = "admin/welcome.html"
 	return nil
 }

@@ -6,6 +6,10 @@ import (
 )
 
 func init() {
+
+	//用户登录过滤
+	beego.InsertFilter("/admin/*", beego.BeforeRouter, filterUser, true)
+
 	beego.Router("/", &controllers.MainController{})
 
 	ns := beego.NewNamespace("v1",
@@ -34,6 +38,10 @@ func init() {
 		//后台歌单
 		beego.NSNamespace("/songCover", beego.NSInclude(&controllers.BSongCoverController{})),
 	)
+	//后台登录
+	ns3 := beego.NewNamespace("bAdmin",
+		beego.NSNamespace("/login", beego.NSInclude(&controllers.BLoginController{})),
+	)
 
-	beego.AddNamespace(ns, ns2)
+	beego.AddNamespace(ns, ns2, ns3)
 }

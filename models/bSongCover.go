@@ -33,7 +33,7 @@ type QueryPageSongCoverListResp struct {
 	List []SongCoverInfo `json:"list"`
 }
 
-type QueQueryBSongCoverByIDResp struct {
+type QueryBSongCoverByIDResp struct {
 	//歌单ID
 	SongCoverId string
 	//歌单名称

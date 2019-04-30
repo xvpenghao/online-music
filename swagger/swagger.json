@@ -5,6 +5,150 @@
     },
     "basePath": "v1",
     "paths": {
+        "/channel/createChannel": {
+            "post": {
+                "tags": [
+                    "channel"
+                ],
+                "description": "添加平台分类",
+                "operationId": "ChannelController.CreateChannel",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "info",
+                        "description": "req",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateChannelReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "exec": {
+                        "description": "error"
+                    },
+                    "resp": {
+                        "description": "true \"resp\"",
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateChannelResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/channel/createChannelUI": {
+            "get": {
+                "tags": [
+                    "channel"
+                ],
+                "description": "添加平台分类UI",
+                "operationId": "ChannelController.ChannelAddUI",
+                "responses": {
+                    "exec": {
+                        "description": "error"
+                    }
+                }
+            }
+        },
+        "/channel/modifyChannel": {
+            "put": {
+                "tags": [
+                    "channel"
+                ],
+                "description": "修改渠道信息",
+                "operationId": "ChannelController.ModifyChannel",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "info",
+                        "description": "req",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ModifyChannelReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\"resp\"",
+                        "schema": {
+                            "$ref": "#/definitions/models.ModifyChannelResp"
+                        }
+                    },
+                    "exec": {
+                        "description": "error"
+                    }
+                }
+            }
+        },
+        "/channel/queryChannelDetail/{channelId}": {
+            "get": {
+                "tags": [
+                    "channel"
+                ],
+                "description": "查询渠道详情",
+                "operationId": "ChannelController.QueryChannelDetail",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "channelId",
+                        "description": "渠道id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "exec": {
+                        "description": "error"
+                    }
+                }
+            }
+        },
+        "/channel/queryChannelList": {
+            "post": {
+                "tags": [
+                    "channel"
+                ],
+                "description": "查询渠道列表",
+                "operationId": "ChannelController.QueryChannelList",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "req",
+                        "description": "req",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.QueryChannelListReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "exec": {
+                        "description": "error"
+                    },
+                    "resp": {
+                        "description": "true \"resp\"",
+                        "schema": {
+                            "$ref": "#/definitions/models.QueryChannelListResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/channel/queryChannelListUI": {
+            "get": {
+                "tags": [
+                    "channel"
+                ],
+                "description": "平台分类列表UI",
+                "operationId": "ChannelController.QueryChannelListUI",
+                "responses": {
+                    "exec": {
+                        "description": "error"
+                    }
+                }
+            }
+        },
         "/data/queryGenderProportion": {
             "get": {
                 "tags": [
@@ -90,12 +234,46 @@
             }
         },
         "/login/": {
+            "get": {
+                "tags": [
+                    "login"
+                ],
+                "description": "登录UI",
+                "operationId": "BLoginController.BLoginUI",
+                "responses": {
+                    "exec": {
+                        "description": "error"
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "login"
                 ],
-                "description": "登录",
-                "operationId": "LoginController.LoginIn"
+                "description": "后台用户登录",
+                "operationId": "BLoginController.BLogin",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "info",
+                        "description": "req",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.BLoginReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\"resp\"",
+                        "schema": {
+                            "$ref": "#/definitions/models.BLoginResp"
+                        }
+                    },
+                    "exec": {
+                        "description": "error"
+                    }
+                }
             }
         },
         "/login/loginOut": {
@@ -409,6 +587,20 @@
                 }
             }
         },
+        "/songCover/bSongCoverListUI": {
+            "get": {
+                "tags": [
+                    "songCover"
+                ],
+                "description": "歌单列表UI",
+                "operationId": "BSongCoverController.BSongCoverListUI",
+                "responses": {
+                    "exec": {
+                        "description": "error"
+                    }
+                }
+            }
+        },
         "/songCover/createCollectSongCover": {
             "post": {
                 "tags": [
@@ -471,6 +663,37 @@
                 }
             }
         },
+        "/songCover/deleteBSongCover": {
+            "delete": {
+                "tags": [
+                    "songCover"
+                ],
+                "description": "删除后台用户歌单",
+                "operationId": "BSongCoverController.DeleteBSongCover",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "req",
+                        "description": "req",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.DeleteBSongCoverReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\"resp\"",
+                        "schema": {
+                            "$ref": "#/definitions/models.DeleteBSongCoverResp"
+                        }
+                    },
+                    "exec": {
+                        "description": "error"
+                    }
+                }
+            }
+        },
         "/songCover/deleteSongCover/{songCoverId}": {
             "delete": {
                 "tags": [
@@ -492,6 +715,37 @@
                         "description": "\"resp\"",
                         "schema": {
                             "$ref": "#/definitions/models.DeleteSongCoverResp"
+                        }
+                    },
+                    "exec": {
+                        "description": "error"
+                    }
+                }
+            }
+        },
+        "/songCover/modifyBSongCover": {
+            "put": {
+                "tags": [
+                    "songCover"
+                ],
+                "description": "修改歌单信息",
+                "operationId": "BSongCoverController.ModifyBSongCover",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "info",
+                        "description": "req",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ModifyBSongCoverReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\"resp\"",
+                        "schema": {
+                            "$ref": "#/definitions/models.resp"
                         }
                     },
                     "exec": {
@@ -555,6 +809,67 @@
                     }
                 ],
                 "responses": {
+                    "exec": {
+                        "description": "error"
+                    }
+                }
+            }
+        },
+        "/songCover/queryBSongCoverByID/{songCoverId}/{userId}": {
+            "get": {
+                "tags": [
+                    "songCover"
+                ],
+                "description": "查询歌单根据id",
+                "operationId": "BSongCoverController.QueryBSongCoverByID",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "songCoverId",
+                        "description": "歌单ID",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "path",
+                        "name": "userId",
+                        "description": "用户ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "exec": {
+                        "description": "error"
+                    }
+                }
+            }
+        },
+        "/songCover/queryPageSongCoverList": {
+            "post": {
+                "tags": [
+                    "songCover"
+                ],
+                "description": "查询分页歌单列表",
+                "operationId": "BSongCoverController.QueryPageSongCoverList",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "info",
+                        "description": "req",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.QueryPageSongCoverListReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\"resp\"",
+                        "schema": {
+                            "$ref": "#/definitions/models.QueryPageSongCoverListResp"
+                        }
+                    },
                     "exec": {
                         "description": "error"
                     }
@@ -684,6 +999,20 @@
                 }
             }
         },
+        "/user/bUserListUI": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "description": "后台用户列表UI",
+                "operationId": "BUserController.BUserListUI",
+                "responses": {
+                    "exec": {
+                        "description": "error"
+                    }
+                }
+            }
+        },
         "/user/createUser": {
             "post": {
                 "tags": [
@@ -691,6 +1020,37 @@
                 ],
                 "description": "添加用户",
                 "operationId": "UserController.CreateUser"
+            }
+        },
+        "/user/modifyBUser": {
+            "put": {
+                "tags": [
+                    "user"
+                ],
+                "description": "后台修改用户信息",
+                "operationId": "BUserController.ModifyBUser",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "req",
+                        "description": "req",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ModifyBUserReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "exec": {
+                        "description": "error"
+                    },
+                    "resp": {
+                        "description": "true \"resp\"",
+                        "schema": {
+                            "$ref": "#/definitions/models.ModifyBUserResp"
+                        }
+                    }
+                }
             }
         },
         "/user/modifyPwd": {
@@ -720,6 +1080,60 @@
                 "operationId": "UserController.ModifyUser"
             }
         },
+        "/user/queryBUserByID/{userId}": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "description": "查询用户根据ID",
+                "operationId": "BUserController.ModifyBUserUI",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "userId",
+                        "description": "用户id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "exec": {
+                        "description": "error"
+                    }
+                }
+            }
+        },
+        "/user/queryBUserList": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "description": "查询用户列表",
+                "operationId": "BUserController.QueryBUserList",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "info",
+                        "description": "req",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.QueryBUserListReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\"resp\"",
+                        "schema": {
+                            "$ref": "#/definitions/models.QueryBUserListResp"
+                        }
+                    },
+                    "exec": {
+                        "description": "error"
+                    }
+                }
+            }
+        },
         "/user/registerUI": {
             "get": {
                 "tags": [
@@ -740,6 +1154,94 @@
         }
     },
     "definitions": {
+        "models.BLoginReq": {
+            "title": "BLoginReq",
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "userName": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.BLoginResp": {
+            "title": "BLoginResp",
+            "type": "object",
+            "properties": {
+                "resultCode": {
+                    "type": "string"
+                },
+                "resultMsg": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.BUserInfo": {
+            "title": "BUserInfo",
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "birthday": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                },
+                "userName": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ChannelInfo": {
+            "title": "ChannelInfo",
+            "type": "object",
+            "properties": {
+                "channelId": {
+                    "type": "string"
+                },
+                "channelName": {
+                    "type": "string"
+                },
+                "createUser": {
+                    "type": "string"
+                },
+                "updateTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CreateChannelReq": {
+            "title": "CreateChannelReq",
+            "type": "object",
+            "properties": {
+                "channelName": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CreateChannelResp": {
+            "title": "CreateChannelResp",
+            "type": "object",
+            "properties": {
+                "resultCode": {
+                    "type": "string"
+                },
+                "resultMsg": {
+                    "type": "string"
+                }
+            }
+        },
         "models.CreateCollectSongCoverReq": {
             "title": "CreateCollectSongCoverReq",
             "type": "object",
@@ -842,6 +1344,30 @@
                 }
             }
         },
+        "models.DeleteBSongCoverReq": {
+            "title": "DeleteBSongCoverReq",
+            "type": "object",
+            "properties": {
+                "songCoverId": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.DeleteBSongCoverResp": {
+            "title": "DeleteBSongCoverResp",
+            "type": "object",
+            "properties": {
+                "resultCode": {
+                    "type": "string"
+                },
+                "resultMsg": {
+                    "type": "string"
+                }
+            }
+        },
         "models.DeleteSongCoverResp": {
             "title": "DeleteSongCoverResp",
             "type": "object",
@@ -890,6 +1416,82 @@
                 }
             }
         },
+        "models.ModifyBSongCoverReq": {
+            "title": "ModifyBSongCoverReq",
+            "type": "object",
+            "properties": {
+                "songCoverId": {
+                    "type": "string"
+                },
+                "songCoverName": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ModifyBUserReq": {
+            "title": "ModifyBUserReq",
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "birthday": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                },
+                "userName": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ModifyBUserResp": {
+            "title": "ModifyBUserResp",
+            "type": "object",
+            "properties": {
+                "resultCode": {
+                    "type": "string"
+                },
+                "resultMsg": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ModifyChannelReq": {
+            "title": "ModifyChannelReq",
+            "type": "object",
+            "properties": {
+                "channelId": {
+                    "type": "string"
+                },
+                "channelName": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ModifyChannelResp": {
+            "title": "ModifyChannelResp",
+            "type": "object",
+            "properties": {
+                "resultCode": {
+                    "type": "string"
+                },
+                "resultMsg": {
+                    "type": "string"
+                }
+            }
+        },
         "models.ModifySongCoverReq": {
             "title": "ModifySongCoverReq",
             "type": "object",
@@ -914,21 +1516,107 @@
                 }
             }
         },
-        "models.QueryChannelDetailResp": {
-            "title": "QueryChannelDetailResp",
+        "models.QueryBUserListReq": {
+            "title": "QueryBUserListReq",
             "type": "object",
             "properties": {
-                "ChannelId": {
+                "age": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "birthday": {
                     "type": "string"
                 },
-                "ChannelName": {
+                "curPage": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "email": {
                     "type": "string"
                 },
-                "CreateName": {
+                "gender": {
                     "type": "string"
                 },
-                "UpdateTimeStr": {
+                "userName": {
                     "type": "string"
+                }
+            }
+        },
+        "models.QueryBUserListResp": {
+            "title": "QueryBUserListResp",
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.BUserInfo"
+                    }
+                },
+                "page": {
+                    "$ref": "#/definitions/utils.Page"
+                }
+            }
+        },
+        "models.QueryChannelListReq": {
+            "title": "QueryChannelListReq",
+            "type": "object",
+            "properties": {
+                "channelName": {
+                    "type": "string"
+                },
+                "curPage": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.QueryChannelListResp": {
+            "title": "QueryChannelListResp",
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.ChannelInfo"
+                    }
+                },
+                "page": {
+                    "$ref": "#/definitions/utils.Page"
+                }
+            }
+        },
+        "models.QueryPageSongCoverListReq": {
+            "title": "QueryPageSongCoverListReq",
+            "type": "object",
+            "properties": {
+                "curPage": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "songCoverName": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "userName": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.QueryPageSongCoverListResp": {
+            "title": "QueryPageSongCoverListResp",
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.SongCoverInfo"
+                    }
+                },
+                "page": {
+                    "$ref": "#/definitions/utils.Page"
                 }
             }
         },
@@ -1039,6 +1727,27 @@
                 }
             }
         },
+        "models.SongCoverInfo": {
+            "title": "SongCoverInfo",
+            "type": "object",
+            "properties": {
+                "songCoverId": {
+                    "type": "string"
+                },
+                "songCoverName": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                },
+                "userName": {
+                    "type": "string"
+                }
+            }
+        },
         "models.SongPlayHistory": {
             "title": "SongPlayHistory",
             "type": "object",
@@ -1069,6 +1778,32 @@
                 },
                 "resultMsg": {
                     "type": "string"
+                }
+            }
+        },
+        "models.resp": {
+            "title": "resp",
+            "type": "object"
+        },
+        "utils.Page": {
+            "title": "Page",
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "curPage": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "groups": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "limit": {
+                    "type": "integer",
+                    "format": "int64"
                 }
             }
         }

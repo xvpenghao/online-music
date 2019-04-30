@@ -19,3 +19,15 @@ type LoginResp struct {
 	//生日
 	Birthday string
 }
+
+//后台登录
+type BLoginReq struct {
+	//用户名
+	UserName string `json:"userName"`
+	//密码
+	Password string `json:"password"`
+}
+
+type BLoginResp struct {
+	baseResp
+}

@@ -142,3 +142,8 @@ const (
 	//分页的分组
 	PAGE_DEFAULT_GROUPS = 5
 )
+
+//后台session的key
+const (
+	BACK_SESSION_KEY = "admin"
+)

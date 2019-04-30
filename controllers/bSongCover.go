@@ -41,7 +41,7 @@ func (receiver *BSongCoverController) QueryBSongCoverByID() error {
 		return receiver.returnError("service返回错误")
 	}
 
-	resp := models.QueQueryBSongCoverByIDResp{
+	resp := models.QueryBSongCoverByIDResp{
 		SongCoverId:   result.ID,
 		SongCoverName: result.SongCoverName,
 		UserId:        req.UserId,
