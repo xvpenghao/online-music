@@ -32,7 +32,7 @@ const (
 //网站使用群体
 type WebSiteUseGroup struct {
 	//群体名称
-	GroupName string `grom:"column:wsug"`
+	GroupName string `gorm:"column:wsug"`
 	//群体数量
 	GroupCounts int `gorm:"column:cnt"`
 }

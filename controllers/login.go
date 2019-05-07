@@ -72,7 +72,8 @@ func (receiver *LoginController) LoginIn() error {
 	}
 
 	//cookie存放用户id，关闭浏览器，则自动情况cookie
-	receiver.SetSecureCookie(constants.COOKIE_SECRET, constants.COOKIE_NAME, key)
+	expire := 3600 * 2
+	receiver.SetSecureCookie(constants.COOKIE_SECRET, constants.COOKIE_NAME, key, expire)
 
 	receiver.Redirect("/v1/index/indexUI", http.StatusFound)
 	return nil

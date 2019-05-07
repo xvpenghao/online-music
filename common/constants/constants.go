@@ -22,7 +22,7 @@ const (
 //cookie
 const (
 	//设置cookie的过期使，或者rediskey的过期时间
-	COOKIE_EXPIRE = "24h"
+	COOKIE_EXPIRE = "2h"
 	//设置cookie名字
 	COOKIE_NAME = "xph"
 	//设置cookie秘钥
