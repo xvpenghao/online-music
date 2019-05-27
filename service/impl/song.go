@@ -176,6 +176,64 @@ func (receiver *SongService) QuerySongBaseInfo(req models.QuerySongDetailReq) (d
 	return result, nil
 }
 
+func (receiver *SongService) QueryChanSongBaseInfo(idChan chan string, dataChan chan dbModel.Song, syncChan chan struct{},
+	errChan chan error) {
+
+	var result dbModel.Song
+	var err error
+
+	c := colly.NewCollector(
+		colly.UserAgent(constants.USER_AGENT))
+
+	var keywords string
+	var imageUrl string
+	c.OnHTML("meta[name='keywords'],meta[property='og:image']", func(e *colly.HTMLElement) {
+		switch {
+		case e.Attr("name") == "keywords":
+			keywords = e.Attr("content")
+		case e.Attr("property") == "og:image":
+			imageUrl = e.Attr("content")
+		}
+	})
+
+	c.OnError(func(response *colly.Response, e error) {
+		if e != nil {
+			err = e
+		}
+	})
+	if err != nil {
+		logs.Error("查询歌曲详情错误：(%v)", err.Error())
+		errChan <- err
+	}
+
+	songId := <-idChan
+	reqUrl := fmt.Sprintf(constants.SONG_URL, songId)
+
+	err = c.Visit(reqUrl)
+	if err != nil {
+		logs.Error("查询歌曲详情-根据歌曲id访问链接错误：(%v),访问链接:(%v)", err.Error(), reqUrl)
+		errChan <- err
+	}
+
+	//设置专辑，歌手，歌曲封面链接，歌曲链接，歌词
+	keywordss := strings.Split(keywords, "，")
+	result.SongId = songId
+	result.SongName = keywordss[0]
+	result.SongAlbum = keywordss[1]
+	result.Singer = keywordss[2]
+	result.SongCoverUrl = imageUrl
+	//歌曲url
+	result.SongPlayUrl = fmt.Sprintf(constants.SONG_PLAY_URL, songId)
+
+	dataChan <- result
+	if len(dataChan) == cap(dataChan) {
+		//通道关闭后，还能继续消费
+		close(dataChan)
+		//开始通知消费
+		syncChan <- struct{}{}
+	}
+}
+
 /*
 *@Title:根据歌单id查询歌曲列表
 *@Description:

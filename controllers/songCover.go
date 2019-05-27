@@ -9,6 +9,7 @@ import (
 	"online-music/service"
 	"online-music/service/dbModel"
 	"online-music/verify"
+	"time"
 )
 
 type SongCoverController struct {
@@ -62,6 +63,7 @@ func (receiver *SongCoverController) QuerySongCoverList() error {
 	return nil
 }
 
+/*
 //@Title QuerySongList
 //@Description 根据歌单id获取歌曲列表
 //@Param channelId query string true "渠道id"
@@ -117,6 +119,95 @@ func (receiver *SongCoverController) QuerySongList() error {
 		song.SongPlayUrl = dbSong.SongPlayUrl
 		song.SongCoverUrl = dbSong.SongCoverUrl
 		resp.List = append(resp.List, song)
+	}
+
+	resp.SongCoverId = req.SongCoverId
+	resp.Description = req.Description
+	resp.SongCoverImgUrl = req.SongCoverImgUrl
+	receiver.Data["songList"] = resp
+
+	receiver.TplName = "song/songList.html"
+	return nil
+}*/
+
+//@Title QuerySongList
+//@Description 根据歌单id获取歌曲列表
+//@Param channelId query string true "渠道id"
+//@Param songCoverId query string true "歌单id"
+//@Param coverImgUrl query string true "歌单图片id"
+//@Param description query string true "歌单描述"
+//@Failure exec error
+//@router /querySongList [get]
+func (receiver *SongCoverController) QuerySongList() error {
+	receiver.BeforeStart("SongListUI")
+
+	req := models.QuerySongListReq{
+		ChannelId:       receiver.GetString("channelId"),
+		SongCoverId:     receiver.GetString("songCoverId"),
+		SongCoverImgUrl: receiver.GetString("coverImgUrl"),
+		Description:     receiver.GetString("description"),
+	}
+	err := verify.QuerySongListReqVerify(req)
+	if err != nil {
+		logs.Error("根据歌单id获取歌曲列表-参数错误：(%v)", err.Error())
+		return receiver.returnError("参数错误：(%v)", err.Error())
+	}
+	songCoverService := service.NewSongCoverService(receiver.GetServiceInit())
+	result, err := songCoverService.QuerySongList(req)
+	if err != nil {
+		logs.Error("根据歌单id获取歌曲列表-service返回错误：(%v)", err.Error())
+		return receiver.returnError("service返回错误：(%v)", err.Error())
+	}
+
+	songService := service.NewSongService(receiver.GetServiceInit())
+	var song models.Song
+	var resp models.QuerySongListResp
+	logs.Debug(len(result))
+
+	dataChan := make(chan dbModel.Song, len(result))
+	syncChan := make(chan struct{}, 1)
+	errChan := make(chan error)
+
+	//我知道歌曲的数量 9s-900ms
+	for _, v := range result {
+		//发送数据
+		idChan := make(chan string, 1)
+		idChan <- v.SongId
+		go songService.QueryChanSongBaseInfo(idChan, dataChan, syncChan, errChan)
+		close(idChan)
+	}
+
+	<-syncChan
+	//设置一个超时策略
+	var timer *time.Timer
+	timeOut := 10 * time.Second
+Loop:
+	for {
+		if timer == nil {
+			timer = time.NewTimer(timeOut)
+		} else {
+			timer.Reset(timeOut)
+		}
+		select {
+		case s, ok := <-dataChan:
+			if !ok {
+				break Loop
+			}
+			song.SongId = s.SongId
+			song.SongName = s.SongName
+			song.Singer = s.Singer
+			song.SongAlbum = s.SongAlbum
+			song.SongPlayUrl = s.SongPlayUrl
+			song.SongCoverUrl = s.SongCoverUrl
+			resp.List = append(resp.List, song)
+		case err := <-errChan:
+			if err != nil {
+				return receiver.returnError("service返回错误：(%v)", err.Error())
+			}
+		case <-timer.C:
+			logs.Error("service返回错误-请求超时")
+			return receiver.returnError("service返回错误：(%v)", err.Error())
+		}
 	}
 
 	resp.SongCoverId = req.SongCoverId

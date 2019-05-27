@@ -20,6 +20,8 @@ type (
 		QuerySongInfoById(req models.QuerySongDetailReq) (dbModel.SongTable, error)
 		//协程版查询歌曲信息
 		QuerySongBaseInfoChan(req models.QuerySongDetailReq, song chan dbModel.Song)
+		//协成版
+		QueryChanSongBaseInfo(idChan chan string, dataChan chan dbModel.Song, syncChan chan struct{}, errChan chan error)
 		//删除歌曲
 		DeleteSong(req models.DeleteSongReq) error
 		//添加歌曲播放历史
